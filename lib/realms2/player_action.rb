@@ -3,9 +3,7 @@ require "realms2/actions"
 
 module Realms2
   class PlayerAction < Choice
-
     attr_reader :turn
-
     def initialize(turn)
       @turn = turn
       @options = {
@@ -15,7 +13,7 @@ module Realms2
         scrap_ability: Actions::ScrapAbility.new(turn),
         use_trade: Actions::UseTrade.new(turn),
         use_combat: Actions::UseCombat.new(turn),
-        end_turn: Actions::EndTurn.new(turn),
+        end_turn: Actions::EndMainPhase.new(turn),
       }
     end
   end

@@ -1,6 +1,6 @@
 module Realms2
   module Actions
-    class EndTurn < Action
+    class EndMainPhase < Action
     end
   end
 end

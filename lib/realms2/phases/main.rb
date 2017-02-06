@@ -6,7 +6,7 @@ module Realms2
       def execute
         action = choose PlayerAction.new(turn)
         perform action
-        unless action.is_a?(Actions::EndTurn)
+        unless action.is_a?(Actions::EndMainPhase)
           execute
         end
       end
