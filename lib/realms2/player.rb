@@ -9,6 +9,10 @@ module Realms2
       @deck = Deck.new
     end
 
+    def draw(n)
+      n.times { deck.draw }
+    end
+
     def to_s
       @name
     end
