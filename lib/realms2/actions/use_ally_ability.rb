@@ -1,6 +1,6 @@
 module Realms2
   module Actions
-    class PlayCard < Action
+    class UseAllyAbility < Action
       attr_reader :card
 
       def initialize(card)
@@ -8,7 +8,6 @@ module Realms2
       end
 
       def execute
-        perform card.primary_ability
       end
     end
   end

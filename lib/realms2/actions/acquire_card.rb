@@ -1,9 +1,7 @@
 module Realms2
   module Actions
-    class Action < Yielder
+    class AcquireTradeRowCard < Action
       attr_reader :turn
-
-      delegate :active_player, to: :turn
 
       def initialize(turn)
         @turn = turn

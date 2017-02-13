@@ -9,17 +9,18 @@ module Realms2
     end
 
     attr_reader :id,
-                :trade,
-                :combat,
                 :game,
                 :active_player,
-                :passive_player
+                :passive_player,
+                :trade_deck
+    attr_accessor :trade,
+                  :combat
 
-    def initialize(game, active_player, passive_player)
+    def initialize(active_player, passive_player, trade_deck)
       @id = self.class.next_id
-      @game = game
       @active_player = active_player
       @passive_player = passive_player
+      @trade_deck = trade_deck
       @trade = 0
       @combat = 0
     end

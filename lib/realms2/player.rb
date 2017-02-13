@@ -2,11 +2,18 @@ require "realms2/deck"
 
 module Realms2
   class Player
-    attr_reader :name, :deck
+    class Unclaimed
+      include Singleton
+    end
 
-    def initialize(name)
+    attr_reader :game, :name, :deck
+
+    delegate :active_turn, to: :game
+
+    def initialize(game, name)
+      @game = game
       @name = name
-      @deck = Deck.new
+      @deck = Deck.new(self)
     end
 
     def draw(n)

@@ -10,7 +10,7 @@ module Realms2
       end.lazy.flat_map { |x| x }
     end
 
-    def decide(decision_key)
+    def decide(*decision_key)
       current_choice.decide(decision_key)
       next_choice
     end
