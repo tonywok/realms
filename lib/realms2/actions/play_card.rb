@@ -8,6 +8,8 @@ module Realms2
       end
 
       def execute
+        card.player.deck.hand.delete(card)
+        card.player.deck.battlefield << card
         perform card.primary_ability
       end
     end
