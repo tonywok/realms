@@ -12,6 +12,10 @@ module Realms2
         @key = self.class.to_s.demodulize.underscore.to_sym
       end
 
+      def inspect
+        key
+      end
+
       def self.cost(trade)
         define_method(:cost) do
           trade
