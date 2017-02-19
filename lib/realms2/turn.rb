@@ -9,7 +9,6 @@ module Realms2
     end
 
     attr_reader :id,
-                :game,
                 :active_player,
                 :passive_player,
                 :trade_deck

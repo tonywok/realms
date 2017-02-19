@@ -7,8 +7,6 @@ module Realms2
                 :discard_pile,
                 :battlefield
 
-    class InvalidTarget < StandardError; end
-
     delegate :include?, to: :cards
 
     def initialize(player)

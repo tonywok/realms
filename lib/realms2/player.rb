@@ -8,7 +8,8 @@ module Realms2
 
     attr_reader :game, :name, :deck
 
-    delegate :active_turn, to: :game
+    delegate :active_turn, :trade_deck,
+      to: :game
 
     def initialize(game, name)
       @game = game

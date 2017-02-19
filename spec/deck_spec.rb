@@ -33,7 +33,7 @@ RSpec.describe Realms2::Deck do
 
     context "when given a card not in the hand" do
       let(:card) { "whatever" }
-      it { expect { deck.discard(card) }.to raise_error(described_class::InvalidTarget) }
+      it { expect { deck.discard(card) }.to raise_error(Realms2::InvalidTarget) }
     end
   end
 
@@ -95,7 +95,7 @@ RSpec.describe Realms2::Deck do
 
     context "when given a card not in the hand" do
       let(:card) { "whatever" }
-      it { expect { deck.play(card) }.to raise_error(described_class::InvalidTarget) }
+      it { expect { deck.play(card) }.to raise_error(Realms2::InvalidTarget) }
     end
   end
 end

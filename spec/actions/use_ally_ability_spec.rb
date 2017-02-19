@@ -11,7 +11,7 @@ RSpec.describe Realms2::Actions::UseAllyAbility do
     game.start
   end
 
-  it do
+  xit do
     game.decide(:hand, :blob_fighter)
     expect(game.current_choice.options[:ally]).to_not have_key(:blob_fighter)
     game.decide(:hand, :blob_fighter)

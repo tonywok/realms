@@ -28,8 +28,13 @@ module Realms2
         end
       end
 
-      def self.primary_ability(klass)
+      def self.primary_ability(*klasses)
         define_method(:primary_ability) do
+          klass = if klasses.many?
+                    Abilities::Multi[klasses]
+                  else
+                    klasses.first
+                  end
           klass.new(player)
         end
       end
