@@ -8,6 +8,7 @@ module Realms2
       end
 
       def execute
+        perform card.ally_ability
       end
     end
   end

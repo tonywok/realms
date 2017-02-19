@@ -16,6 +16,11 @@ module Realms2
         key
       end
 
+      def ally_ability_activated?
+        return false if faction == :unaligned
+        (player.deck.battlefield - [self]).any? { |card| card.faction == faction }
+      end
+
       def self.cost(trade)
         define_method(:cost) do
           trade
@@ -24,7 +29,7 @@ module Realms2
 
       def self.faction(name)
         define_method(:faction) do
-          name || :unaligned
+          name
         end
       end
 

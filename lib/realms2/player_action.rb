@@ -32,7 +32,9 @@ module Realms2
 
     def ally_abilities
       turn.active_player.deck.battlefield.each_with_object({}) do |card, opts|
-        opts[card.key] = Actions::UseAllyAbility.new(card)
+        if card.ally_ability_activated?
+          opts[card.key] = Actions::UseAllyAbility.new(card)
+        end
       end
     end
 
