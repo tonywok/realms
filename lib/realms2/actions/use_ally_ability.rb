@@ -9,6 +9,7 @@ module Realms2
 
       def execute
         perform card.ally_ability
+        card.player.active_turn.activated_ally_ability << card.key
       end
     end
   end

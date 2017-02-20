@@ -13,7 +13,8 @@ module Realms2
                 :passive_player,
                 :trade_deck
     attr_accessor :trade,
-                  :combat
+                  :combat,
+                  :activated_ally_ability
 
     def initialize(active_player, passive_player, trade_deck)
       @id = self.class.next_id
@@ -22,19 +23,13 @@ module Realms2
       @trade_deck = trade_deck
       @trade = 0
       @combat = 0
+      @activated_ally_ability = []
     end
 
     def execute
-      puts "[#{id}]: starting #{active_player}'s main phase"
       perform Phases::Main.new(self)
-      puts "[#{id}]: ending #{active_player}'s main phase"
-      puts "[#{id}]: starting #{active_player}'s discard phase"
       perform Phases::Discard.new(self)
-      puts "[#{id}]: ending #{active_player}'s discard phase"
-      puts "[#{id}]: starting #{active_player}'s draw phase"
       perform Phases::Draw.new(self)
-      puts "[#{id}]: ending #{active_player}'s draw phase"
-      puts "\n"
     end
   end
 end

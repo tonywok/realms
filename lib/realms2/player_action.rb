@@ -35,7 +35,7 @@ module Realms2
         if card.ally_ability_activated?
           opts[card.key] = Actions::UseAllyAbility.new(card)
         end
-      end
+      end.except(*turn.activated_ally_ability)
     end
 
     def scrap_abilities
