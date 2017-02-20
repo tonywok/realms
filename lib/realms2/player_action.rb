@@ -25,9 +25,10 @@ module Realms2
       end
     end
 
-    # TODO bases
     def primary_abilities
-      {}
+      turn.active_player.deck.battlefield.select(&:base?).each_with_object({}) do |card, opts|
+        opts[card.key] = Actions::UsePrimaryAbility.new(card)
+      end.except(*turn.activated_base_ability)
     end
 
     def ally_abilities

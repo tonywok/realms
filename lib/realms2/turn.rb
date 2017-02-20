@@ -14,7 +14,8 @@ module Realms2
                 :trade_deck
     attr_accessor :trade,
                   :combat,
-                  :activated_ally_ability
+                  :activated_ally_ability,
+                  :activated_base_ability
 
     def initialize(active_player, passive_player, trade_deck)
       @id = self.class.next_id
@@ -24,6 +25,7 @@ module Realms2
       @trade = 0
       @combat = 0
       @activated_ally_ability = []
+      @activated_base_ability = []
     end
 
     def execute

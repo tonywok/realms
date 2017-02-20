@@ -1,6 +1,5 @@
 require "realms2/abilities"
 require "realms2/actions"
-require "securerandom"
 
 module Realms2
   module Cards
@@ -15,6 +14,10 @@ module Realms2
 
       def inspect
         key
+      end
+
+      def base?
+        false
       end
 
       def ally_ability_activated?

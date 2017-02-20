@@ -5,6 +5,7 @@ require "realms2/actions/acquire_explorer"
 require "realms2/actions/use_scrap_ability"
 require "realms2/actions/use_ally_ability"
 require "realms2/actions/play_card"
+require "realms2/actions/use_primary_ability"
 
 module Realms2
   module Actions
