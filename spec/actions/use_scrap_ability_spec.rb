@@ -8,7 +8,7 @@ RSpec.describe Realms2::Actions::UseScrapAbility do
   before do
     game.p1.deck.battlefield << card
     game.start
-    game.decide(:scrap, :explorer)
+    game.decide(:scrap, :explorer_0)
   end
 
   it do

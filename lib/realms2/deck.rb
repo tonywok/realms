@@ -10,8 +10,8 @@ module Realms2
     delegate :include?, to: :cards
 
     def initialize(player)
-      scouts = 8.times.map { Cards::Scout.new(player) }
-      vipers = 2.times.map { Cards::Viper.new(player) }
+      scouts = 8.times.map { |i| Cards::Scout.new(player, index: i) }
+      vipers = 2.times.map { |i| Cards::Viper.new(player, index: i) }
       @draw_pile = scouts + vipers
       @discard_pile = []
       @hand = []
@@ -56,11 +56,10 @@ module Realms2
 
     def inspect
       <<-DECK
-      Deck
-        hand         : #{hand}
-        draw_pile    : #{draw_pile}
-        discard_pile : #{discard_pile}
-        battlefield  : #{battlefield}
+      hand         : #{hand}
+      draw_pile    : #{draw_pile}
+      discard_pile : #{discard_pile}
+      battlefield  : #{battlefield}
       DECK
     end
   end

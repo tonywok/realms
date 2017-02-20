@@ -8,16 +8,16 @@ RSpec.describe Realms2::Deck do
     subject { deck.cards.map(&:key) }
     it do
       is_expected.to contain_exactly(
-        :scout,
-        :scout,
-        :scout,
-        :scout,
-        :scout,
-        :scout,
-        :scout,
-        :scout,
-        :viper,
-        :viper,
+        :scout_0,
+        :scout_1,
+        :scout_2,
+        :scout_3,
+        :scout_4,
+        :scout_5,
+        :scout_6,
+        :scout_7,
+        :viper_0,
+        :viper_1,
       )
     end
   end

@@ -18,7 +18,7 @@ RSpec.describe Realms2::Cards::BattlePod do
     before do
       game.p1.deck.hand << card
       game.start
-      game.decide(:hand, :battle_pod)
+      game.decide(:play, :battle_pod_0)
     end
 
     it "adds 4 combat and prompts the player to scrap a card from the trade row" do

@@ -12,12 +12,12 @@ RSpec.describe Realms2::Actions::UseAllyAbility do
   end
 
   it do
-    game.decide(:hand, :blob_fighter)
-    expect(game.current_choice.options[:ally]).to_not have_key(:blob_fighter)
-    game.decide(:hand, :battle_pod)
-    game.decide(:scout)
-    expect(game.current_choice.options[:ally]).to have_key(:blob_fighter)
-    expect { game.decide(:ally, :blob_fighter) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)
-    expect { game.decide(:ally, :battle_pod) }.to change { game.active_turn.combat }.by(2)
+    game.decide(:play, :blob_fighter_0)
+    expect(game.current_choice.options[:ally]).to_not have_key(:blob_fighter_0)
+    game.decide(:play, :battle_pod_0)
+    game.decide(:scout_0)
+    expect(game.current_choice.options[:ally]).to have_key(:blob_fighter_0)
+    expect { game.decide(:ally, :blob_fighter_0) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)
+    expect { game.decide(:ally, :battle_pod_0) }.to change { game.active_turn.combat }.by(2)
   end
 end

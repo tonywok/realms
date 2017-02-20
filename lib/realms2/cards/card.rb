@@ -1,5 +1,6 @@
 require "realms2/abilities"
 require "realms2/actions"
+require "securerandom"
 
 module Realms2
   module Cards
@@ -7,9 +8,9 @@ module Realms2
       attr_accessor :player
       attr_reader :key
 
-      def initialize(player = Player::Unclaimed.instance)
+      def initialize(player = Player::Unclaimed.instance, index: 0)
         @player = player
-        @key = self.class.to_s.demodulize.underscore.to_sym
+        @key = "#{self.class.to_s.demodulize.underscore}_#{index}".to_sym
       end
 
       def inspect

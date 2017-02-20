@@ -10,7 +10,7 @@ module Realms2
     def initialize(turn)
       @turn = turn
       @options = {}
-      @options[:hand] = play_card_from_hand
+      @options[:play] = play_card_from_hand
       @options[:primary] = primary_abilities
       @options[:ally] = ally_abilities
       @options[:scrap] = scrap_abilities

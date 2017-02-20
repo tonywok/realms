@@ -8,7 +8,7 @@ module Realms2
 
     def decide(args)
       @decision = options.dig(*args).tap do |choice|
-        raise "missing #{args.join} in #{options.keys}" if choice.nil?
+        raise "missing #{args.join("::")} in #{options.keys}" if choice.nil?
       end
     end
 
