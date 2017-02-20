@@ -7,6 +7,7 @@ require "realms2/cards/blob_fighter"
 require "realms2/cards/battle_pod"
 require "realms2/cards/trade_pod"
 require "realms2/cards/blob_wheel"
+require "realms2/cards/ram"
 
 module Realms2
   module Cards
