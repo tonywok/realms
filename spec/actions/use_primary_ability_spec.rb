@@ -13,5 +13,6 @@ RSpec.describe Realms::Actions::UsePrimaryAbility do
 
   it do
     expect(game.active_turn.combat).to eq(1)
+    expect(game.current_choice.options[:primary]).to be_empty
   end
 end
