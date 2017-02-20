@@ -1,7 +1,7 @@
 require "spec_helper"
 
-RSpec.describe Realms2::Cards::BlobFighter do
-  let(:game) { Realms2::Game.new.start }
+RSpec.describe Realms::Cards::BlobFighter do
+  let(:game) { Realms::Game.new.start }
   let(:card) { described_class.new(game.p1) }
 
   describe "#cost" do

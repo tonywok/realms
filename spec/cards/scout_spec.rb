@@ -1,7 +1,7 @@
 require "spec_helper"
 
-RSpec.describe Realms2::Cards::Scout do
-  let(:game) { Realms2::Game.new.start }
+RSpec.describe Realms::Cards::Scout do
+  let(:game) { Realms::Game.new.start }
   let(:scout) { described_class.new(game.p1) }
 
   describe "#primary_ability" do

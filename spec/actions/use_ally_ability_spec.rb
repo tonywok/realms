@@ -1,11 +1,11 @@
 require "spec_helper"
 
-RSpec.describe Realms2::Actions::UseAllyAbility do
-  let(:game) { Realms2::Game.new }
+RSpec.describe Realms::Actions::UseAllyAbility do
+  let(:game) { Realms::Game.new }
 
   context "when playing two different, same faction cards" do
-    let(:card1) { Realms2::Cards::BlobFighter.new(game.p1) }
-    let(:card2) { Realms2::Cards::BattlePod.new(game.p1) }
+    let(:card1) { Realms::Cards::BlobFighter.new(game.p1) }
+    let(:card2) { Realms::Cards::BattlePod.new(game.p1) }
 
     before do
       game.p1.deck.hand << card1
@@ -25,8 +25,8 @@ RSpec.describe Realms2::Actions::UseAllyAbility do
   end
 
   context "when playing two of the same card" do
-    let(:card1) { Realms2::Cards::BlobFighter.new(game.p1, index: 0) }
-    let(:card2) { Realms2::Cards::BlobFighter.new(game.p1, index: 1) }
+    let(:card1) { Realms::Cards::BlobFighter.new(game.p1, index: 0) }
+    let(:card2) { Realms::Cards::BlobFighter.new(game.p1, index: 1) }
 
     before do
       game.p1.deck.hand << card1

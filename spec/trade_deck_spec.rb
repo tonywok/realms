@@ -1,7 +1,7 @@
 require "spec_helper"
 
-RSpec.describe Realms2::TradeDeck do
-  let(:game) { Realms2::Game.new }
+RSpec.describe Realms::TradeDeck do
+  let(:game) { Realms::Game.new }
   let(:trade_deck) { game.trade_deck }
 
   describe "#scrap" do

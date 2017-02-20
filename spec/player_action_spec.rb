@@ -1,7 +1,7 @@
 require "spec_helper"
 
-RSpec.describe Realms2::PlayerAction do
-  let(:game) { Realms2::Game.new.start }
+RSpec.describe Realms::PlayerAction do
+  let(:game) { Realms::Game.new.start }
 
   context "when multiple cards by the same name" do
     it "identifies them uniquely" do

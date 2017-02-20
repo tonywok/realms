@@ -11,5 +11,5 @@ require "realms2"
 # Pry.start
 
 require "irb"
-include Realms2
+include Realms
 IRB.start

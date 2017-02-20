@@ -1,8 +1,8 @@
 require "spec_helper"
 
-RSpec.describe Realms2::Actions::UsePrimaryAbility do
-  let(:game) { Realms2::Game.new }
-  let(:card) { Realms2::Cards::BlobWheel.new(game.p1) }
+RSpec.describe Realms::Actions::UsePrimaryAbility do
+  let(:game) { Realms::Game.new }
+  let(:card) { Realms::Cards::BlobWheel.new(game.p1) }
   let(:action) { described_class.new(card) }
 
   before do

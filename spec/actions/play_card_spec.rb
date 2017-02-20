@@ -1,10 +1,10 @@
 require "spec_helper"
 
-RSpec.describe Realms2::Actions::PlayCard do
-  let(:game) { Realms2::Game.new }
-  let(:card1) { Realms2::Cards::Scout.new(game.p1) }
-  let(:card2) { Realms2::Cards::Scout.new(game.p1) }
-  let(:card3) { Realms2::Cards::Scout.new(game.p1) }
+RSpec.describe Realms::Actions::PlayCard do
+  let(:game) { Realms::Game.new }
+  let(:card1) { Realms::Cards::Scout.new(game.p1) }
+  let(:card2) { Realms::Cards::Scout.new(game.p1) }
+  let(:card3) { Realms::Cards::Scout.new(game.p1) }
 
   before do
     game.p1.deck.hand << card1

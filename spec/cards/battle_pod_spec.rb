@@ -1,7 +1,7 @@
 require "spec_helper"
 
-RSpec.describe Realms2::Cards::BattlePod do
-  let(:game) { Realms2::Game.new }
+RSpec.describe Realms::Cards::BattlePod do
+  let(:game) { Realms::Game.new }
   let(:card) { described_class.new(game.p1) }
 
   describe "#faction" do

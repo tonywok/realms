@@ -1,7 +1,7 @@
 require "spec_helper"
 
-RSpec.describe Realms2::Deck do
-  let(:game) { Realms2::Game.new }
+RSpec.describe Realms::Deck do
+  let(:game) { Realms::Game.new }
   let(:deck) { described_class.new(game.p1) }
 
   describe "#cards" do
@@ -33,7 +33,7 @@ RSpec.describe Realms2::Deck do
 
     context "when given a card not in the hand" do
       let(:card) { "whatever" }
-      it { expect { deck.discard(card) }.to raise_error(Realms2::InvalidTarget) }
+      it { expect { deck.discard(card) }.to raise_error(Realms::InvalidTarget) }
     end
   end
 
@@ -95,7 +95,7 @@ RSpec.describe Realms2::Deck do
 
     context "when given a card not in the hand" do
       let(:card) { "whatever" }
-      it { expect { deck.play(card) }.to raise_error(Realms2::InvalidTarget) }
+      it { expect { deck.play(card) }.to raise_error(Realms::InvalidTarget) }
     end
   end
 end

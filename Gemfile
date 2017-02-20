@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in realms2.gemspec
+# Specify your gem's dependencies in realms.gemspec
 gemspec
