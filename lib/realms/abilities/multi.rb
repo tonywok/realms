@@ -3,7 +3,7 @@ module Realms
     class Multi < Ability
       def execute
         arg.each do |ability_klass|
-          perform ability_klass.new(player)
+          perform ability_klass.new(turn)
         end
       end
     end

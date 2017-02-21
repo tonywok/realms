@@ -11,8 +11,8 @@ module Realms
   module Abilities
     class ScrapCardFromTradeRow < Ability
       def execute
-        card = choose CardFromTradeRow.new(player.active_turn)
-        player.trade_deck.scrap(card)
+        card = choose CardFromTradeRow.new(turn)
+        turn.active_player.trade_deck.scrap(card)
       end
     end
   end

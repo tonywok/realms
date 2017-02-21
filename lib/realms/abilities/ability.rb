@@ -1,10 +1,10 @@
 module Realms
   module Abilities
     class Ability < Yielder
-      attr_reader :player
+      attr_reader :turn
 
-      def initialize(player)
-        @player = player
+      def initialize(turn)
+        @turn = turn
       end
 
       class_attribute :arg, instance_predicate: false, instance_writer: false

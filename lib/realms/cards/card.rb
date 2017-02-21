@@ -44,19 +44,19 @@ module Realms
                   else
                     klasses.first
                   end
-          klass.new(player)
+          klass.new(player.active_turn)
         end
       end
 
       def self.ally_ability(klass)
         define_method(:ally_ability) do
-          klass.new(player)
+          klass.new(player.active_turn)
         end
       end
 
       def self.scrap_ability(klass)
         define_method(:scrap_ability) do
-          klass.new(player)
+          klass.new(player.active_turn)
         end
       end
     end

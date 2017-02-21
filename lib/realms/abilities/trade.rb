@@ -2,7 +2,7 @@ module Realms
   module Abilities
     class Trade < Ability
       def execute
-        player.active_turn.trade += arg
+        turn.trade += arg
       end
     end
   end
