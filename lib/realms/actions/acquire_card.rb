@@ -1,13 +1,16 @@
 module Realms
   module Actions
-    class AcquireTradeRowCard < Action
-      attr_reader :turn
+    class AcquireCard < Action
+      attr_reader :player, :card
 
-      def initialize(turn)
-        @turn = turn
+      def initialize(player, card)
+        @player = player
+        @card = card
       end
 
       def execute
+        player.deck.acquire(card)
+        card.player.active_turn.trade -= card.cost
       end
     end
   end

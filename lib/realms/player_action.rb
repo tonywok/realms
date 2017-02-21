@@ -46,7 +46,11 @@ module Realms
     end
 
     def trade_row
-      { explorer: Actions::AcquireExplorer.new(turn) }
+      turn.trade_deck.trade_row.each_with_object({}) do |card, opts|
+        if turn.trade >= card.cost
+          opts[card.key] = Actions::AcquireCard.new(turn.active_player, card)
+        end
+      end.merge(explorer: Actions::AcquireExplorer.new(turn))
     end
 
     def use_combat

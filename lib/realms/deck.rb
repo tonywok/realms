@@ -2,14 +2,16 @@ require "realms/cards"
 
 module Realms
   class Deck
-    attr_reader :draw_pile,
-                :hand,
-                :discard_pile,
-                :battlefield
+    attr_accessor :draw_pile,
+                  :hand,
+                  :discard_pile,
+                  :battlefield,
+                  :player
 
     delegate :include?, to: :cards
 
     def initialize(player)
+      @player = player
       scouts = 8.times.map { |i| Cards::Scout.new(player, index: i) }
       vipers = 2.times.map { |i| Cards::Viper.new(player, index: i) }
       @draw_pile = scouts + vipers
@@ -30,6 +32,11 @@ module Realms
     def play(card)
       raise(InvalidTarget, card) unless hand.include?(card)
       self.battlefield << self.hand.delete_at(hand.index(card) || hand.length)
+    end
+
+    def acquire(card)
+      card.player = player
+      self.discard_pile << card
     end
 
     def discard_hand

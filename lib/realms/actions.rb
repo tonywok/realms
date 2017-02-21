@@ -6,6 +6,7 @@ require "realms/actions/use_scrap_ability"
 require "realms/actions/use_ally_ability"
 require "realms/actions/play_card"
 require "realms/actions/use_primary_ability"
+require "realms/actions/acquire_card"
 
 module Realms
   module Actions
