@@ -24,7 +24,7 @@ module Realms
       players = [p1, p2]
 
       players.cycle do |active_player|
-        passive_player = players - [active_player]
+        passive_player = players.find { |p| p != active_player }
         @active_turn = Turn.new(active_player, passive_player, trade_deck)
         perform @active_turn
       end

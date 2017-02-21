@@ -7,6 +7,7 @@ module Realms
     end
 
     attr_reader :game, :name, :deck
+    attr_accessor :authority
 
     delegate :active_turn, :trade_deck,
       to: :game
@@ -14,6 +15,7 @@ module Realms
     def initialize(game, name)
       @game = game
       @name = name
+      @authority = 50
       @deck = Deck.new(self)
     end
 

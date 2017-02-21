@@ -50,7 +50,7 @@ module Realms
     end
 
     def use_combat
-      Actions::UseCombat.new(turn)
+      { turn.passive_player.name.to_sym => Actions::UseCombat.new(turn) }
     end
 
     def end_turn
