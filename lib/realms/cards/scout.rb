@@ -1,8 +1,8 @@
 module Realms
   module Cards
     class Scout < Card
-      cost 0
       faction :unaligned
+      cost 0
       primary_ability Abilities::Trade[1]
     end
   end

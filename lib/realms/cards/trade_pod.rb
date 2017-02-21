@@ -1,8 +1,8 @@
 module Realms
   module Cards
     class TradePod < Card
-      cost 2
       faction :blob
+      cost 2
       primary_ability Abilities::Trade[3]
       ally_ability Abilities::Combat[2]
     end
