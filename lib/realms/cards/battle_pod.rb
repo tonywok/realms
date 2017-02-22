@@ -3,7 +3,8 @@ module Realms
     class BattlePod < Card
       faction :blob
       cost 2
-      primary_ability Abilities::Combat[4], Abilities::ScrapCardFromTradeRow[1]
+      primary_ability Abilities::Combat[4]
+      primary_ability Abilities::ScrapCardFromTradeRow[1]
       ally_ability Abilities::Combat[2]
     end
   end

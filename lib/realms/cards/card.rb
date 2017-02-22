@@ -4,16 +4,73 @@ require "realms/actions"
 module Realms
   module Cards
     class Card
-      attr_accessor :player
-      attr_reader :key
+      class CardDefinition
+        attr_accessor :faction,
+                      :cost,
+                      :primary_abilities,
+                      :ally_abilities,
+                      :scrap_abilities
 
-      def initialize(player = Player::Unclaimed.instance, index: 0)
-        @player = player
-        @key = "#{self.class.to_s.demodulize.underscore}_#{index}".to_sym
+        def initialize
+          @faction = :unaligned
+          @cost = 0
+          @primary_abilities = []
+          @ally_abilities = []
+          @scrap_abilities = []
+        end
+
+        def primary_ability
+          return primary_abilities.first unless primary_abilities.many?
+          Abilities::Multi[primary_abilities]
+        end
+
+        def ally_ability
+          return ally_abilities.first unless ally_abilities.many?
+          Abilities::Multi[ally_abilities]
+        end
+
+        def scrap_ability
+          return scrap_abilities.first unless scrap_abilities.many?
+          Abilities::Multi[scrap_abilities]
+        end
       end
 
-      def inspect
-        key
+      def self.definition
+        @definition ||= CardDefinition.new
+      end
+
+      def self.faction(faction)
+        definition.faction = faction
+      end
+
+      def self.cost(num)
+        definition.cost = num
+      end
+
+      def self.primary_ability(klass, optional: false)
+        definition.primary_abilities << klass
+      end
+
+      def self.ally_ability(klass, optional: false)
+        definition.ally_abilities << klass
+      end
+
+      def self.scrap_ability(klass, optional: false)
+        definition.scrap_abilities << klass
+      end
+
+      attr_reader :key, :player, :definition
+
+      delegate :faction,
+               :cost,
+               :primary_ability,
+               :ally_ability,
+               to: :definition
+
+      def initialize(player = Player::Unclaimed.instance, index: 0)
+        @key = "#{self.class.to_s.demodulize.underscore}_#{index}".to_sym
+        @player = player
+        @definition = self.class.definition
       end
 
       def base?
@@ -25,39 +82,8 @@ module Realms
         (player.deck.battlefield - [self]).any? { |card| card.faction == faction }
       end
 
-      def self.cost(trade)
-        define_method(:cost) do
-          trade
-        end
-      end
-
-      def self.faction(name)
-        define_method(:faction) do
-          name
-        end
-      end
-
-      def self.primary_ability(*klasses)
-        define_method(:primary_ability) do
-          klass = if klasses.many?
-                    Abilities::Multi[klasses]
-                  else
-                    klasses.first
-                  end
-          klass.new(player.active_turn)
-        end
-      end
-
-      def self.ally_ability(klass)
-        define_method(:ally_ability) do
-          klass.new(player.active_turn)
-        end
-      end
-
-      def self.scrap_ability(klass)
-        define_method(:scrap_ability) do
-          klass.new(player.active_turn)
-        end
+      def inspect
+        key
       end
     end
   end

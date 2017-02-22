@@ -22,9 +22,12 @@ RSpec.describe Realms::Cards::BattlePod do
     end
 
     it "adds 4 combat and prompts the player to scrap a card from the trade row" do
+      expect(game.active_turn.combat).to eq(4)
       expect(game.current_choice.options.keys).to contain_exactly(*game.trade_deck.trade_row.map(&:key).uniq)
       card = game.trade_deck.trade_row.last
-      expect { game.decide(card.key) }.to change { game.trade_deck.trade_row }
+      expect {
+        game.decide(card.key)
+      }.to change { game.trade_deck.trade_row }
       expect(game.trade_deck.trade_row).to_not include(card)
       expect(game.trade_deck.trade_row.length).to eq(5)
     end
@@ -32,6 +35,10 @@ RSpec.describe Realms::Cards::BattlePod do
 
   describe "#ally_ability" do
     before { game.start }
-    it { expect { card.ally_ability.execute }.to change { game.active_turn.combat }.by(2) }
+    it {
+      expect {
+        card.ally_ability.new(game.active_turn).execute
+      }.to change { game.active_turn.combat }.by(2)
+    }
   end
 end

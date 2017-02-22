@@ -9,7 +9,7 @@ module Realms
 
       def execute
         card.player.deck.play(card)
-        perform card.primary_ability
+        perform card.primary_ability.new(card.player.active_turn)
       end
     end
   end
