@@ -23,13 +23,23 @@ RSpec.describe Realms::Cards::BattlePod do
 
     it "adds 4 combat and prompts the player to scrap a card from the trade row" do
       expect(game.active_turn.combat).to eq(4)
-      expect(game.current_choice.options.keys).to contain_exactly(*game.trade_deck.trade_row.map(&:key).uniq)
+      expect(game.current_choice.options.keys).to contain_exactly(*game.trade_deck.trade_row.map(&:key).uniq, :none)
       card = game.trade_deck.trade_row.last
       expect {
         game.decide(card.key)
       }.to change { game.trade_deck.trade_row }
       expect(game.trade_deck.trade_row).to_not include(card)
       expect(game.trade_deck.trade_row.length).to eq(5)
+    end
+
+    context "opting out of optional primary ability" do
+      it "can opt out of optional abilities" do
+        expect(game.active_turn.combat).to eq(4)
+        expect(game.current_choice.options.keys).to include(:none)
+        expect {
+          game.decide(:none)
+        }.to_not change { game.trade_deck.trade_row }
+      end
     end
   end
 

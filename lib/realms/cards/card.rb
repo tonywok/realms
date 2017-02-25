@@ -48,14 +48,17 @@ module Realms
       end
 
       def self.primary_ability(klass, optional: false)
+        klass = Abilities::Optional[klass] if optional
         definition.primary_abilities << klass
       end
 
       def self.ally_ability(klass, optional: false)
+        klass = Abilities::Optional[klass] if optional
         definition.ally_abilities << klass
       end
 
       def self.scrap_ability(klass, optional: false)
+        klass = Abilities::Optional[klass] if optional
         definition.scrap_abilities << klass
       end
 

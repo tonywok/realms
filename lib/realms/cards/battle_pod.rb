@@ -4,7 +4,7 @@ module Realms
       faction :blob
       cost 2
       primary_ability Abilities::Combat[4]
-      primary_ability Abilities::ScrapCardFromTradeRow[1]
+      primary_ability Abilities::ScrapCardFromTradeRow[1], optional: true
       ally_ability Abilities::Combat[2]
     end
   end

@@ -2,8 +2,9 @@ module Realms
   class Choice
     attr_reader :options, :decision
 
-    def initialize(options)
+    def initialize(options, optional: false)
       @options = options
+      @options[:none] = false if optional
     end
 
     def decide(args)

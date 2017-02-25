@@ -29,7 +29,11 @@ module Realms
     def choose(choice)
       choice.clear
       choices.yield choice
-      choice.decision
+      if block_given? && choice.decision
+        yield choice.decision
+      else
+        choice.decision
+      end
     end
 
     def perform(choosable)

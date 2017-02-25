@@ -1,4 +1,5 @@
 require "realms/abilities/ability"
+require "realms/abilities/optional"
 require "realms/abilities/multi"
 require "realms/abilities/trade"
 require "realms/abilities/combat"
