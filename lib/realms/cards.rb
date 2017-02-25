@@ -8,6 +8,7 @@ require "realms/cards/battle_pod"
 require "realms/cards/trade_pod"
 require "realms/cards/blob_wheel"
 require "realms/cards/ram"
+require "realms/cards/blob_destroyer"
 
 module Realms
   module Cards

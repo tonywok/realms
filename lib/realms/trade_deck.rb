@@ -20,6 +20,7 @@ module Realms
     def scrap(card)
       raise(InvalidTarget, card) unless trade_row.include?(card)
       trade_row[trade_row.index(card)] = draw_pile.shift
+      self.scrap_heap << card
     end
   end
 end

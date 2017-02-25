@@ -1,6 +1,3 @@
-require "realms/choice"
-require "realms/actions"
-
 module Realms
   module Abilities
     class ScrapCardFromTradeRow < Ability

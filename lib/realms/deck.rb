@@ -39,6 +39,11 @@ module Realms
       self.discard_pile << card
     end
 
+    def destroy(card)
+      raise(InvalidTarget, card) unless battlefield.include?(card)
+      self.discard_pile << self.battlefield.delete_at(battlefield.index(card) || battlefield.length)
+    end
+
     def discard_hand
       until hand.empty?
         discard(hand.first)

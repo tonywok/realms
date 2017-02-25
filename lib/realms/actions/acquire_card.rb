@@ -10,7 +10,7 @@ module Realms
 
       def execute
         player.deck.acquire(card)
-        card.player.active_turn.trade -= card.cost
+        player.active_turn.trade -= card.cost
       end
     end
   end
