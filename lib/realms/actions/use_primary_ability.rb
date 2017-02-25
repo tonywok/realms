@@ -8,7 +8,7 @@ module Realms
       end
 
       def execute
-        perform card.primary_ability.new(card.player.active_turn)
+        perform card.primary_ability
         card.player.active_turn.activated_base_ability << card.key
       end
     end

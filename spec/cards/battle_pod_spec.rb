@@ -37,7 +37,7 @@ RSpec.describe Realms::Cards::BattlePod do
     before { game.start }
     it {
       expect {
-        card.ally_ability.new(game.active_turn).execute
+        card.ally_ability.execute
       }.to change { game.active_turn.combat }.by(2)
     }
   end

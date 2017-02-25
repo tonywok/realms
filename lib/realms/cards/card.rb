@@ -59,18 +59,30 @@ module Realms
         definition.scrap_abilities << klass
       end
 
-      attr_reader :key, :player, :definition
+      attr_reader :key, :definition
+      attr_accessor :player
 
       delegate :faction,
                :cost,
                :primary_ability,
-               :ally_ability,
                to: :definition
 
       def initialize(player = Player::Unclaimed.instance, index: 0)
         @key = "#{self.class.to_s.demodulize.underscore}_#{index}".to_sym
         @player = player
         @definition = self.class.definition
+      end
+
+      def primary_ability
+        definition.primary_ability.new(player.active_turn)
+      end
+
+      def ally_ability
+        definition.ally_ability.new(player.active_turn)
+      end
+
+      def scrap_ability
+        definition.scrap_ability.new(player.active_turn)
       end
 
       def base?

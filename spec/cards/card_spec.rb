@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Realms::Card2 do
+RSpec.describe Realms::Cards::Card do
   describe "defaults" do
     before do
       class SomeCard < described_class; end
