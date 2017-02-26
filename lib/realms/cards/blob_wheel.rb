@@ -1,6 +1,7 @@
 module Realms
   module Cards
-    class BlobWheel < Base
+    class BlobWheel < Card
+      type :base
       faction :blob
       cost 3
       primary_ability Abilities::Combat[1]

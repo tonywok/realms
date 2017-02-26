@@ -5,13 +5,15 @@ module Realms
   module Cards
     class Card
       class CardDefinition
-        attr_accessor :faction,
+        attr_accessor :type,
+                      :faction,
                       :cost,
                       :primary_abilities,
                       :ally_abilities,
                       :scrap_abilities
 
         def initialize
+          @type = :ship
           @faction = :unaligned
           @cost = 0
           @primary_abilities = []
@@ -37,6 +39,10 @@ module Realms
 
       def self.definition
         @definition ||= CardDefinition.new
+      end
+
+      def self.type(type)
+        definition.type = type
       end
 
       def self.faction(faction)
@@ -65,9 +71,9 @@ module Realms
       attr_reader :key, :definition
       attr_accessor :player
 
-      delegate :faction,
+      delegate :type,
+               :faction,
                :cost,
-               :primary_ability,
                to: :definition
 
       def initialize(player = Player::Unclaimed.instance, index: 0)
@@ -88,8 +94,12 @@ module Realms
         definition.scrap_ability.new(player.active_turn)
       end
 
+      def ship?
+        type == :ship
+      end
+
       def base?
-        false
+        type == :base
       end
 
       def ally_ability_activated?

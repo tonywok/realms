@@ -1,5 +1,4 @@
 require "realms/cards/card"
-require "realms/cards/base"
 require "realms/cards/scout"
 require "realms/cards/viper"
 require "realms/cards/explorer"
