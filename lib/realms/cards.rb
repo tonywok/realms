@@ -9,6 +9,7 @@ require "realms/cards/blob_wheel"
 require "realms/cards/ram"
 require "realms/cards/blob_destroyer"
 require "realms/cards/the_hive"
+require "realms/cards/battle_blob"
 
 module Realms
   module Cards
