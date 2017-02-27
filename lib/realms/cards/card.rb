@@ -101,6 +101,10 @@ module Realms
         definition.scrap_ability.new(player.active_turn)
       end
 
+      def blob?
+        faction == :blob
+      end
+
       def ship?
         type == :ship
       end

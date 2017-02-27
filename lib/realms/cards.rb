@@ -12,6 +12,7 @@ require "realms/cards/the_hive"
 require "realms/cards/battle_blob"
 require "realms/cards/blob_carrier"
 require "realms/cards/mothership"
+require "realms/cards/blob_world"
 
 module Realms
   module Cards

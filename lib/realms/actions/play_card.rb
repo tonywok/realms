@@ -9,7 +9,7 @@ module Realms
 
       def execute
         card.player.deck.play(card)
-        perform card.primary_ability
+        perform card.primary_ability unless card.base?
       end
     end
   end
