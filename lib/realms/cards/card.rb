@@ -6,6 +6,7 @@ module Realms
     class Card
       class CardDefinition
         attr_accessor :type,
+                      :defense,
                       :faction,
                       :cost,
                       :primary_abilities,
@@ -14,6 +15,7 @@ module Realms
 
         def initialize
           @type = :ship
+          @defense = 0 # TODO: there's probably a class in here
           @faction = :unaligned
           @cost = 0
           @primary_abilities = []
@@ -53,6 +55,10 @@ module Realms
         definition.cost = num
       end
 
+      def self.defense(num)
+        definition.defense = num
+      end
+
       def self.primary_ability(klass, optional: false)
         klass = Abilities::Optional[klass] if optional
         definition.primary_abilities << klass
@@ -74,6 +80,7 @@ module Realms
       delegate :type,
                :faction,
                :cost,
+               :defense,
                to: :definition
 
       def initialize(player = Player::Unclaimed.instance, index: 0)
