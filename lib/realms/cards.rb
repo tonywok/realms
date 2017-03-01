@@ -15,6 +15,7 @@ require "realms/cards/mothership"
 require "realms/cards/blob_world"
 require "realms/cards/federation_shuttle"
 require "realms/cards/cutter"
+require "realms/cards/embassy_yacht"
 
 module Realms
   module Cards
