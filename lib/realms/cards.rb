@@ -17,6 +17,7 @@ require "realms/cards/federation_shuttle"
 require "realms/cards/cutter"
 require "realms/cards/embassy_yacht"
 require "realms/cards/trading_post"
+require "realms/cards/barter_world"
 
 module Realms
   module Cards

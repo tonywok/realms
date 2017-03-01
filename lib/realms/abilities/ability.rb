@@ -3,6 +3,8 @@ module Realms
     class Ability < Yielder
       attr_reader :turn, :optional
 
+      delegate :active_player, to: :turn
+
       def initialize(turn, optional: false)
         @turn = turn
         @optional = optional
