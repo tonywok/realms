@@ -13,6 +13,7 @@ require "realms/cards/battle_blob"
 require "realms/cards/blob_carrier"
 require "realms/cards/mothership"
 require "realms/cards/blob_world"
+require "realms/cards/federation_shuttle"
 
 module Realms
   module Cards
