@@ -1,11 +1,12 @@
 module Realms
   module Abilities
     class Ability < Yielder
-      attr_reader :turn, :optional
+      attr_reader :card, :turn, :optional
 
       delegate :active_player, to: :turn
 
-      def initialize(turn, optional: false)
+      def initialize(card, turn, optional: false)
+        @card = card
         @turn = turn
         @optional = optional
       end

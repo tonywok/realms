@@ -38,7 +38,17 @@ RSpec.describe Realms::Cards::Freighter do
       expect {
         game.decide(:acquire, trade_row_card.key)
       }.to change { game.p1.deck.draw_pile.length }.by(1)
+
       expect(game.p1.deck.draw_pile.first).to eq(trade_row_card)
+      expect(game.p1.deck.discard_pile).to_not include(trade_row_card)
+
+      trade_row_card = game.trade_deck.trade_row.first
+      expect {
+        game.decide(:acquire, trade_row_card.key)
+      }.to change { game.p1.deck.discard_pile.length }.by(1)
+
+      expect(game.p1.deck.discard_pile.first).to eq(trade_row_card)
+      expect(game.p1.deck.draw_pile).to_not include(trade_row_card)
     }
   end
 end

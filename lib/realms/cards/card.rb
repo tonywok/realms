@@ -90,15 +90,15 @@ module Realms
       end
 
       def primary_ability
-        definition.primary_ability.new(player.active_turn)
+        definition.primary_ability.new(self, player.active_turn)
       end
 
       def ally_ability
-        definition.ally_ability.new(player.active_turn)
+        definition.ally_ability.new(self, player.active_turn)
       end
 
       def scrap_ability
-        definition.scrap_ability.new(player.active_turn)
+        definition.scrap_ability.new(self, player.active_turn)
       end
 
       def blob?

@@ -1,4 +1,5 @@
 require "realms/phases"
+require "realms/event_manager"
 
 module Realms
   class Turn < Yielder
@@ -11,7 +12,8 @@ module Realms
     attr_reader :id,
                 :active_player,
                 :passive_player,
-                :trade_deck
+                :trade_deck,
+                :event_manager
     attr_accessor :trade,
                   :combat,
                   :activated_ally_ability,
@@ -24,6 +26,7 @@ module Realms
       @trade_deck = trade_deck
       @trade = 0
       @combat = 0
+      @event_manager = EventManager.new
       @activated_ally_ability = []
       @activated_base_ability = []
     end

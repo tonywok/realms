@@ -9,8 +9,15 @@ module Realms
       end
 
       def execute
-        player.deck.acquire(card)
         player.active_turn.trade -= card.cost
+        player.active_turn.trade_deck.acquire(card)
+
+        # TODO: Formalize this
+        player.active_turn.event_manager.changed
+        player.active_turn.event_manager.notify_observers(card)
+        unless player.deck.include?(card)
+          player.deck.acquire(card)
+        end
       end
     end
   end

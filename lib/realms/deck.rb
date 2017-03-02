@@ -34,9 +34,9 @@ module Realms
       self.battlefield << self.hand.delete_at(hand.index(card) || hand.length)
     end
 
-    def acquire(card)
+    def acquire(card, zone: :discard_pile)
       card.player = player
-      self.discard_pile << card
+      self.send(zone).unshift(card)
     end
 
     def destroy(card)

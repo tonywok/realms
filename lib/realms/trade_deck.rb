@@ -9,7 +9,7 @@ module Realms
       to: :trade_row
 
     def initialize(game)
-      @draw_pile = 100.times.map { Cards::Scout.new }
+      @draw_pile = 10.times.map { |i| Cards::Cutter.new(index: i) }
       @scrap_heap = []
       @trade_row = []
       @explorers = 10.times.map { |i| Cards::Explorer.new(index: i) }

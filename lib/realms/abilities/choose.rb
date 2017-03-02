@@ -7,7 +7,7 @@ module Realms
 
       def execute
         choose(Choice.new(abilities, optional: true)) do |ability|
-          perform ability.new(turn)
+          perform ability.new(card, turn)
         end
       end
 
