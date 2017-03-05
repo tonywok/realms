@@ -21,6 +21,7 @@ require "realms/cards/barter_world"
 require "realms/cards/freighter"
 require "realms/cards/defense_center"
 require "realms/cards/trade_escort"
+require "realms/cards/flagship"
 
 module Realms
   module Cards
