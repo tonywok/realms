@@ -34,9 +34,11 @@ RSpec.describe Realms::Cards::BlobDestroyer do
       game.decide(:blob_wheel_0)
       expect(game.p1.deck.battlefield).to_not include(ally_card)
       expect(game.p1.deck.discard_pile).to include(ally_card)
-      expect(game.current_choice.options.keys).to contain_exactly(:scout_0, :none)
-      game.decide(:scout_0)
-      expect(game.trade_deck.scrap_heap.map(&:key)).to contain_exactly(:scout_0)
+      trade_row_cards = game.trade_deck.trade_row.map(&:key)
+      trade_row_card = trade_row_cards.sample
+      expect(game.current_choice.options.keys).to contain_exactly(*trade_row_cards, :none)
+      game.decide(trade_row_card)
+      expect(game.trade_deck.scrap_heap.map(&:key)).to contain_exactly(trade_row_card)
     end
   end
 end

@@ -32,7 +32,8 @@ RSpec.describe Realms::Cards::BlobCarrier do
 
     it "acquire any ship without paying its cost and put it on top of your deck" do
       game.decide(:ally, :blob_carrier_0)
-      expect(game.current_choice.options.keys).to contain_exactly(:scout_0, :blob_destroyer_0, :none)
+      trade_row_cards = game.trade_deck.trade_row.map(&:key)
+      expect(game.current_choice.options.keys).to contain_exactly(*trade_row_cards, :none)
       game.decide(:blob_destroyer_0)
       expect(game.trade_deck.trade_row).to_not include(selected_card)
       expect(game.trade_deck.trade_row.length).to eq(5)

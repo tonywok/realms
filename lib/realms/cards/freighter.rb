@@ -5,8 +5,8 @@ module Realms
         turn.event_manager.add_observer(self)
       end
 
-      def update(acquired_card)
-        card.player.deck.acquire(acquired_card, zone: :draw_pile)
+      def update(acquire_card)
+        acquire_card.zone = :draw_pile
         turn.event_manager.delete_observer(self)
       end
     end

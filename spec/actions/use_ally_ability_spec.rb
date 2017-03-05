@@ -17,7 +17,8 @@ RSpec.describe Realms::Actions::UseAllyAbility do
       game.decide(:play, :blob_fighter_0)
       expect(game.current_choice.options[:ally]).to_not have_key(:blob_fighter_0)
       game.decide(:play, :battle_pod_0)
-      game.decide(:scout_0)
+      trade_row_card = game.trade_deck.trade_row.sample
+      game.decide(trade_row_card.key)
       expect(game.current_choice.options[:ally]).to have_key(:blob_fighter_0)
       expect { game.decide(:ally, :blob_fighter_0) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)
       expect { game.decide(:ally, :battle_pod_0) }.to change { game.active_turn.combat }.by(2)
