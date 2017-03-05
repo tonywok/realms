@@ -9,6 +9,11 @@ RSpec.describe Realms::Cards::TradingPost do
     it { is_expected.to eq(:outpost) }
   end
 
+  describe "#defense" do
+    subject { card.defense }
+    it { is_expected.to eq(4) }
+  end
+
   describe "#faction" do
     subject { card.faction }
     it { is_expected.to eq(:trade_federation) }

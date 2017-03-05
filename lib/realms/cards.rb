@@ -22,6 +22,7 @@ require "realms/cards/freighter"
 require "realms/cards/defense_center"
 require "realms/cards/trade_escort"
 require "realms/cards/flagship"
+require "realms/cards/port_of_call"
 
 module Realms
   module Cards

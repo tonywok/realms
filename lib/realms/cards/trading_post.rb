@@ -2,6 +2,7 @@ module Realms
   module Cards
     class TradingPost < Card
       type :outpost
+      defense 4
       faction :trade_federation
       cost 3
       primary_ability Abilities::Choose[
