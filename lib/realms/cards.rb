@@ -20,6 +20,7 @@ require "realms/cards/trading_post"
 require "realms/cards/barter_world"
 require "realms/cards/freighter"
 require "realms/cards/defense_center"
+require "realms/cards/trade_escort"
 
 module Realms
   module Cards
