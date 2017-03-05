@@ -1,14 +1,14 @@
 module Realms
   module Cards
-    class TradingPost < Card
+    class DefenseCenter < Card
       type :outpost
       faction :trade_federation
-      cost 3
+      cost 5
       primary_ability Abilities::Choose[
-        Abilities::Authority[1],
-        Abilities::Trade[1],
+        Abilities::Authority[3],
+        Abilities::Combat[2],
       ]
-      scrap_ability Abilities::Combat[3]
+      ally_ability Abilities::Combat[2]
     end
   end
 end

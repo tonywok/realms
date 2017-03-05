@@ -31,7 +31,7 @@ RSpec.describe Realms::Cards::DefenseCenter do
       it { expect { game.decide(:option_0) }.to change { game.p1.authority }.by(3) }
     end
 
-    context "combat" do
+    context "trade" do
       it { expect { game.decide(:option_1) }.to change { game.active_turn.combat }.by(2) }
     end
   end
@@ -50,3 +50,4 @@ RSpec.describe Realms::Cards::DefenseCenter do
     it { expect { game.decide(:ally, card.key) }.to change { game.active_turn.combat }.by(2) }
   end
 end
+

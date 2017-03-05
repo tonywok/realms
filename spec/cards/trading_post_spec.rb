@@ -6,7 +6,7 @@ RSpec.describe Realms::Cards::TradingPost do
 
   describe "#type" do
     subject { card.type }
-    it { is_expected.to eq(:base) }
+    it { is_expected.to eq(:outpost) }
   end
 
   describe "#faction" do

@@ -19,6 +19,7 @@ require "realms/cards/embassy_yacht"
 require "realms/cards/trading_post"
 require "realms/cards/barter_world"
 require "realms/cards/freighter"
+require "realms/cards/defense_center"
 
 module Realms
   module Cards

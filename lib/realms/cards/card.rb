@@ -110,7 +110,11 @@ module Realms
       end
 
       def base?
-        type == :base
+        [:base, :outpost].include?(type)
+      end
+
+      def outpost?
+        type == :outpost
       end
 
       def ally_ability_activated?
