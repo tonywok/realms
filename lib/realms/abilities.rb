@@ -9,6 +9,7 @@ require "realms/abilities/scrap_card_from_trade_row"
 require "realms/abilities/destroy_target_base"
 require "realms/abilities/acquire_ship_and_top_deck"
 require "realms/abilities/authority"
+require "realms/abilities/top_deck_next_ship"
 
 module Realms
   module Abilities
