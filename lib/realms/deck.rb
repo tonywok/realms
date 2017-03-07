@@ -39,6 +39,15 @@ module Realms
       self.send(zone).unshift(card)
     end
 
+    def scrap(card)
+      raise(InvalidTarget, card) unless include?(card)
+      # NOTE: so zone is a thing I need to extract
+      zone = [draw_pile, discard_pile, hand, battlefield].find do |z|
+        z.include?(card)
+      end
+      zone.delete(card)
+    end
+
     def destroy(card)
       raise(InvalidTarget, card) unless battlefield.include?(card)
       self.discard_pile << self.battlefield.delete_at(battlefield.index(card) || battlefield.length)

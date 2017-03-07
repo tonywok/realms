@@ -10,6 +10,7 @@ require "realms/abilities/destroy_target_base"
 require "realms/abilities/acquire_ship_and_top_deck"
 require "realms/abilities/authority"
 require "realms/abilities/top_deck_next_ship"
+require "realms/abilities/scrap_from_hand_or_discard_pile"
 
 module Realms
   module Abilities

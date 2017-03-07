@@ -25,6 +25,9 @@ require "realms/cards/flagship"
 require "realms/cards/port_of_call"
 require "realms/cards/central_office"
 require "realms/cards/command_ship"
+require "realms/cards/trade_bot"
+require "realms/cards/missile_bot"
+require "realms/cards/battle_station"
 
 module Realms
   module Cards
