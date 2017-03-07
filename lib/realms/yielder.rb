@@ -27,6 +27,7 @@ module Realms
     attr_reader :choices
 
     def choose(choice)
+      return if choice.noop?
       choice.clear
       choices.yield choice
       if block_given? && choice.decision

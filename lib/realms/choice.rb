@@ -13,6 +13,10 @@ module Realms
       end
     end
 
+    def noop?
+      options.except(:none).empty?
+    end
+
     def undecided?
       @decision.nil?
     end

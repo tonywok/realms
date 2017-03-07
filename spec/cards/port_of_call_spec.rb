@@ -50,8 +50,9 @@ RSpec.describe Realms::Cards::PortOfCall do
       end
 
       it {
-        expect { game.decide(:scrap, card.key) }.to change { game.p1.hand.length }.by(1)
-        game.decide(:option_0)
+        expect { game.decide(:scrap, card.key) }.to change { game.p1.deck.hand.length }.by(1)
+        game.decide(base_card.key)
+        expect(game.p1.deck.discard_pile).to include(base_card)
       }
     end
 
@@ -62,7 +63,10 @@ RSpec.describe Realms::Cards::PortOfCall do
       end
 
       it {
-        expect { game.decide(:scrap, card.key) }.to change { game.p1.hand.length }.by(1)
+        expect {
+          game.decide(:scrap, card.key)
+        }.to change { game.p1.deck.hand.length }.by(1)
+        expect(game.current_choice).to be_an_instance_of(Realms::PlayerAction)
       }
     end
   end
