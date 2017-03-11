@@ -28,6 +28,8 @@ require "realms/cards/command_ship"
 require "realms/cards/trade_bot"
 require "realms/cards/missile_bot"
 require "realms/cards/battle_station"
+require "realms/cards/supply_bot"
+require "realms/cards/patrol_mech"
 
 module Realms
   module Cards
