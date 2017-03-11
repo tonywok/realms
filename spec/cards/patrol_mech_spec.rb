@@ -4,15 +4,8 @@ RSpec.describe Realms::Cards::PatrolMech do
   let(:game) { Realms::Game.new }
   let(:card) { described_class.new(game.p1) }
 
-  describe "#faction" do
-    subject { card.faction }
-    it { is_expected.to eq(:machine_cult) }
-  end
-
-  describe "#cost" do
-    subject { card.cost }
-    it { is_expected.to eq(4) }
-  end
+  include_examples "factions", :machine_cult
+  include_examples "cost", 4
 
   describe "#primary_ability" do
     before do

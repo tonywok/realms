@@ -4,10 +4,8 @@ RSpec.describe Realms::Cards::BlobCarrier do
   let(:game) { Realms::Game.new }
   let(:card) { described_class.new(game.p1) }
 
-  describe "#cost" do
-    subject { card.cost }
-    it { is_expected.to eq(6) }
-  end
+  include_examples "factions", :blob
+  include_examples "cost", 6
 
   describe "#primary_ability" do
     before do

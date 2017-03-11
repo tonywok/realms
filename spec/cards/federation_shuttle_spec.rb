@@ -4,15 +4,8 @@ RSpec.describe Realms::Cards::FederationShuttle do
   let(:game) { Realms::Game.new.start }
   let(:card) { described_class.new(game.p1) }
 
-  describe "#faction" do
-    subject { card.faction }
-    it { is_expected.to eq(:trade_federation) }
-  end
-
-  describe "#cost" do
-    subject { card.cost }
-    it { is_expected.to eq(1) }
-  end
+  include_examples "factions", :trade_federation
+  include_examples "cost", 1
 
   describe "#primary_ability" do
     before { card.primary_ability.execute }

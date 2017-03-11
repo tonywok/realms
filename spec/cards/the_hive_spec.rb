@@ -4,25 +4,10 @@ RSpec.describe Realms::Cards::TheHive do
   let(:game) { Realms::Game.new.start }
   let(:card) { described_class.new(game.p1) }
 
-  describe "#type" do
-    subject { card.type }
-    it { is_expected.to eq(:base) }
-  end
-
-  describe "#defense" do
-    subject { card.defense }
-    it { is_expected.to eq(5) }
-  end
-
-  describe "#faction" do
-    subject { card.faction }
-    it { is_expected.to eq(:blob) }
-  end
-
-  describe "#cost" do
-    subject { card.cost }
-    it { is_expected.to eq(5) }
-  end
+  include_examples "type", :base
+  include_examples "defense", 5
+  include_examples "factions", :blob
+  include_examples "cost", 5
 
   describe "#primary_ability" do
     before { card.primary_ability.execute }

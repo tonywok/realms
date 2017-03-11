@@ -4,10 +4,8 @@ RSpec.describe Realms::Cards::BlobFighter do
   let(:game) { Realms::Game.new.start }
   let(:card) { described_class.new(game.p1) }
 
-  describe "#cost" do
-    subject { card.cost }
-    it { is_expected.to eq(1) }
-  end
+  include_examples "factions", :blob
+  include_examples "cost", 1
 
   describe "#primary_ability" do
     before { card.primary_ability.execute }

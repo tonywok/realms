@@ -4,25 +4,10 @@ RSpec.describe Realms::Cards::TradingPost do
   let(:game) { Realms::Game.new }
   let(:card) { described_class.new(game.p1) }
 
-  describe "#type" do
-    subject { card.type }
-    it { is_expected.to eq(:outpost) }
-  end
-
-  describe "#defense" do
-    subject { card.defense }
-    it { is_expected.to eq(4) }
-  end
-
-  describe "#faction" do
-    subject { card.faction }
-    it { is_expected.to eq(:trade_federation) }
-  end
-
-  describe "#cost" do
-    subject { card.cost }
-    it { is_expected.to eq(3) }
-  end
+  include_examples "type", :outpost
+  include_examples "defense", 4
+  include_examples "factions", :trade_federation
+  include_examples "cost", 3
 
   describe "#primary_ability" do
     before do

@@ -7,8 +7,8 @@ module Realms
       class CardDefinition
         attr_accessor :type,
                       :defense,
-                      :faction,
                       :cost,
+                      :factions,
                       :primary_abilities,
                       :ally_abilities,
                       :scrap_abilities
@@ -16,8 +16,8 @@ module Realms
         def initialize
           @type = :ship
           @defense = 0 # TODO: there's probably a class in here
-          @faction = :unaligned
           @cost = 0
+          @factions = []
           @primary_abilities = []
           @ally_abilities = []
           @scrap_abilities = []
@@ -48,7 +48,7 @@ module Realms
       end
 
       def self.faction(faction)
-        definition.faction = faction
+        definition.factions << faction
       end
 
       def self.cost(num)
@@ -74,11 +74,11 @@ module Realms
         definition.scrap_abilities << klass
       end
 
-      attr_reader :key, :definition
-      attr_accessor :player
+      attr_reader :key
+      attr_accessor :player, :definition
 
       delegate :type,
-               :faction,
+               :factions,
                :cost,
                :defense,
                to: :definition
@@ -102,7 +102,7 @@ module Realms
       end
 
       def blob?
-        faction == :blob
+        factions.include?(:blob)
       end
 
       def ship?
@@ -118,8 +118,8 @@ module Realms
       end
 
       def ally_ability_activated?
-        return false if faction == :unaligned
-        (player.deck.battlefield - [self]).any? { |card| card.faction == faction }
+        return false if factions.reject { |f| f == :unaligned }.empty?
+        (player.deck.battlefield - [self]).any? { |card| (card.factions & factions).present? }
       end
 
       def inspect

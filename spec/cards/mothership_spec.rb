@@ -4,15 +4,8 @@ RSpec.describe Realms::Cards::Mothership do
   let(:game) { Realms::Game.new }
   let(:card) { described_class.new(game.p1) }
 
-  describe "#faction" do
-    subject { card.faction }
-    it { is_expected.to eq(:blob) }
-  end
-
-  describe "#cost" do
-    subject { card.cost }
-    it { is_expected.to eq(7) }
-  end
+  include_examples "factions", :blob
+  include_examples "cost", 7
 
   describe "#primary_ability" do
     before do

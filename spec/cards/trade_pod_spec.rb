@@ -4,15 +4,8 @@ RSpec.describe Realms::Cards::TradePod do
   let(:game) { Realms::Game.new.start }
   let(:card) { described_class.new(game.p1) }
 
-  describe "#cost" do
-    subject { card.cost }
-    it { is_expected.to eq(2) }
-  end
-
-  describe "#faction" do
-    subject { card.faction }
-    it { is_expected.to eq(:blob) }
-  end
+  include_examples "factions", :blob
+  include_examples "cost", 2
 
   describe "#primary_ability" do
     before { card.primary_ability.execute }

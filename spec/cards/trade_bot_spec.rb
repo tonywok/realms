@@ -4,15 +4,8 @@ RSpec.describe Realms::Cards::TradeBot do
   let(:game) { Realms::Game.new }
   let(:card) { described_class.new(game.p1) }
 
-  describe "#faction" do
-    subject { card.faction }
-    it { is_expected.to eq(:machine_cult) }
-  end
-
-  describe "#cost" do
-    subject { card.cost }
-    it { is_expected.to eq(1) }
-  end
+  include_examples "factions", :machine_cult
+  include_examples "cost", 1
 
   describe "#primary_ability" do
     let(:another_card) { Realms::Cards::Scout.new(game.p1, index: 42) }

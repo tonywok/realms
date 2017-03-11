@@ -4,15 +4,8 @@ RSpec.describe Realms::Cards::Freighter do
   let(:game) { Realms::Game.new }
   let(:card) { described_class.new(game.p1) }
 
-  describe "#faction" do
-    subject { card.faction }
-    it { is_expected.to eq(:trade_federation) }
-  end
-
-  describe "#cost" do
-    subject { card.cost }
-    it { is_expected.to eq(4) }
-  end
+  include_examples "factions", :trade_federation
+  include_examples "cost", 4
 
   describe "#primary_ability" do
     before do

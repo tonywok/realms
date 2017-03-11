@@ -2,6 +2,7 @@ module Realms
   module Cards
     class DefenseCenter < Card
       type :outpost
+      defense 5
       faction :trade_federation
       cost 5
       primary_ability Abilities::Choose[

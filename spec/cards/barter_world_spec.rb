@@ -1,23 +1,13 @@
 require "spec_helper"
 
-RSpec.describe Realms::Cards::DefenseCenter do
+RSpec.describe Realms::Cards::BarterWorld do
   let(:game) { Realms::Game.new }
   let(:card) { described_class.new(game.p1) }
 
-  describe "#type" do
-    subject { card.type }
-    it { is_expected.to eq(:outpost) }
-  end
-
-  describe "#faction" do
-    subject { card.faction }
-    it { is_expected.to eq(:trade_federation) }
-  end
-
-  describe "#cost" do
-    subject { card.cost }
-    it { is_expected.to eq(5) }
-  end
+  include_examples "type", :base
+  include_examples "defense", 4
+  include_examples "factions", :trade_federation
+  include_examples "cost", 4
 
   describe "#primary_ability" do
     before do
@@ -28,15 +18,15 @@ RSpec.describe Realms::Cards::DefenseCenter do
     end
 
     context "authority" do
-      it { expect { game.decide(:option_0) }.to change { game.p1.authority }.by(3) }
+      it { expect { game.decide(:option_0) }.to change { game.p1.authority }.by(2) }
     end
 
-    context "combat" do
-      it { expect { game.decide(:option_1) }.to change { game.active_turn.combat }.by(2) }
+    context "trade" do
+      it { expect { game.decide(:option_1) }.to change { game.active_turn.trade }.by(2) }
     end
   end
 
-  describe "#ally_ability" do
+  describe "#scrap_ability" do
     let(:ally_card) { Realms::Cards::FederationShuttle.new(game.p1) }
 
     before do
@@ -47,6 +37,6 @@ RSpec.describe Realms::Cards::DefenseCenter do
       game.decide(:play, ally_card.key)
     end
 
-    it { expect { game.decide(:ally, card.key) }.to change { game.active_turn.combat }.by(2) }
+    it { expect { game.decide(:scrap, card.key) }.to change { game.active_turn.combat }.by(5) }
   end
 end

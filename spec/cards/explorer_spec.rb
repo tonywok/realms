@@ -4,10 +4,8 @@ RSpec.describe Realms::Cards::Explorer do
   let(:game) { Realms::Game.new.start }
   let(:card) { described_class.new(game.p1) }
 
-  describe "#cost" do
-    subject { card.cost }
-    it { is_expected.to eq(2) }
-  end
+  include_examples "factions", :unaligned
+  include_examples "cost", 2
 
   describe "#primary_ability" do
     before { card.primary_ability.execute }

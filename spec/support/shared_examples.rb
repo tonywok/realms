@@ -21,3 +21,31 @@ shared_examples "scrap_card_from_hand_or_discard_pile" do
     }
   end
 end
+
+shared_examples "factions" do |factions|
+  describe "#factions" do
+    subject { card.factions }
+    it { is_expected.to contain_exactly(*factions) }
+  end
+end
+
+shared_examples "cost" do |cost|
+  describe "#cost" do
+    subject { card.cost }
+    it { is_expected.to eq(cost) }
+  end
+end
+
+shared_examples "type" do |type|
+  describe "#type" do
+    subject { card.type }
+    it { is_expected.to eq(type) }
+  end
+end
+
+shared_examples "defense" do |defense|
+  describe "#type" do
+    subject { card.defense }
+    it { is_expected.to eq(defense) }
+  end
+end

@@ -4,25 +4,10 @@ RSpec.describe Realms::Cards::CentralOffice do
   let(:game) { Realms::Game.new }
   let(:card) { described_class.new(game.p1) }
 
-  describe "#type" do
-    subject { card.type }
-    it { is_expected.to eq(:base) }
-  end
-
-  describe "#defense" do
-    subject { card.defense }
-    it { is_expected.to eq(6) }
-  end
-
-  describe "#faction" do
-    subject { card.faction }
-    it { is_expected.to eq(:trade_federation) }
-  end
-
-  describe "#cost" do
-    subject { card.cost }
-    it { is_expected.to eq(7) }
-  end
+  include_examples "type", :base
+  include_examples "defense", 6
+  include_examples "factions", :trade_federation
+  include_examples "cost", 7
 
   describe "#primary_ability" do
     before do

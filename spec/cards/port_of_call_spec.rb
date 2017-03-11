@@ -4,25 +4,10 @@ RSpec.describe Realms::Cards::PortOfCall do
   let(:game) { Realms::Game.new }
   let(:card) { described_class.new(game.p1) }
 
-  describe "#type" do
-    subject { card.type }
-    it { is_expected.to eq(:outpost) }
-  end
-
-  describe "#type" do
-    subject { card.defense }
-    it { is_expected.to eq(6) }
-  end
-
-  describe "#faction" do
-    subject { card.faction }
-    it { is_expected.to eq(:trade_federation) }
-  end
-
-  describe "#cost" do
-    subject { card.cost }
-    it { is_expected.to eq(6) }
-  end
+  include_examples "type", :outpost
+  include_examples "defense", 6
+  include_examples "factions", :trade_federation
+  include_examples "cost", 6
 
   describe "#primary_ability" do
     before do

@@ -4,15 +4,10 @@ RSpec.describe Realms::Cards::BlobWheel do
   let(:game) { Realms::Game.new.start }
   let(:card) { described_class.new(game.p1) }
 
-  describe "#faction" do
-    subject { card.faction }
-    it { is_expected.to eq(:blob) }
-  end
-
-  describe "#cost" do
-    subject { card.cost }
-    it { is_expected.to eq(3) }
-  end
+  include_examples "type", :base
+  include_examples "defense", 5
+  include_examples "factions", :blob
+  include_examples "cost", 3
 
   describe "#primary_ability" do
     before { card.primary_ability.execute }

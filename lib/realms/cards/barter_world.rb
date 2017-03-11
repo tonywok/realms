@@ -2,6 +2,7 @@ module Realms
   module Cards
     class BarterWorld < Card
       type :base
+      defense 4
       faction :trade_federation
       cost 4
       primary_ability Abilities::Choose[

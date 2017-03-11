@@ -7,15 +7,8 @@ RSpec.describe Realms::Cards::Card do
     end
     let(:card) { SomeCard.new }
 
-    describe "#faction" do
-      subject { card.faction }
-      it { is_expected.to eq(:unaligned) }
-    end
-
-    describe "#cost" do
-      subject { card.cost }
-      it { is_expected.to eq(0) }
-    end
+    include_examples "factions", []
+    include_examples "cost", 0
   end
 
   describe "overriding defaults" do
@@ -27,14 +20,7 @@ RSpec.describe Realms::Cards::Card do
     end
     let(:card) { SomeCard.new }
 
-    describe "#faction" do
-      subject { card.faction }
-      it { is_expected.to eq(:blob) }
-    end
-
-    describe "#cost" do
-      subject { card.cost }
-      it { is_expected.to eq(1) }
-    end
+    include_examples "factions", :blob
+    include_examples "cost", 1
   end
 end
