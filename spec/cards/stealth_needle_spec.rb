@@ -29,7 +29,7 @@ RSpec.describe Realms::Cards::StealthNeedle do
         game.start
       end
 
-      it "copies the ship, maintaining faction, until end of turn" do
+      it "copies another ship played this turn" do
         expect {
           game.decide(:play, another_ship.key)
         }.to change { game.active_turn.trade }.by(2).and \
