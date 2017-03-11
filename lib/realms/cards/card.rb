@@ -4,6 +4,15 @@ require "realms/actions"
 module Realms
   module Cards
     class Card
+      module Factions
+        ALL = [
+          BLOB = :blob,
+          TRADE_FEDERATION = :trade_federation,
+          MACHINE_CULT = :machine_cult,
+          STAR_ALLIANCE = :star_alliance,
+        ]
+      end
+
       class CardDefinition
         attr_accessor :type,
                       :defense,
@@ -101,6 +110,10 @@ module Realms
         definition.scrap_ability.new(self, player.active_turn)
       end
 
+      def ally_factions
+        factions
+      end
+
       def blob?
         factions.include?(:blob)
       end
@@ -119,7 +132,7 @@ module Realms
 
       def ally_ability_activated?
         return false if factions.reject { |f| f == :unaligned }.empty?
-        (player.deck.battlefield - [self]).any? { |card| (card.factions & factions).present? }
+        (player.deck.battlefield - [self]).any? { |card| (card.ally_factions & factions).present? }
       end
 
       def inspect

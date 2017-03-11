@@ -32,6 +32,7 @@ require "realms/cards/supply_bot"
 require "realms/cards/patrol_mech"
 require "realms/cards/stealth_needle"
 require "realms/cards/battle_mech"
+require "realms/cards/mech_world"
 
 module Realms
   module Cards
