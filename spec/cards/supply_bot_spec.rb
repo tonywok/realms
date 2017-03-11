@@ -15,51 +15,16 @@ RSpec.describe Realms::Cards::SupplyBot do
   end
 
   describe "#primary_ability" do
-    context "opting out of scrap" do
-      before do
-        game.p1.deck.hand << card
-        game.start
-      end
+    let(:another_card) { Realms::Cards::Scout.new(game.p1, index: 42) }
 
-      it {
-        expect { game.decide(:play, card.key) }.to change { game.active_turn.trade }.by(2)
-        expect {
-          game.decide(:none)
-        }.to change { game.trade_deck.scrap_heap.length }.by(0)
-      }
+    before do
+      game.p1.deck.hand << card
+      game.p1.deck.discard_pile << another_card
+      game.start
+      game.decide(:play, card.key)
     end
 
-    context "scrapping card from hand" do
-      let(:another_card) { Realms::Cards::Scout.new(game.p1, index: 42) }
-
-      before do
-        game.p1.deck.hand << card
-        game.p1.deck.hand << another_card
-        game.start
-      end
-
-      it {
-        game.decide(:play, card.key)
-        game.decide(another_card.key)
-        expect(game.trade_deck.scrap_heap).to include(another_card)
-      }
-    end
-
-    context "scrapping card from discard pile" do
-      let(:another_card) { Realms::Cards::Scout.new(game.p1, index: 42) }
-
-      before do
-        game.p1.deck.hand << card
-        game.p1.deck.discard_pile << another_card
-        game.start
-      end
-
-      it {
-        game.decide(:play, card.key)
-        game.decide(another_card.key)
-        expect(game.trade_deck.scrap_heap).to include(another_card)
-      }
-    end
+    include_examples "scrap_card_from_hand_or_discard_pile"
   end
 
   describe "#ally_ability" do
