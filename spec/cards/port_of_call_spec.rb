@@ -22,37 +22,14 @@ RSpec.describe Realms::Cards::PortOfCall do
   end
 
   describe "#scrap_ability" do
-    before do
-      game.p1.deck.hand << card
-    end
-
-    context "base in play" do
-      let(:base_card) { Realms::Cards::TradingPost.new(game.p1) }
+    include_examples "destroy_target_base" do
       before do
-        game.p1.deck.battlefield << base_card
+        game.p1.deck.hand << card
+        setup(game)
         game.start
         game.decide(:play, card.key)
+        game.decide(:scrap, card.key)
       end
-
-      it {
-        expect { game.decide(:scrap, card.key) }.to change { game.p1.deck.hand.length }.by(1)
-        game.decide(base_card.key)
-        expect(game.p1.deck.discard_pile).to include(base_card)
-      }
-    end
-
-    context "no base in play" do
-      before do
-        game.start
-        game.decide(:play, card.key)
-      end
-
-      it {
-        expect {
-          game.decide(:scrap, card.key)
-        }.to change { game.p1.deck.hand.length }.by(1)
-        expect(game.current_choice).to be_an_instance_of(Realms::PlayerAction)
-      }
     end
   end
 end

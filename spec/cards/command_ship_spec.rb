@@ -24,21 +24,16 @@ RSpec.describe Realms::Cards::CommandShip do
 
   describe "#ally_ability" do
     let(:ally_card) { Realms::Cards::FederationShuttle.new(game.p1) }
-    let(:base_card) { Realms::Cards::TradingPost.new(game.p1) }
 
-    before do
-      game.p1.deck.hand << card
-      game.p1.deck.hand << ally_card
-      game.p1.deck.battlefield << base_card
-      game.start
-      game.decide(:play, ally_card.key)
-      game.decide(:play, card.key)
+    include_examples "destroy_target_base" do
+      before do
+        game.p1.deck.hand << ally_card
+        setup(game)
+        game.start
+        game.decide(:play, ally_card.key)
+        game.decide(:play, card.key)
+        game.decide(:ally, card.key)
+      end
     end
-
-    it {
-      game.decide(:ally, card.key)
-      game.decide(base_card.key)
-      expect(game.p1.deck.discard_pile).to include(base_card)
-    }
   end
 end
