@@ -1,3 +1,45 @@
+shared_examples "destroy_target_base" do
+  context "no bases in play" do
+    def setup(game)
+      game.p1.deck.hand << card
+    end
+
+    it { expect(game.current_choice).to be_an_instance_of(Realms::PlayerAction) }
+  end
+
+  context "base in play" do
+    let(:base_card) { Realms::Cards::BlobWheel.new(game.p1) }
+
+    def setup(game)
+      game.p1.deck.battlefield << base_card
+      game.p1.deck.hand << card
+    end
+
+    it {
+      game.decide(base_card.key)
+      expect(game.p1.deck.discard_pile).to include(base_card)
+    }
+  end
+
+  context "both outpost and base in play" do
+    let(:base_card) { Realms::Cards::BlobWheel.new(game.p1) }
+    let(:outpost_card) { Realms::Cards::BattleStation.new(game.p1) }
+
+    def setup(game)
+      game.p1.deck.battlefield << base_card
+      game.p1.deck.battlefield << outpost_card
+      game.p1.deck.hand << card
+    end
+
+    it "must choose the outpost card first" do
+      expect(game.current_choice.options.values).to include(outpost_card)
+      expect(game.current_choice.options.values).to_not include(base_card)
+      game.decide(outpost_card.key)
+      expect(game.p1.deck.discard_pile).to include(outpost_card)
+    end
+  end
+end
+
 shared_examples "scrap_card_from_hand_or_discard_pile" do
   context "opting out of the scrap" do
     it {

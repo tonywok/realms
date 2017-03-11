@@ -11,8 +11,10 @@ module Realms
       def bases_in_play
         opponent_bases = turn.active_player.deck.battlefield.select(&:base?)
         own_bases = turn.active_player.deck.battlefield.select(&:base?)
+        all_bases = opponent_bases + own_bases
+        bases = all_bases.any?(&:outpost?) ? all_bases.select(&:outpost?) : all_bases
 
-        (opponent_bases + own_bases).each_with_object({}) do |card, opts|
+        bases.each_with_object({}) do |card, opts|
           opts[card.key] = card
         end
       end
