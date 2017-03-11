@@ -33,6 +33,7 @@ require "realms/cards/patrol_mech"
 require "realms/cards/stealth_needle"
 require "realms/cards/battle_mech"
 require "realms/cards/mech_world"
+require "realms/cards/junkyard"
 
 module Realms
   module Cards
