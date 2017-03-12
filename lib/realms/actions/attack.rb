@@ -19,13 +19,15 @@ module Realms
       end
 
       def damageable_targets
-        bases = passive_player.deck.battlefield.select(&:base?)
-        outposts = bases.select(&:outpost?)
+        eligible = ->(base) { turn.combat >= base.defense }
+        outposts, bases = passive_player.deck.battlefield.select(&:base?).partition(&:outpost?)
 
         if outposts.any?
-          outposts
+          outposts.select(&eligible)
         else
-          bases + [passive_player]
+          bases.select(&eligible).tap do |targets|
+            targets << passive_player if turn.combat.positive?
+          end
         end
       end
     end
