@@ -4,20 +4,9 @@ module Realms
       def execute
         choose(Choice.new(ships)) do |ship|
           turn.event_manager.add_observer(self)
-
-          new_definition = Cards::Card::CardDefinition.new
-          old_definition = ship.definition
-
-          new_definition.primary_abilities << old_definition.primary_ability
-          new_definition.ally_abilities << old_definition.ally_ability
-          new_definition.scrap_abilities << old_definition.scrap_ability
-          (old_definition.factions + card.factions).each do |faction|
-            new_definition.factions << faction
+          card.definition = ship.definition.clone.tap do |defn|
+            card.factions.each { |faction| defn.factions << faction }
           end
-
-          new_definition.cost = old_definition.cost
-          card.definition = new_definition
-
           perform card.primary_ability
         end
       end
