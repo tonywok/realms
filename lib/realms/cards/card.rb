@@ -114,6 +114,10 @@ module Realms
         factions
       end
 
+      def scrap_ability?
+        definition.scrap_abilities.any?
+      end
+
       def blob?
         factions.include?(:blob)
       end

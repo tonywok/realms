@@ -15,14 +15,22 @@ RSpec.describe Realms::Cards::Cutter do
 
     it {
       expect {
-        game.decide(:play, :cutter_0)
+        game.play(card)
       }.to change { game.active_turn.trade }.by(2).and \
            change { game.p1.authority }.by(4)
     }
   end
 
   describe "#ally_ability" do
-    before { game.start }
-    it { expect { card.ally_ability.execute }.to change { game.active_turn.combat }.by(4) }
+    let(:ally_card) { Realms::Cards::FederationShuttle.new(game.p1) }
+
+    before do
+      game.p1.deck.hand << card
+      game.p1.deck.hand << ally_card
+      game.start
+      game.play(card)
+    end
+
+    it { expect { game.ally_ability(card) }.to change { game.active_turn.combat }.by(4) }
   end
 end

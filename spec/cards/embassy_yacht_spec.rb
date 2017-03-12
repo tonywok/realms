@@ -17,7 +17,7 @@ RSpec.describe Realms::Cards::EmbassyYacht do
       before { game.start }
       it {
         expect {
-          game.decide(:play, :embassy_yacht_0)
+          game.play(card)
         }.to change { game.p1.authority }.by(3).and \
              change { game.active_turn.trade }.by(2)
       }
@@ -32,7 +32,7 @@ RSpec.describe Realms::Cards::EmbassyYacht do
 
       it {
         expect {
-          game.decide(:play, :embassy_yacht_0)
+          game.play(card)
         }.to change { game.p1.authority }.by(3).and \
              change { game.active_turn.trade }.by(2)
       }
@@ -48,7 +48,7 @@ RSpec.describe Realms::Cards::EmbassyYacht do
 
       it {
         expect {
-          game.decide(:play, :embassy_yacht_0)
+          game.play(card)
         }.to change { game.p1.authority }.by(3).and \
              change { game.active_turn.trade }.by(2).and \
              change { game.p1.deck.draw_pile.length }.by(-2)

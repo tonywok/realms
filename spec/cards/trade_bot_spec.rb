@@ -14,9 +14,7 @@ RSpec.describe Realms::Cards::TradeBot do
       game.p1.deck.hand << card
       game.p1.deck.discard_pile << another_card
       game.start
-      expect {
-        game.decide(:play, card.key)
-      }.to change { game.active_turn.trade }.by(1)
+      expect { game.play(card) }.to change { game.active_turn.trade }.by(1)
     end
 
     include_examples "scrap_card_from_hand_or_discard_pile"
@@ -29,13 +27,11 @@ RSpec.describe Realms::Cards::TradeBot do
       game.p1.deck.hand << card
       game.p1.deck.hand << ally_card
       game.start
-      game.decide(:play, ally_card.key)
-      game.decide(:play, card.key)
+      game.play(ally_card)
+      game.play(card)
+      game.decide(:none)
     end
 
-    it {
-      game.decide(:none)
-      expect { game.decide(:ally, card.key) }.to change { game.active_turn.combat }.by(2)
-    }
+    it { expect { game.ally_ability(card) }.to change { game.active_turn.combat }.by(2) }
   end
 end

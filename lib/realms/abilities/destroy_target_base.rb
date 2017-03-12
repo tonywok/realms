@@ -1,6 +1,10 @@
 module Realms
   module Abilities
     class DestroyTargetBase < Ability
+      def self.key
+        :destroy_target_base
+      end
+
       def execute
         choose(Choice.new(bases_in_play, optional: optional)) do |card|
           player = card.player
@@ -9,14 +13,8 @@ module Realms
       end
 
       def bases_in_play
-        opponent_bases = turn.active_player.deck.battlefield.select(&:base?)
-        own_bases = turn.active_player.deck.battlefield.select(&:base?)
-        all_bases = opponent_bases + own_bases
-        bases = all_bases.any?(&:outpost?) ? all_bases.select(&:outpost?) : all_bases
-
-        bases.each_with_object({}) do |card, opts|
-          opts[card.key] = card
-        end
+        all_bases = turn.active_player.deck.battlefield.select(&:base?)
+        all_bases.any?(&:outpost?) ? all_bases.select(&:outpost?) : all_bases
       end
     end
   end

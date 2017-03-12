@@ -15,7 +15,7 @@ RSpec.describe Realms::Cards::Flagship do
 
     it {
       expect {
-        game.decide(:play, card.key)
+        game.play(card)
       }.to change { game.active_turn.combat }.by(5).and \
            change { game.p1.deck.draw_pile.length }.by(-1)
     }
@@ -28,10 +28,10 @@ RSpec.describe Realms::Cards::Flagship do
       game.p1.deck.hand << card
       game.p1.deck.hand << ally_card
       game.start
-      game.decide(:play, card.key)
-      game.decide(:play, ally_card.key)
+      game.play(card)
+      game.play(ally_card)
     end
 
-    it { expect { game.decide(:ally, card.key) }.to change { game.p1.authority }.by(5) }
+    it { expect { game.ally_ability(card) }.to change { game.p1.authority }.by(5) }
   end
 end

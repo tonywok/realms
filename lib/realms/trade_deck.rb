@@ -24,6 +24,7 @@ module Realms
     end
 
     def acquire(card)
+      return card if card.is_a?(Realms::Cards::Explorer)
       raise(InvalidTarget, card) unless trade_row.include?(card)
       trade_row[trade_row.index(card)] = draw_pile.shift
       card

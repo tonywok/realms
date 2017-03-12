@@ -1,3 +1,4 @@
+require "realms/choice"
 require "realms/phases"
 require "realms/event_manager"
 

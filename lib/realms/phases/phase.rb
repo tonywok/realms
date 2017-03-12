@@ -1,5 +1,3 @@
-require "realms/player_action"
-
 module Realms
   module Phases
     class Phase < Yielder

@@ -17,7 +17,7 @@ RSpec.describe Realms::Cards::BlobWorld do
     context "choosing nothing" do
       it "does nothing" do
         game.start
-        game.decide(:play, :blob_world_0)
+        game.play(card)
         expect(game.active_turn.combat).to eq(0)
       end
     end
@@ -25,9 +25,9 @@ RSpec.describe Realms::Cards::BlobWorld do
     context "choosing combat" do
       it "adds 5 combat" do
         game.start
-        game.decide(:play, :blob_world_0)
-        game.decide(:primary, :blob_world_0)
-        expect { game.decide(:option_0) }.to change { game.active_turn.combat }.by(5)
+        game.play(card)
+        game.base_ability(card)
+        expect { game.decide(:combat) }.to change { game.active_turn.combat }.by(5)
       end
     end
 
@@ -35,39 +35,41 @@ RSpec.describe Realms::Cards::BlobWorld do
       context "when played alone" do
         it "draws 1" do
           game.start
-          game.decide(:play, :blob_world_0)
-          game.decide(:primary, :blob_world_0)
-          expect { game.decide(:option_1) }.to change { game.p1.deck.hand.length }.by(1)
+          game.play(card)
+          game.base_ability(card)
+          expect { game.decide(:draw_for_each_blob_card_played_this_turn) }.to change { game.p1.deck.hand.length }.by(1)
         end
       end
 
       context "having just played a blob" do
-        let(:another_blob) { Realms::Cards::BlobWheel.new(game.p1) }
+        let(:blob_card) { Realms::Cards::BlobWheel.new(game.p1) }
+
         before do
-          game.p1.deck.hand << another_blob
+          game.p1.deck.hand << blob_card
         end
 
         it "draws 2" do
           game.start
-          game.decide(:play, :blob_world_0)
-          game.decide(:play, :blob_wheel_0)
-          game.decide(:primary, :blob_world_0)
-          expect { game.decide(:option_1) }.to change { game.p1.deck.hand.length }.by(2)
+          game.play(card)
+          game.play(blob_card)
+          game.base_ability(card)
+          expect { game.decide(:draw_for_each_blob_card_played_this_turn) }.to change { game.p1.deck.hand.length }.by(2)
         end
       end
 
       context "playing a blob afterwards" do
-        let(:another_blob) { Realms::Cards::BlobWheel.new(game.p1) }
+        let(:blob_card) { Realms::Cards::BlobWheel.new(game.p1) }
+
         before do
-          game.p1.deck.hand << another_blob
+          game.p1.deck.hand << blob_card
         end
 
         it "draws 2" do
           game.start
-          game.decide(:play, :blob_world_0)
-          game.decide(:primary, :blob_world_0)
-          expect { game.decide(:option_1) }.to change { game.p1.deck.hand.length }.by(1)
-          expect { game.decide(:play, :blob_wheel_0) }.to change { game.p1.deck.hand.length }.by(-1)
+          game.play(card)
+          game.base_ability(card)
+          expect { game.decide(:draw_for_each_blob_card_played_this_turn) }.to change { game.p1.deck.hand.length }.by(1)
+          expect { game.play(blob_card) }.to change { game.p1.deck.hand.length }.by(-1)
         end
       end
 

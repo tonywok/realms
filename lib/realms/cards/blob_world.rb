@@ -1,6 +1,10 @@
 module Realms
   module Abilities
     class DrawForEachBlobCardPlayedThisTurn < Ability
+      def self.key
+        :draw_for_each_blob_card_played_this_turn
+      end
+
       def execute
         # TODO this is not sufficient
         num = turn.active_player.deck.battlefield.select(&:blob?).length

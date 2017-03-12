@@ -16,8 +16,8 @@ RSpec.describe Realms::Cards::Junkyard do
       game.p1.deck.hand << card
       game.p1.deck.discard_pile << another_card
       game.start
-      game.decide(:play, card.key)
-      game.decide(:primary, card.key)
+      game.play(card)
+      game.base_ability(card)
     end
 
     include_examples "scrap_card_from_hand_or_discard_pile"

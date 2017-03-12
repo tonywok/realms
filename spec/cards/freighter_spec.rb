@@ -12,7 +12,7 @@ RSpec.describe Realms::Cards::Freighter do
       game.p1.deck.hand << card
       game.start
     end
-    it { expect { game.decide(:play, card.key) }.to change { game.active_turn.trade }.by(4) }
+    it { expect { game.play(card) }.to change { game.active_turn.trade }.by(4) }
   end
 
   describe "#ally_ability" do
@@ -21,15 +21,15 @@ RSpec.describe Realms::Cards::Freighter do
       game.p1.deck.hand << card
       game.p1.deck.hand << ally_card
       game.start
-      game.decide(:play, card.key)
-      game.decide(:play, ally_card.key)
+      game.play(card)
+      game.play(ally_card)
     end
 
     it {
-      game.decide(:ally, card.key)
+      game.ally_ability(card)
       trade_row_card = game.trade_deck.trade_row.first
       expect {
-        game.decide(:acquire, trade_row_card.key)
+        game.acquire(trade_row_card)
       }.to change { game.p1.deck.draw_pile.length }.by(1)
 
       expect(game.p1.deck.draw_pile.first).to eq(trade_row_card)
@@ -37,7 +37,7 @@ RSpec.describe Realms::Cards::Freighter do
 
       trade_row_card = game.trade_deck.trade_row.first
       expect {
-        game.decide(:acquire, trade_row_card.key)
+        game.acquire(trade_row_card)
       }.to change { game.p1.deck.discard_pile.length }.by(1)
 
       expect(game.p1.deck.discard_pile.first).to eq(trade_row_card)

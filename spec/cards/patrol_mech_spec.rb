@@ -11,24 +11,15 @@ RSpec.describe Realms::Cards::PatrolMech do
     before do
       game.p1.deck.hand << card
       game.start
+      game.play(card)
     end
 
     context "trade" do
-      it {
-        expect {
-          game.decide(:play, card.key)
-          game.decide(:option_0)
-        }.to change { game.active_turn.trade }.by(3)
-      }
+      it { expect { game.decide(:trade) }.to change { game.active_turn.trade }.by(3) }
     end
 
     context "combat" do
-      it {
-        expect {
-          game.decide(:play, card.key)
-          game.decide(:option_1)
-        }.to change { game.active_turn.combat }.by(5)
-      }
+      it { expect { game.decide(:combat) }.to change { game.active_turn.combat }.by(5) }
     end
   end
 
@@ -41,10 +32,10 @@ RSpec.describe Realms::Cards::PatrolMech do
       game.p1.deck.hand << ally_card
       game.p1.deck.discard_pile << another_card
       game.start
-      game.decide(:play, ally_card.key)
-      game.decide(:play, card.key)
-      game.decide(:option_0)
-      game.decide(:ally, card.key)
+      game.play(ally_card)
+      game.play(card)
+      game.decide(:trade)
+      game.ally_ability(card)
     end
 
     include_examples "scrap_card_from_hand_or_discard_pile"

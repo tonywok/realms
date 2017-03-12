@@ -4,7 +4,7 @@ shared_examples "destroy_target_base" do
       game.p1.deck.hand << card
     end
 
-    it { expect(game.current_choice).to be_an_instance_of(Realms::PlayerAction) }
+    it { expect(game.current_choice.options).to have_key(:play) }
   end
 
   context "base in play" do
@@ -32,8 +32,8 @@ shared_examples "destroy_target_base" do
     end
 
     it "must choose the outpost card first" do
-      expect(game.current_choice.options.values).to include(outpost_card)
-      expect(game.current_choice.options.values).to_not include(base_card)
+      expect(game.current_choice.options).to have_value(outpost_card)
+      expect(game.current_choice.options).to_not have_value(base_card)
       game.decide(outpost_card.key)
       expect(game.p1.deck.discard_pile).to include(outpost_card)
     end

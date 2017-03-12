@@ -9,10 +9,10 @@ RSpec.describe Realms::Cards::BlobCarrier do
 
   describe "#primary_ability" do
     before do
+      game.p1.deck.hand << card
       game.start
-      card.primary_ability.execute
     end
-    it { expect(game.active_turn.combat).to eq(7) }
+    it { expect { game.play(card) }.to change { game.active_turn.combat }.by(7) }
   end
 
   describe "#ally_ability" do
@@ -24,14 +24,12 @@ RSpec.describe Realms::Cards::BlobCarrier do
       game.p1.deck.hand << ally_card
       game.trade_deck.trade_row[0] = selected_card
       game.start
-      game.decide(:play, :blob_wheel_0)
-      game.decide(:play, :blob_carrier_0)
+      game.play(ally_card)
+      game.play(card)
     end
 
     it "acquire any ship without paying its cost and put it on top of your deck" do
-      game.decide(:ally, :blob_carrier_0)
-      trade_row_cards = game.trade_deck.trade_row.map(&:key)
-      expect(game.current_choice.options.keys).to contain_exactly(*trade_row_cards, :none)
+      game.ally_ability(card)
       game.decide(:blob_destroyer_0)
       expect(game.trade_deck.trade_row).to_not include(selected_card)
       expect(game.trade_deck.trade_row.length).to eq(5)

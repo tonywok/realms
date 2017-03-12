@@ -15,7 +15,7 @@ RSpec.describe Realms::Cards::StealthNeedle do
       end
 
       it "is just machine cult card with no abilities" do
-        game.decide(:play, card.key)
+        game.play(card)
         expect(card.factions).to contain_exactly(:machine_cult)
       end
     end
@@ -31,11 +31,11 @@ RSpec.describe Realms::Cards::StealthNeedle do
 
       it "copies another ship played this turn" do
         expect {
-          game.decide(:play, another_ship.key)
+          game.play(another_ship)
         }.to change { game.active_turn.trade }.by(2).and \
              change { game.p1.authority }.by(4)
 
-        game.decide(:play, card.key)
+        game.play(card)
 
         expect {
           game.decide(another_ship.key)
@@ -45,14 +45,14 @@ RSpec.describe Realms::Cards::StealthNeedle do
         expect(card.factions).to contain_exactly(:trade_federation, :machine_cult)
 
         expect {
-          game.decide(:ally, another_ship.key)
+          game.ally_ability(another_ship)
         }.to change { game.active_turn.combat }.by(4)
 
         expect {
-          game.decide(:ally, card.key)
+          game.ally_ability(card)
         }.to change { game.active_turn.combat }.by(4)
 
-        game.decide(:end_turn)
+        game.end_turn
 
         expect(card.factions).to contain_exactly(:machine_cult)
       end

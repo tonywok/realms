@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Realms::Actions::UseCombat do
+RSpec.describe Realms::Actions::Attack do
   let(:game) { Realms::Game.new }
 
   context "opponent has no bases in play" do
@@ -13,11 +13,11 @@ RSpec.describe Realms::Actions::UseCombat do
 
     it "deals damage to the opponent" do
       expect {
-        game.decide(:play, :viper_0)
+        game.play(card.key)
       }.to change { game.active_turn.combat }.by(1)
 
       expect {
-        game.decide(:use_combat, game.p2.name.to_sym)
+        game.attack(game.p2.key)
       }.to change { game.p2.authority }.by(-1).and \
            change { game.active_turn.combat }.by(-1)
 

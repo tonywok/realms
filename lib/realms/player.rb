@@ -19,6 +19,8 @@ module Realms
       @deck = Deck.new(self)
     end
 
+    alias_method :key, :name
+
     def draw(n)
       n.times { deck.draw }
     end

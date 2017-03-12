@@ -13,11 +13,11 @@ RSpec.describe Realms::Cards::PortOfCall do
     before do
       game.p1.deck.hand << card
       game.start
-      game.decide(:play, card.key)
+      game.play(card)
     end
 
     context "authority" do
-      it { expect { game.decide(:primary, card.key) }.to change { game.active_turn.trade }.by(3) }
+      it { expect { game.base_ability(card) }.to change { game.active_turn.trade }.by(3) }
     end
   end
 
@@ -27,8 +27,8 @@ RSpec.describe Realms::Cards::PortOfCall do
         game.p1.deck.hand << card
         setup(game)
         game.start
-        game.decide(:play, card.key)
-        game.decide(:scrap, card.key)
+        game.play(card)
+        expect { game.scrap_ability(card) }.to change { game.p1.deck.hand.length }.by(1)
       end
     end
   end

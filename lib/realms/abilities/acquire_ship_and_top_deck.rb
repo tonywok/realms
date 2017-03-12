@@ -1,6 +1,10 @@
 module Realms
   module Abilities
     class AcquireShipAndTopDeck < Ability
+      def self.key
+        :acquire_ship_and_top_deck
+      end
+
       def execute
         choose(Choice.new(trade_row_ships, optional: optional)) do |card|
           # TODO: Make this less awkward. Who's responsible for ownership transfer?
@@ -10,9 +14,7 @@ module Realms
       end
 
       def trade_row_ships
-        turn.trade_deck.trade_row.select(&:ship?).each_with_object({}) do |card, opts|
-          opts[card.key] = card
-        end
+        turn.trade_deck.trade_row.select(&:ship?)
       end
     end
   end

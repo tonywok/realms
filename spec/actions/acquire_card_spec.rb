@@ -14,12 +14,12 @@ RSpec.describe Realms::Actions::AcquireCard do
 
     it "acquires a card from the trade row paid for in trade" do
       expect {
-        game.decide(:play, :scout_0)
+        game.play(:scout_0)
       }.to change { game.active_turn.trade }.by(1)
 
       expect {
         new_card = game.trade_deck.trade_row.first
-        game.decide(:acquire, new_card.key)
+        game.acquire(new_card.key)
       }.to change { game.p1.deck.discard_pile.length }.by(1).and \
            change { game.trade_deck.trade_row.length }.by(0)
 
@@ -40,13 +40,14 @@ RSpec.describe Realms::Actions::AcquireCard do
 
     it "only sees explorer as an option" do
       expect {
-        game.decide(:play, :scout_0)
-        game.decide(:play, :scout_0)
-        game.decide(:play, :viper_0)
+        game.play(:scout_0)
+        game.play(:scout_1)
+        game.play(:viper_0)
       }.to change { game.active_turn.trade }.by(2).and \
            change { game.active_turn.combat }.by(1)
 
-      expect(game.current_choice.options[:acquire].keys).to contain_exactly(:explorer)
+      game.decide(:acquire)
+      expect(game.current_choice.options.keys).to contain_exactly(:explorer_0)
     end
   end
 end

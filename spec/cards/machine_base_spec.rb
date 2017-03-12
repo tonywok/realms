@@ -13,12 +13,12 @@ RSpec.describe Realms::Cards::MachineBase do
     before do
       game.p1.deck.hand << card
       game.start
-      game.decide(:play, card.key)
+      game.play(card)
     end
 
     it "draws a card and scraps a card from hand" do
       expect {
-        game.decide(:primary, card.key)
+        game.base_ability(card)
       }.to change { game.p1.deck.draw_pile.length }.by(-1)
 
       card_in_hand = game.p1.deck.hand.sample

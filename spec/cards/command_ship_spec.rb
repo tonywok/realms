@@ -15,7 +15,7 @@ RSpec.describe Realms::Cards::CommandShip do
 
     it {
       expect {
-        game.decide(:play, card.key)
+        game.play(card)
       }.to change { game.p1.authority }.by(4).and \
            change { game.p1.active_turn.combat }.by(5).and \
            change { game.p1.deck.draw_pile.length }.by(-2)
@@ -30,9 +30,9 @@ RSpec.describe Realms::Cards::CommandShip do
         game.p1.deck.hand << ally_card
         setup(game)
         game.start
-        game.decide(:play, ally_card.key)
-        game.decide(:play, card.key)
-        game.decide(:ally, card.key)
+        game.play(ally_card)
+        game.play(card)
+        game.ally_ability(card)
       end
     end
   end

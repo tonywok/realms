@@ -9,9 +9,7 @@ module Realms
       end
 
       def cards_in_hand
-        turn.active_player.deck.hand.each_with_object({}) do |card_in_hand, opts|
-          opts[card_in_hand.key] = card_in_hand
-        end
+        turn.active_player.deck.hand
       end
     end
   end

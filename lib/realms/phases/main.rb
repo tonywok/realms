@@ -1,16 +1,24 @@
-require "realms/player_action"
-
 module Realms
   module Phases
     class Main < Phase
       def execute
-        action = choose PlayerAction.new(turn)
-        perform action
-        unless action.is_a?(Actions::EndMainPhase)
-          execute
+        choose Choice.new(player_actions) do |decision|
+          action = decision.new(turn)
+          perform action
+          execute unless action.key.end_turn?
         end
-        turn.event_manager.changed
-        turn.event_manager.notify_observers(self)
+      end
+
+      def player_actions
+        [
+          Actions::PlayCard,
+          Actions::BaseAbility,
+          Actions::AllyAbility,
+          Actions::ScrapAbility,
+          Actions::AcquireCard,
+          Actions::Attack,
+          Actions::EndMainPhase,
+        ]
       end
     end
   end

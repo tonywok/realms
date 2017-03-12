@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Realms::Actions::UsePrimaryAbility do
+RSpec.describe Realms::Actions::BaseAbility do
   let(:game) { Realms::Game.new }
   let(:card) { Realms::Cards::BlobWheel.new(game.p1) }
   let(:action) { described_class.new(card) }
@@ -8,11 +8,11 @@ RSpec.describe Realms::Actions::UsePrimaryAbility do
   before do
     game.p1.deck.battlefield << card
     game.start
-    game.decide(:primary, :blob_wheel_0)
+    game.base_ability(:blob_wheel_0)
   end
 
   it do
     expect(game.active_turn.combat).to eq(1)
-    expect(game.current_choice.options[:primary]).to be_empty
+    expect { game.base_ability(:blob_wheel_0) }.to raise_error(Realms::Choice::InvalidOption)
   end
 end

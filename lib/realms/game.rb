@@ -2,6 +2,7 @@ require "realms/yielder"
 require "realms/player"
 require "realms/turn"
 require "realms/trade_deck"
+require "realms/trade_deck"
 
 module Realms
   class Game < Yielder
@@ -32,6 +33,45 @@ module Realms
 
     def active_player
       active_turn.active_player
+    end
+
+    def play(key)
+      decide(:play)
+      safe_decide(key)
+    end
+
+    def base_ability(key)
+      decide(:base_ability)
+      safe_decide(key)
+    end
+
+    def ally_ability(key)
+      decide(:ally_ability)
+      safe_decide(key)
+    end
+
+    def scrap_ability(key)
+      decide(:scrap_ability)
+      safe_decide(key)
+    end
+
+    def acquire(key)
+      decide(:acquire)
+      safe_decide(key)
+    end
+
+    def attack(key)
+      decide(:attack)
+      safe_decide(key)
+    end
+
+    def safe_decide(key_or_thing)
+      key = key_or_thing.respond_to?(:key) ? key_or_thing.key : key_or_thing
+      decide(key)
+    end
+
+    def end_turn
+      decide(:end_turn)
     end
 
     def inspect
