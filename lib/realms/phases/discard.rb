@@ -2,10 +2,14 @@ module Realms
   module Phases
     class Discard < Phase
       def execute
-        # 1. lose all trade
-        # 2. lose all combat
-        # 3. put all in-play ships into your discard pile
-        # 4. put any cards left in your hand into your discard pile
+        turn.trade = 0
+        turn.combat = 0
+        deck.battlefield.select(&:ship?).each { |ship| deck.destroy(ship) }
+        deck.discard_hand
+      end
+
+      def deck
+        @deck ||= turn.active_player.deck
       end
     end
   end

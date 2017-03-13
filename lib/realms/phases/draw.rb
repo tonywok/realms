@@ -2,8 +2,7 @@ module Realms
   module Phases
     class Draw < Phase
       def execute
-        # 1. draw 5 cards
-        # 2. turn ends
+        turn.active_player.draw(5)
       end
     end
   end

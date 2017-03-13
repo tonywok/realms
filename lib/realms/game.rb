@@ -6,11 +6,12 @@ require "realms/trade_deck"
 
 module Realms
   class Game < Yielder
-    attr_reader :p1, :p2, :active_turn, :trade_deck
+    attr_reader :p1, :p2, :players, :active_turn, :trade_deck
 
     def initialize
       @p1 = Player.new(self, "frog")
       @p2 = Player.new(self, "bear")
+      @players = [@p1, @p2]
       @trade_deck = TradeDeck.new(self)
     end
 
@@ -21,13 +22,16 @@ module Realms
       self
     end
 
-    def execute
-      players = [p1, p2]
+    def over?
+      players.any? { |p| p.authority <= 0 }
+    end
 
+    def execute
       players.cycle do |active_player|
         passive_player = (players - [active_player]).first
         @active_turn = Turn.new(active_player, passive_player, trade_deck)
         perform @active_turn
+        break if over?
       end
     end
 
