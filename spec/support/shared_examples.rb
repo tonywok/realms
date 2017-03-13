@@ -4,7 +4,10 @@ shared_examples "destroy_target_base" do
       game.p1.deck.hand << card
     end
 
-    it { expect(game.current_choice.options).to have_key(:play) }
+    it "has no eligible attack.<base> targets" do
+      attack_targets = game.current_choice.options.except("attack.#{game.p2.name}").keys.select { |key| key =~ /attack/ }
+      expect(attack_targets).to be_empty
+    end
   end
 
   context "base in play" do

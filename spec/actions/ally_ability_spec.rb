@@ -23,9 +23,8 @@ RSpec.describe Realms::Actions::AllyAbility do
       expect { game.ally_ability(:blob_fighter_0) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)
       expect { game.ally_ability(:battle_pod_0) }.to change { game.active_turn.combat }.by(2)
 
-      game.decide(:ally_ability)
-      expect(game.current_choice.options).to_not include(:blob_fighter_0)
-      expect(game.current_choice.options).to_not include(:battle_pod_0)
+      expect(game.current_choice.options).to_not have_key(:blob_fighter_0)
+      expect(game.current_choice.options).to_not have_key(:battle_pod_0)
     end
   end
 
@@ -46,9 +45,8 @@ RSpec.describe Realms::Actions::AllyAbility do
       expect { game.ally_ability(:blob_fighter_0) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)
       expect { game.ally_ability(:blob_fighter_1) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)
 
-      game.decide(:ally_ability)
-      expect(game.current_choice.options).to_not include(:blob_fighter_0)
-      expect(game.current_choice.options).to_not include(:blob_fighter_1)
+      expect(game.current_choice.options).to_not have_key(:blob_fighter_0)
+      expect(game.current_choice.options).to_not have_key(:blob_fighter_1)
     end
   end
 end

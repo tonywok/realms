@@ -5,6 +5,10 @@ module Realms
         :end_turn
       end
 
+      def key
+        self.class.key.to_s
+      end
+
       def execute
         turn.event_manager.changed
         turn.event_manager.notify_observers(self)

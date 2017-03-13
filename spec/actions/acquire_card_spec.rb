@@ -14,7 +14,7 @@ RSpec.describe Realms::Actions::AcquireCard do
 
     it "acquires a card from the trade row paid for in trade" do
       expect {
-        game.play(:scout_0)
+        game.play(card)
       }.to change { game.active_turn.trade }.by(1)
 
       expect {
@@ -46,8 +46,7 @@ RSpec.describe Realms::Actions::AcquireCard do
       }.to change { game.active_turn.trade }.by(2).and \
            change { game.active_turn.combat }.by(1)
 
-      game.decide(:acquire)
-      expect(game.current_choice.options.keys).to contain_exactly(:explorer_0)
+      expect(game.current_choice.options).to have_key("acquire.explorer_0")
     end
   end
 end

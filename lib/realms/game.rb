@@ -25,7 +25,7 @@ module Realms
       players = [p1, p2]
 
       players.cycle do |active_player|
-        passive_player = players.find { |p| p != active_player }
+        passive_player = (players - [active_player]).first
         @active_turn = Turn.new(active_player, passive_player, trade_deck)
         perform @active_turn
       end
@@ -36,42 +36,35 @@ module Realms
     end
 
     def play(key)
-      decide(:play)
-      safe_decide(key)
+      decide("play.#{safe(key)}")
     end
 
     def base_ability(key)
-      decide(:base_ability)
-      safe_decide(key)
+      decide("base_ability.#{safe(key)}")
     end
 
     def ally_ability(key)
-      decide(:ally_ability)
-      safe_decide(key)
+      decide("ally_ability.#{safe(key)}")
     end
 
     def scrap_ability(key)
-      decide(:scrap_ability)
-      safe_decide(key)
+      decide("scrap_ability.#{safe(key)}")
     end
 
     def acquire(key)
-      decide(:acquire)
-      safe_decide(key)
+      decide("acquire.#{safe(key)}")
     end
 
     def attack(key)
-      decide(:attack)
-      safe_decide(key)
+      decide("attack.#{safe(key)}")
     end
 
-    def safe_decide(key_or_thing)
-      key = key_or_thing.respond_to?(:key) ? key_or_thing.key : key_or_thing
-      decide(key)
+    def safe(key_or_thing)
+      key_or_thing.respond_to?(:key) ? key_or_thing.key : key_or_thing
     end
 
     def end_turn
-      decide(:end_turn)
+      decide("end_turn")
     end
 
     def inspect
