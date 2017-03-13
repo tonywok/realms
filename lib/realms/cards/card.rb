@@ -118,6 +118,10 @@ module Realms
         definition.scrap_abilities.any?
       end
 
+      def ally_ability?
+        definition.ally_abilities.any?
+      end
+
       def blob?
         factions.include?(:blob)
       end

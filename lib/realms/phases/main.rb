@@ -40,7 +40,7 @@ module Realms
 
       def unused_allies
         active_player.deck.battlefield.select do |card|
-          turn.activated_ally_ability.exclude?(card)
+          card.ally_ability? && turn.activated_ally_ability.exclude?(card)
         end
       end
 
