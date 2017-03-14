@@ -36,6 +36,7 @@ require "realms/cards/mech_world"
 require "realms/cards/junkyard"
 require "realms/cards/missile_mech"
 require "realms/cards/machine_base"
+require "realms/cards/brain_world"
 
 module Realms
   module Cards
