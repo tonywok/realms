@@ -1,6 +1,8 @@
 module Realms
   module Actions
     class AcquireCard < Action
+      include Wisper::Publisher
+
       attr_accessor :zone
 
       def self.key
@@ -14,9 +16,7 @@ module Realms
 
       def execute
         turn.trade -= card.cost
-        turn.event_manager.changed
-        turn.event_manager.notify_observers(self)
-        # TODO: consider pulling this out into a zone transfer?
+        broadcast(:card_acquired, self)
         turn.trade_deck.acquire(card)
         turn.active_player.deck.acquire(card, zone: zone)
       end

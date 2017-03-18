@@ -1,13 +1,17 @@
 module Realms
   module Abilities
     class TopDeckNextShip < Ability
-      def execute
-        turn.event_manager.add_observer(self)
+      def self.key
+        :top_deck_next_ship
       end
 
-      def update(acquire_card)
+      def execute
+        Actions::AcquireCard.subscribe(self)
+      end
+
+      def card_acquired(acquire_card)
         acquire_card.zone = :draw_pile
-        turn.event_manager.delete_observer(self)
+        Wisper.unsubscribe(self)
       end
     end
   end
