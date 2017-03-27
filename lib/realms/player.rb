@@ -12,6 +12,9 @@ module Realms
     delegate :active_turn, :trade_deck,
       to: :game
 
+    delegate :draw_pile, :hand, :discard_pile, :battlefield,
+      to: :deck
+
     def initialize(game, name)
       @game = game
       @name = name

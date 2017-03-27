@@ -7,9 +7,8 @@ module Realms
 
       def execute
         choose(Choice.new(trade_row_ships, optional: optional)) do |card|
-          # TODO: Make this less awkward. Who's responsible for ownership transfer?
-          selected_card = turn.trade_deck.acquire(card)
-          turn.active_player.deck.draw_pile.unshift(selected_card)
+          zt = ZoneTransfer.new(card: card, source: turn.trade_deck.trade_row, destination: active_player.draw_pile)
+          zt.transfer!(0)
         end
       end
 

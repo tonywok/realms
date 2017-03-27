@@ -4,6 +4,7 @@ module Realms
       def execute
         active_player.draw(1)
         choose Choice.new(cards_in_hand) do |chosen_card|
+          ZoneTransfer.new(card: chosen_card, source: active_player.hand, destination: turn.trade_deck.scrap_heap)
           turn.trade_deck.scrap_heap << active_player.deck.scrap(chosen_card)
         end
       end

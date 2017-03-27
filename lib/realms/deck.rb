@@ -14,24 +14,26 @@ module Realms
       @player = player
       scouts = 8.times.map { |i| Cards::Scout.new(player, index: i) }
       vipers = 2.times.map { |i| Cards::Viper.new(player, index: i) }
-      @draw_pile = scouts + vipers
-      @discard_pile = []
-      @hand = []
-      @battlefield = []
+      @draw_pile = Zone.new(scouts + vipers)
+      @discard_pile = Zone.new
+      @hand = Zone.new
+      @battlefield = Zone.new
     end
 
     def cards
-      draw_pile + discard_pile + hand + battlefield
+      draw_pile.cards + discard_pile.cards + hand.cards + battlefield.cards
     end
 
     def discard(card)
-      raise(InvalidTarget, card) unless hand.include?(card)
-      self.discard_pile << self.hand.delete_at(hand.index(card) || hand.length)
+      ZoneTransfer.new(source: hand, destination: discard_pile, card: card).append!
     end
 
     def play(card)
-      raise(InvalidTarget, card) unless hand.include?(card)
-      self.battlefield << self.hand.delete_at(hand.index(card) || hand.length)
+      ZoneTransfer.new(source: hand, destination: battlefield, card: card).append!
+    end
+
+    def destroy(card)
+      ZoneTransfer.new(source: battlefield, destination: discard_pile, card: card).append!
     end
 
     def acquire(card, zone: :discard_pile)
@@ -48,11 +50,6 @@ module Realms
       zone.delete(card)
     end
 
-    def destroy(card)
-      raise(InvalidTarget, card) unless battlefield.include?(card)
-      self.discard_pile << self.battlefield.delete_at(battlefield.index(card) || battlefield.length)
-    end
-
     def discard_hand
       until hand.empty?
         discard(hand.first)
@@ -64,13 +61,13 @@ module Realms
         reshuffle
         draw unless draw_pile.empty?
       else
-        self.hand << draw_pile.shift
+        ZoneTransfer.new(source: draw_pile, destination: hand, card: draw_pile.first).append!
       end
     end
 
     def reshuffle
       until discard_pile.empty? do
-        self.draw_pile << discard_pile.shift
+        ZoneTransfer.new(source: discard_pile, destination: draw_pile, card: discard_pile.first).append!
       end
       draw_pile.shuffle!
     end

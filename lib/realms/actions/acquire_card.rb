@@ -9,16 +9,10 @@ module Realms
         :acquire
       end
 
-      def initialize(turn, target)
-        super
-        @zone = :discard_pile
-      end
-
       def execute
         turn.trade -= card.cost
-        broadcast(:card_acquired, self)
-        turn.trade_deck.acquire(card)
-        turn.active_player.deck.acquire(card, zone: zone)
+        zt = ZoneTransfer.new(card: card, source: turn.trade_deck.trade_row, destination: active_player.deck.discard_pile)
+        zt.transfer!
       end
     end
   end

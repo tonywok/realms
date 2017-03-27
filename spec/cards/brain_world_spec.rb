@@ -33,7 +33,7 @@ RSpec.describe Realms::Cards::BrainWorld do
 
     context "scrap no cards" do
       it "draws no cards" do
-        expect { game.decide(:none) }.to_not change { game.p1.deck.hand }
+        expect { game.decide(:none) }.to_not change { game.p1.deck.hand.length }
       end
     end
 

@@ -146,6 +146,12 @@ module Realms
       def inspect
         key
       end
+
+      protected
+
+      def <=>(other_card)
+        self.key <=> other_card.key
+      end
     end
   end
 end

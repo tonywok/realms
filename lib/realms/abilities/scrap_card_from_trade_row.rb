@@ -7,12 +7,12 @@ module Realms
 
       def execute
         choose(Choice.new(cards_in_trade_row, optional: optional)) do |card|
-          turn.active_player.trade_deck.scrap(card)
+          turn.trade_deck.scrap(card)
         end
       end
 
       def cards_in_trade_row
-        turn.trade_deck.trade_row
+        turn.trade_deck.trade_row.cards
       end
     end
   end

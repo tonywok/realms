@@ -6,12 +6,15 @@ module Realms
       end
 
       def execute
-        Actions::AcquireCard.subscribe(self)
+        ZoneTransfer.subscribe(self)
       end
 
-      def card_acquired(acquire_card)
-        acquire_card.zone = :draw_pile
-        Wisper.unsubscribe(self)
+      def zone_transfer(zt)
+        if zt.source == turn.trade_deck.trade_row && zt.card.ship?
+          zt.destination = active_player.deck.draw_pile
+          zt.position = 0
+          Wisper.unsubscribe(self)
+        end
       end
     end
   end

@@ -12,7 +12,8 @@ RSpec.describe Realms::Cards::BattlePod do
       game.p1.deck.hand << card
       game.start
       game.play(card)
-    end 
+    end
+
     it "adds 4 combat and prompts the player to scrap a card from the trade row" do
       expect(game.active_turn.combat).to eq(4)
       expect(game.current_choice.options.keys).to contain_exactly(*game.trade_deck.trade_row.map(&:key).uniq, :none)
@@ -28,7 +29,7 @@ RSpec.describe Realms::Cards::BattlePod do
         expect(game.current_choice.options).to have_key(:none)
         expect {
           game.decide(:none)
-        }.to_not change { game.trade_deck.trade_row }
+        }.to_not change { game.trade_deck.trade_row.length }
       end
     end
   end

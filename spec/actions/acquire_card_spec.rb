@@ -8,7 +8,7 @@ RSpec.describe Realms::Actions::AcquireCard do
 
     before do
       game.p1.deck.hand << card
-      game.trade_deck.trade_row = 5.times.map { |i| Realms::Cards::BlobFighter.new(index: i) }
+      game.trade_deck.trade_row = Realms::Zone.new(5.times.map { |i| Realms::Cards::BlobFighter.new(index: i) })
       game.start
     end
 
@@ -19,7 +19,7 @@ RSpec.describe Realms::Actions::AcquireCard do
 
       expect {
         new_card = game.trade_deck.trade_row.first
-        game.acquire(new_card.key)
+        game.acquire(new_card)
       }.to change { game.p1.deck.discard_pile.length }.by(1).and \
            change { game.trade_deck.trade_row.length }.by(0)
 
@@ -29,12 +29,12 @@ RSpec.describe Realms::Actions::AcquireCard do
 
   context "when the turn doesn't have enough trade" do
     before do
-      game.p1.deck.hand = [
+      game.p1.deck.hand = Realms::Zone.new([
         Realms::Cards::Scout.new(game.p1, index: 0),
         Realms::Cards::Scout.new(game.p1, index: 1),
         Realms::Cards::Viper.new(game.p1, index: 0),
-      ]
-      game.trade_deck.trade_row = 5.times.map { |i| Realms::Cards::BlobWheel.new(index: i) }
+      ])
+      game.trade_deck.trade_row = Realms::Zone.new(5.times.map { |i| Realms::Cards::BlobWheel.new(index: i) })
       game.start
     end
 

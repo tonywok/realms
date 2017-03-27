@@ -49,7 +49,7 @@ module Realms
       end
 
       def purchasable_cards
-        cards = turn.trade_deck.trade_row + [turn.trade_deck.explorers.first]
+        cards = turn.trade_deck.trade_row.cards + turn.trade_deck.explorers.cards
         cards.select { |card| turn.trade >= card.cost }
       end
 

@@ -22,7 +22,7 @@ RSpec.describe Realms::Cards::BlobCarrier do
     before do
       game.p1.deck.hand << card
       game.p1.deck.hand << ally_card
-      game.trade_deck.trade_row[0] = selected_card
+      game.trade_deck.trade_row.cards[0] = selected_card
       game.start
       game.play(ally_card)
       game.play(card)
