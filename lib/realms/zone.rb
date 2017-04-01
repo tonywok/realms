@@ -33,28 +33,12 @@ module Realms
       self.cards << card
     end
 
-    def +(other_zone)
-      self.cards + other_zone.cards
-    end
-
     def each(&block)
       cards.each(&block)
     end
 
     def initialize(cards = [])
       @cards = cards
-    end
-
-    def peek(num = 1)
-      cards.take(num)
-    end
-
-    def append(card)
-      cards << card
-    end
-
-    def prepend(card)
-      cards.unshift(card)
     end
 
     def remove(card)

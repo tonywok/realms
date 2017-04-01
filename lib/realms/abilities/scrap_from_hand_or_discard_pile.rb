@@ -14,7 +14,7 @@ module Realms
       end
 
       def cards_in_hand_or_discard_pile
-        turn.active_player.deck.hand + turn.active_player.deck.discard_pile
+        turn.active_player.deck.hand.cards + turn.active_player.deck.discard_pile.cards
       end
     end
   end
