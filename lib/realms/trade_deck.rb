@@ -14,20 +14,17 @@ module Realms
       @trade_row = Zone.new
       @explorers = Zone.new(10.times.map { |i| Cards::Explorer.new(index: i) })
       draw_pile.shuffle!
-      5.times do
-        ZoneTransfer.new(source: draw_pile, destination: trade_row).transfer!
-      end
+      5.times { draw_pile.transfer!(to: trade_row) }
       ZoneTransfer.subscribe(self)
     end
 
     def scrap(card)
-      ZoneTransfer.new(card: card, source: trade_row, destination: scrap_heap).transfer!
+      trade_row.transfer!(card: card, to: scrap_heap)
     end
 
     def zone_transfer(zt)
       if zt.source == trade_row
-        pos = trade_row.index(zt.card)
-        ZoneTransfer.new(card: draw_pile.first, source: draw_pile, destination: trade_row).transfer!(pos)
+        draw_pile.transfer!(to: trade_row, pos: trade_row.index(zt.card))
       end
     end
   end

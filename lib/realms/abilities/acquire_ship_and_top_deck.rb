@@ -7,8 +7,7 @@ module Realms
 
       def execute
         choose(Choice.new(trade_row_ships, optional: optional)) do |card|
-          zt = ZoneTransfer.new(card: card, source: turn.trade_deck.trade_row, destination: active_player.draw_pile)
-          zt.transfer!(0)
+          turn.trade_deck.trade_row.transfer!(card: card, to: active_player.draw_pile, pos: 0)
         end
       end
 

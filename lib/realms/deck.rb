@@ -25,15 +25,15 @@ module Realms
     end
 
     def discard(card)
-      ZoneTransfer.new(source: hand, destination: discard_pile, card: card).append!
+      hand.transfer!(card: card, to: discard_pile)
     end
 
     def play(card)
-      ZoneTransfer.new(source: hand, destination: battlefield, card: card).append!
+      hand.transfer!(card: card, to: battlefield)
     end
 
     def destroy(card)
-      ZoneTransfer.new(source: battlefield, destination: discard_pile, card: card).append!
+      battlefield.transfer!(card: card, to: discard_pile)
     end
 
     def acquire(card, zone: :discard_pile)
@@ -61,13 +61,13 @@ module Realms
         reshuffle
         draw unless draw_pile.empty?
       else
-        ZoneTransfer.new(source: draw_pile, destination: hand, card: draw_pile.first).append!
+        draw_pile.transfer!(to: hand)
       end
     end
 
     def reshuffle
       until discard_pile.empty? do
-        ZoneTransfer.new(source: discard_pile, destination: draw_pile, card: discard_pile.first).append!
+        discard_pile.transfer!(to: draw_pile)
       end
       draw_pile.shuffle!
     end

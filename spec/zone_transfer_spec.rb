@@ -25,14 +25,14 @@ RSpec.describe Realms::ZoneTransfer do
       let(:source_cards) { [] }
       let(:destination_cards) { [] }
 
-      it { expect { zone_transfer.append! }.to raise_error(Realms::InvalidTarget) }
+      it { expect { zone_transfer.transfer! }.to raise_error(Realms::InvalidTarget) }
     end
 
     context "when the card is already in the destination" do
       let(:source_cards) { [card] }
       let(:destination_cards) { [card] }
 
-      it { expect { zone_transfer.append! }.to raise_error(Realms::InvalidTarget) }
+      it { expect { zone_transfer.transfer! }.to raise_error(Realms::InvalidTarget) }
     end
 
     context "transferring to a specific position" do

@@ -16,8 +16,6 @@ module Realms
       broadcast(:zone_transfer, self)
       destination.insert(pos, source.remove(card))
     end
-
-    alias_method :append!, :transfer!
   end
 
   class Zone
@@ -39,6 +37,10 @@ module Realms
 
     def initialize(cards = [])
       @cards = cards
+    end
+
+    def transfer!(card: first, to:, pos: to.length)
+      ZoneTransfer.new(card: card, source: self, destination: to).transfer!(pos)
     end
 
     def remove(card)
