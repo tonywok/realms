@@ -6,7 +6,7 @@ module Realms
       include Singleton
     end
 
-    attr_reader :game, :name, :deck
+    attr_reader :game, :name, :deck, :upkeep
     attr_accessor :authority
 
     delegate :active_turn, :trade_deck,
@@ -20,6 +20,7 @@ module Realms
       @name = name
       @authority = 50
       @deck = Deck.new(self)
+      @upkeep = []
     end
 
     alias_method :key, :name

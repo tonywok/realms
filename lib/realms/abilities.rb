@@ -13,6 +13,7 @@ require "realms/abilities/top_deck_next_ship"
 require "realms/abilities/scrap_from_hand_or_discard_pile"
 require "realms/abilities/copy_ship"
 require "realms/abilities/draw_then_scrap_from_hand"
+require "realms/abilities/discard"
 
 module Realms
   module Abilities

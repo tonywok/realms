@@ -32,6 +32,7 @@ module Realms
     end
 
     def execute
+      perform Phases::Upkeep.new(self)
       perform Phases::Main.new(self)
       perform Phases::Discard.new(self)
       perform Phases::Draw.new(self)
