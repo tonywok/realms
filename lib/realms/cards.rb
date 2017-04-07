@@ -38,6 +38,7 @@ require "realms/cards/missile_mech"
 require "realms/cards/machine_base"
 require "realms/cards/brain_world"
 require "realms/cards/imperial_fighter"
+require "realms/cards/corvette"
 
 module Realms
   module Cards
