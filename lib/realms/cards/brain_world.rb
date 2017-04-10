@@ -6,17 +6,17 @@ module Realms
       end
 
       def execute
-        cards_scraped = arg.times.map.select do
-          choose(Choice.new(cards_in_hand_or_discard_pile, optional: optional)) do |card|
-            turn.trade_deck.scrap_heap << turn.active_player.deck.scrap(card)
-            card
+        arg.times do
+          choose(Choice.new(zones.flat_map(&:cards), optional: optional)) do |card|
+            zone = zones.find { |z| z.include?(card) }
+            zone.transfer!(card: card, to: turn.trade_deck.scrap_heap)
+            active_player.draw_pile.transfer!(to: active_player.hand)
           end
         end
-        active_player.draw(cards_scraped.length)
       end
 
-      def cards_in_hand_or_discard_pile
-        turn.active_player.deck.hand.cards + turn.active_player.deck.discard_pile.cards
+      def zones
+        [active_player.hand, active_player.discard_pile]
       end
     end
   end
