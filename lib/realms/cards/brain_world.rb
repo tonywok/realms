@@ -6,12 +6,12 @@ module Realms
       end
 
       def execute
-        arg.times do
-          choose(Choice.new(zones.flat_map(&:cards), optional: optional)) do |card|
+        choose(MultiChoice.new(zones.flat_map(&:cards), count: arg)) do |cards|
+          cards.each do |card|
             zone = zones.find { |z| z.include?(card) }
             zone.transfer!(card: card, to: turn.trade_deck.scrap_heap)
-            active_player.draw_pile.transfer!(to: active_player.hand)
           end
+          cards.length.times { active_player.draw_pile.transfer!(to: active_player.hand) }
         end
       end
 

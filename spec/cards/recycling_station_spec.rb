@@ -30,6 +30,7 @@ RSpec.describe Realms::Cards::RecyclingStation do
         it {
           expect {
             game.decide(game.p1.hand.sample.key)
+            game.decide(:none)
           }.to change { game.p1.draw_pile.length }.by(-1).and \
                change { game.p1.hand.length }.by(0)
         }
@@ -38,8 +39,12 @@ RSpec.describe Realms::Cards::RecyclingStation do
       context "discard 2" do
         it {
           expect {
-            game.decide(game.p1.hand.sample.key)
-            game.decide(game.p1.hand.sample.key)
+            top_of_deck = game.p1.deck.draw_pile.first
+            c1, c2 = game.p1.hand.sample(2)
+            game.decide(c1.key)
+            expect(game.current_choice.options.values.map(&:key)).to_not include(top_of_deck.key)
+            expect(c1).to_not eq(c2)
+            game.decide(c2.key)
           }.to change { game.p1.draw_pile.length }.by(-2).and \
                change { game.p1.hand.length }.by(0)
         }

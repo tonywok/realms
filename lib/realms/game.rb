@@ -2,7 +2,6 @@ require "realms/yielder"
 require "realms/player"
 require "realms/turn"
 require "realms/trade_deck"
-require "realms/trade_deck"
 
 module Realms
   class Game < Yielder

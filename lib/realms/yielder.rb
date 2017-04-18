@@ -30,7 +30,8 @@ module Realms
       return if choice.noop?
       choice.clear
       choices.yield choice
-      if block_given? && choice.decision
+
+      if block_given? && choice.actionable?
         yield choice.decision
       else
         choice.decision

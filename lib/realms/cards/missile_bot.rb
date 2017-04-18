@@ -4,7 +4,7 @@ module Realms
       faction :machine_cult
       cost 2
       primary_ability Abilities::Combat[2]
-      primary_ability Abilities::ScrapFromHandOrDiscardPile[1], optional: true
+      primary_ability Abilities::ScrapFromHandOrDiscardPile, optional: true
       ally_ability Abilities::Combat[2]
     end
   end

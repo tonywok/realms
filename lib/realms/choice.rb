@@ -4,11 +4,19 @@ module Realms
 
     attr_reader :options, :decision
 
-    def initialize(options, optional: false)
-      @options = options.each_with_object({}) do |option, opts|
-        opts[option.key] = option
+    class NullOption
+      include Singleton
+
+      def key
+        :none
       end
-      @options[:none] = false if optional
+      alias_method :inspect, :key
+    end
+
+    def initialize(options, optional: false)
+      opts = options
+      opts = opts + [NullOption.instance] if optional
+      @options = opts.index_by(&:key)
     end
 
     def decide(key)
@@ -25,8 +33,46 @@ module Realms
       !@decision.nil?
     end
 
+    def actionable?
+      return false unless decided?
+      decision != NullOption.instance
+    end
+
     def clear
       @decision = nil
+    end
+  end
+
+  class MultiChoice < Choice
+    attr_reader :count
+
+    def initialize(options, count:)
+      super(options, optional: true)
+      @count = count
+      @decision = []
+    end
+
+    def decide(key)
+      @decision << options.delete(key) do
+        raise InvalidOption, "missing #{key} in #{options.keys}"
+      end
+    end
+
+    def decided?
+      @decision.length == count
+    end
+
+    def decision
+      @decision.reject { |o| o.key == :none }
+    end
+
+    def actionable?
+      return false unless decided?
+      decision.none? { |a| a == NullOption.instance }
+    end
+
+    def clear
+      @decision = [] if decided?
     end
   end
 end

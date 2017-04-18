@@ -7,7 +7,7 @@ module Realms
         Abilities::Trade[3],
         Abilities::Combat[5]
       ]
-      ally_ability Abilities::ScrapFromHandOrDiscardPile[1], optional: true
+      ally_ability Abilities::ScrapFromHandOrDiscardPile, optional: true
     end
   end
 end
