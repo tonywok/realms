@@ -16,7 +16,7 @@ module Realms
     end
 
     def next_choice
-      return current_choice if current_choice && current_choice.undecided?
+      return current_choice if current_choice && !current_choice.decided?
       @current_choice = state_machine.next
     rescue StopIteration
       @current_choice = nil

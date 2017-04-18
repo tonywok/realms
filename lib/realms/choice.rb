@@ -21,8 +21,8 @@ module Realms
       options.except(:none).empty?
     end
 
-    def undecided?
-      @decision.nil?
+    def decided?
+      !@decision.nil?
     end
 
     def clear
