@@ -1,5 +1,6 @@
 require "realms/abilities"
 require "realms/actions"
+require "equalizer"
 
 module Realms
   module Cards
@@ -47,6 +48,8 @@ module Realms
           Abilities::Multi[scrap_abilities]
         end
       end
+
+      include Equalizer.new(:key)
 
       def self.definition
         @definition ||= CardDefinition.new
