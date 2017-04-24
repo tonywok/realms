@@ -23,4 +23,14 @@ RSpec.describe Realms::Cards::Card do
     include_examples "factions", :blob
     include_examples "cost", 1
   end
+
+  describe "shuffling" do
+    let(:unshuffled) { 10.times.map { |i| Realms::Cards::Scout.new(index: i) } }
+    let(:seed) { Random.new_seed }
+
+    it "shuffles the same with a seed" do
+      shuffled = unshuffled.shuffle(random: Random.new(seed))
+      expect(unshuffled.shuffle(random: Random.new(seed))).to eq(shuffled)
+    end
+  end
 end

@@ -13,7 +13,7 @@ module Realms
       @scrap_heap = Zone.new
       @trade_row = Zone.new
       @explorers = Zone.new(10.times.map { |i| Cards::Explorer.new(index: i) })
-      draw_pile.shuffle!
+      draw_pile.shuffle!(random: game.rng)
       5.times { draw_pile.transfer!(to: trade_row) }
       ZoneTransfer.subscribe(self)
     end

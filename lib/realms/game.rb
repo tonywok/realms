@@ -5,13 +5,18 @@ require "realms/trade_deck"
 
 module Realms
   class Game < Yielder
-    attr_reader :p1, :p2, :players, :active_turn, :trade_deck
+    attr_reader :p1, :p2, :players, :active_turn, :trade_deck, :seed
 
-    def initialize
+    def initialize(seed = Random.new_seed)
+      @seed = seed
       @p1 = Player.new(self, "frog")
       @p2 = Player.new(self, "bear")
       @players = [@p1, @p2]
       @trade_deck = TradeDeck.new(self)
+    end
+
+    def rng
+      Random.new(seed)
     end
 
     def start

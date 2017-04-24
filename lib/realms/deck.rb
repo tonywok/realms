@@ -69,7 +69,7 @@ module Realms
       until discard_pile.empty? do
         discard_pile.transfer!(to: draw_pile)
       end
-      draw_pile.shuffle!
+      draw_pile.shuffle!(random: player.game.rng)
     end
 
     def inspect

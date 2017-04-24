@@ -4,7 +4,7 @@ RSpec.describe Realms::Actions::AcquireCard do
   let(:game) { Realms::Game.new }
 
   context "acquiring cards from the trade row" do
-    let(:card) { Realms::Cards::Scout.new(game.p1, index: 0) }
+    let(:card) { Realms::Cards::Scout.new(game.p1, index: 10) }
 
     before do
       game.p1.deck.hand << card
@@ -30,9 +30,9 @@ RSpec.describe Realms::Actions::AcquireCard do
   context "when the turn doesn't have enough trade" do
     before do
       game.p1.deck.hand = Realms::Zone.new([
-        Realms::Cards::Scout.new(game.p1, index: 0),
-        Realms::Cards::Scout.new(game.p1, index: 1),
-        Realms::Cards::Viper.new(game.p1, index: 0),
+        Realms::Cards::Scout.new(game.p1, index: 10),
+        Realms::Cards::Scout.new(game.p1, index: 11),
+        Realms::Cards::Viper.new(game.p1, index: 10),
       ])
       game.trade_deck.trade_row = Realms::Zone.new(5.times.map { |i| Realms::Cards::BlobWheel.new(index: i) })
       game.start
@@ -40,9 +40,9 @@ RSpec.describe Realms::Actions::AcquireCard do
 
     it "only sees explorer as an option" do
       expect {
-        game.play(:scout_0)
-        game.play(:scout_1)
-        game.play(:viper_0)
+        game.play(:scout_10)
+        game.play(:scout_11)
+        game.play(:viper_10)
       }.to change { game.active_turn.trade }.by(2).and \
            change { game.active_turn.combat }.by(1)
 

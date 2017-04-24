@@ -25,7 +25,7 @@ RSpec.describe Realms::Cards::ImperialFighter do
   end
 
   describe "#ally_ability" do
-    let(:ally_card) { Realms::Cards::ImperialFighter.new(game.p1) }
+    let(:ally_card) { Realms::Cards::ImperialFighter.new(game.p1, index: 1) }
 
     before do
       game.p1.deck.hand << card
