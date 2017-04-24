@@ -1,3 +1,5 @@
+require "realms/sets"
+
 module Realms
   class TradeDeck
     attr_accessor :draw_pile,
@@ -9,7 +11,7 @@ module Realms
       to: :trade_row
 
     def initialize(game)
-      @draw_pile = Zone.new(10.times.map { |i| Cards::Cutter.new(index: i) })
+      @draw_pile = Zone.new(Sets::Vanilla.new.cards)
       @scrap_heap = Zone.new
       @trade_row = Zone.new
       @explorers = Zone.new(10.times.map { |i| Cards::Explorer.new(index: i) })

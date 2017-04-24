@@ -14,7 +14,6 @@ RSpec.describe Realms::TradeDeck do
         cards = gn.trade_deck.trade_row.cards
 
         expect(g1.seed).to eq(gn.seed)
-
         expect(cards).to eq(g1.trade_deck.trade_row.cards)
       end
     end
