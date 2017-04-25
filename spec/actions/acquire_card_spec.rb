@@ -20,6 +20,7 @@ RSpec.describe Realms::Actions::AcquireCard do
       expect {
         new_card = game.trade_deck.trade_row.first
         game.acquire(new_card)
+        expect(new_card.player).to eq(game.p1)
       }.to change { game.p1.deck.discard_pile.length }.by(1).and \
            change { game.trade_deck.trade_row.length }.by(0)
 
