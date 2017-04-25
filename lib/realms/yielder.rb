@@ -11,7 +11,7 @@ module Realms
     end
 
     def decide(decision_key)
-      current_choice.decide(decision_key)
+      current_choice.decide(decision_key.to_sym)
       next_choice
     end
 

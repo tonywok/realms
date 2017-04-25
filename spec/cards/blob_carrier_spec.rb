@@ -17,7 +17,7 @@ RSpec.describe Realms::Cards::BlobCarrier do
 
   describe "#ally_ability" do
     let(:ally_card) { Realms::Cards::BlobWheel.new(game.p1) }
-    let(:selected_card) { Realms::Cards::BlobDestroyer.new(game.p1) }
+    let(:selected_card) { Realms::Cards::BlobDestroyer.new(game.p1, index: 10) }
 
     before do
       game.p1.deck.hand << card
@@ -30,7 +30,7 @@ RSpec.describe Realms::Cards::BlobCarrier do
 
     it "acquire any ship without paying its cost and put it on top of your deck" do
       game.ally_ability(card)
-      game.decide(:blob_destroyer_0)
+      game.decide(selected_card.key)
       expect(game.trade_deck.trade_row).to_not include(selected_card)
       expect(game.trade_deck.trade_row.length).to eq(5)
       expect(game.p1.deck.draw_pile.first).to eq(selected_card)

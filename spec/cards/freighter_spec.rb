@@ -16,32 +16,35 @@ RSpec.describe Realms::Cards::Freighter do
   end
 
   describe "#ally_ability" do
+    let(:selected_card_1) { Realms::Cards::Cutter.new(index: 10) }
+    let(:selected_card_2) { Realms::Cards::Cutter.new(index: 11) }
     let(:ally_card) {  Realms::Cards::FederationShuttle.new(game.p1) }
+
     before do
       game.p1.deck.hand << card
       game.p1.deck.hand << ally_card
       game.start
+      game.trade_deck.trade_row.cards[0] = selected_card_1
+      game.trade_deck.trade_row.cards[4] = selected_card_2
       game.play(card)
       game.play(ally_card)
     end
 
     it {
       game.ally_ability(card)
-      trade_row_card = game.trade_deck.trade_row.first
       expect {
-        game.acquire(trade_row_card)
+        game.acquire(selected_card_1.key)
       }.to change { game.p1.deck.draw_pile.length }.by(1)
 
-      expect(game.p1.deck.draw_pile.first).to eq(trade_row_card)
-      expect(game.p1.deck.discard_pile).to_not include(trade_row_card)
+      expect(game.p1.deck.draw_pile.first).to eq(selected_card_1)
+      expect(game.p1.deck.discard_pile).to_not include(selected_card_1)
 
-      trade_row_card = game.trade_deck.trade_row.first
       expect {
-        game.acquire(trade_row_card)
+        game.acquire(selected_card_2.key)
       }.to change { game.p1.deck.discard_pile.length }.by(1)
 
-      expect(game.p1.deck.discard_pile.first).to eq(trade_row_card)
-      expect(game.p1.deck.draw_pile).to_not include(trade_row_card)
+      expect(game.p1.deck.discard_pile.first).to eq(selected_card_2)
+      expect(game.p1.deck.draw_pile).to_not include(selected_card_2)
     }
   end
 end

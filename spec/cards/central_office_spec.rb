@@ -10,9 +10,12 @@ RSpec.describe Realms::Cards::CentralOffice do
   include_examples "cost", 7
 
   describe "#primary_ability" do
+    let(:selected_card) { Realms::Cards::Cutter.new(index: 10) }
+
     before do
       game.p1.deck.hand << card
       game.start
+      game.trade_deck.trade_row.cards[0] = selected_card
       game.play(card)
     end
 
@@ -28,12 +31,14 @@ RSpec.describe Realms::Cards::CentralOffice do
   end
 
   describe "#ally_ability" do
+    let(:selected_card) { Realms::Cards::Cutter.new(index: 10) }
     let(:ally_card) { Realms::Cards::FederationShuttle.new(game.p1) }
 
     before do
       game.p1.deck.hand << ally_card
       game.p1.deck.hand << card
       game.start
+      game.trade_deck.trade_row.cards[0] = selected_card
       game.play(card)
     end
 

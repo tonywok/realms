@@ -16,7 +16,7 @@ module Realms
     def initialize(options, optional: false)
       opts = options
       opts = opts + [NullOption.instance] if optional
-      @options = opts.index_by(&:key)
+      @options = opts.index_by(&:key).transform_keys(&:to_sym)
     end
 
     def decide(key)

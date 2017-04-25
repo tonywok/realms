@@ -47,7 +47,7 @@ RSpec.describe Realms::Actions::AcquireCard do
       }.to change { game.active_turn.trade }.by(2).and \
            change { game.active_turn.combat }.by(1)
 
-      expect(game.current_choice.options).to have_key("acquire.explorer_0")
+      expect(game.current_choice.options).to have_key(:"acquire.explorer_0")
     end
   end
 end

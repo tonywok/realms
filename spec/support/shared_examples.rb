@@ -5,7 +5,7 @@ shared_examples "destroy_target_base" do
     end
 
     it "has no eligible attack.<base> targets" do
-      attack_targets = game.current_choice.options.except("attack.#{game.p2.name}").keys.select { |key| key =~ /attack/ }
+      attack_targets = game.current_choice.options.except(:"attack.#{game.p2.name}").keys.select { |key| key =~ /attack/ }
       expect(attack_targets).to be_empty
     end
   end

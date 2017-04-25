@@ -4,7 +4,7 @@ RSpec.describe Realms::Actions::Attack do
   let(:game) { Realms::Game.new }
   let(:combat) { 1 }
   let(:card) do
-    card = Realms::Cards::Viper.new(game.p1, index: 0)
+    card = Realms::Cards::Viper.new(game.p1, index: 10)
     card.definition = card.definition.clone.tap do |definition|
       definition.primary_abilities = [Realms::Abilities::Combat[combat]]
     end
