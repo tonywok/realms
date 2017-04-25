@@ -14,7 +14,7 @@ module Realms
       @player = player
       scouts = 8.times.map { |i| Cards::Scout.new(player, index: i) }
       vipers = 2.times.map { |i| Cards::Viper.new(player, index: i) }
-      @draw_pile = Zone.new(scouts + vipers)
+      @draw_pile = Zone.new((scouts + vipers).shuffle(random: player.game.rng))
       @discard_pile = Zone.new
       @hand = Zone.new
       @battlefield = Zone.new
