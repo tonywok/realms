@@ -24,11 +24,12 @@ RSpec.describe Realms::Cards::PortOfCall do
   describe "#scrap_ability" do
     include_examples "destroy_target_base" do
       before do
-        game.p1.deck.hand << card
         setup(game)
         game.start
         game.play(card)
-        expect { game.scrap_ability(card) }.to change { game.p1.deck.hand.length }.by(1)
+        expect {
+          game.scrap_ability(card)
+        }.to change { game.p1.deck.hand.length }.by(1)
       end
     end
   end

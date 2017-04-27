@@ -87,7 +87,7 @@ module Realms
       end
 
       attr_reader :key
-      attr_accessor :player, :definition
+      attr_accessor :owner, :definition
 
       delegate :type,
                :factions,
@@ -95,22 +95,27 @@ module Realms
                :defense,
                to: :definition
 
-      def initialize(player = Player::Unclaimed.instance, index: 0)
+      def initialize(owner, index: 0)
         @key = "#{self.class.to_s.demodulize.underscore}_#{index}".to_sym
-        @player = player
+        @owner = owner
         @definition = self.class.definition
       end
 
+      def zone
+        if_none = ->() { raise "card lost: #{card}" }
+        owner.zones.find(if_none) { |z| z.include?(self) }
+      end
+
       def primary_ability
-        definition.primary_ability.new(self, player.active_turn)
+        definition.primary_ability.new(self, owner.active_turn)
       end
 
       def ally_ability
-        definition.ally_ability.new(self, player.active_turn)
+        definition.ally_ability.new(self, owner.active_turn)
       end
 
       def scrap_ability
-        definition.scrap_ability.new(self, player.active_turn)
+        definition.scrap_ability.new(self, owner.active_turn)
       end
 
       def ally_factions
@@ -143,7 +148,7 @@ module Realms
 
       def ally_ability_activated?
         return false if factions.reject { |f| f == :unaligned }.empty?
-        (player.deck.battlefield - [self]).any? { |card| (card.ally_factions & factions).present? }
+        (owner.deck.battlefield - [self]).any? { |card| (card.ally_factions & factions).present? }
       end
 
       def inspect

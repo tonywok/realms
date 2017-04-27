@@ -11,8 +11,7 @@ module Realms
 
       def execute
         turn.trade -= card.cost
-        turn.trade_deck.trade_row.transfer!(card: card, to: active_player.discard_pile)
-        card.player = active_player
+        active_player.deck.acquire(card)
       end
     end
   end

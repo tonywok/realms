@@ -6,9 +6,8 @@ module Realms
       end
 
       def execute
-        card.player.deck.battlefield.delete(card)
+        active_player.deck.scrap(card)
         perform card.scrap_ability
-        card.player = Player::Unclaimed.instance
         # TODO: put explorers back
       end
     end

@@ -7,7 +7,7 @@ module Realms
 
       def execute
         choose(Choice.new(bases_in_play, optional: optional)) do |card|
-          player = card.player
+          player = card.owner
           player.deck.destroy(card)
         end
       end

@@ -5,7 +5,7 @@ RSpec.describe Realms::Deck do
   let(:deck) { described_class.new(game.p1) }
 
   describe "#cards" do
-    subject { deck.cards.map(&:key) }
+    subject { deck.draw_pile.map(&:key) }
     it do
       is_expected.to contain_exactly(
         :scout_0,
@@ -32,7 +32,7 @@ RSpec.describe Realms::Deck do
     end
 
     context "when given a card not in the hand" do
-      let(:card) { "whatever" }
+      let(:card) { Realms::Cards::Cutter.new(game.p1) }
       it { expect { deck.discard(card) }.to raise_error(Realms::InvalidTarget) }
     end
   end
@@ -94,7 +94,7 @@ RSpec.describe Realms::Deck do
     end
 
     context "when given a card not in the hand" do
-      let(:card) { "whatever" }
+      let(:card) { Realms::Cards::Cutter.new(game.p1) }
       it { expect { deck.play(card) }.to raise_error(Realms::InvalidTarget) }
     end
   end

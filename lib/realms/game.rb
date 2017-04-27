@@ -1,4 +1,5 @@
 require "realms/yielder"
+require "realms/zones"
 require "realms/player"
 require "realms/turn"
 require "realms/trade_deck"
@@ -9,10 +10,10 @@ module Realms
 
     def initialize(seed = Random.new_seed)
       @seed = seed
+      @trade_deck = TradeDeck.new(self)
       @p1 = Player.new(self, "frog")
       @p2 = Player.new(self, "bear")
       @players = [@p1, @p2]
-      @trade_deck = TradeDeck.new(self)
     end
 
     def rng

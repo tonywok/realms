@@ -5,7 +5,7 @@ RSpec.describe Realms::Cards::Card do
     before do
       class SomeCard < described_class; end
     end
-    let(:card) { SomeCard.new }
+    let(:card) { SomeCard.new("test") }
 
     include_examples "factions", []
     include_examples "cost", 0
@@ -18,7 +18,7 @@ RSpec.describe Realms::Cards::Card do
         faction :blob
       end
     end
-    let(:card) { SomeCard.new }
+    let(:card) { SomeCard.new("test") }
 
     include_examples "factions", :blob
     include_examples "cost", 1

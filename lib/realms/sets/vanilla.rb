@@ -4,19 +4,21 @@ module Realms
       include Cards
 
       def self.cards
-        @cards ||= []
+        @cards ||= {}
       end
 
       def self.card(klass, num)
-        num.times do |n|
-          self.cards << klass.new(index: n)
-        end
+        cards[klass] = num
       end
 
       attr_reader :cards
 
-      def initialize
-        @cards = self.class.cards.dup
+      def initialize(trade_deck)
+        @cards = self.class.cards.each_with_object([]) do |(klass, num), cards|
+          num.times do |i|
+            cards << klass.new(trade_deck, index: i)
+          end
+        end
       end
 
       # Machine Cult

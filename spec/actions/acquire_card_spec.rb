@@ -5,10 +5,11 @@ RSpec.describe Realms::Actions::AcquireCard do
 
   context "acquiring cards from the trade row" do
     let(:card) { Realms::Cards::Scout.new(game.p1, index: 10) }
+    let(:trade_row_card) { Realms::Cards::BlobFighter.new(game.trade_deck) }
 
     before do
       game.p1.deck.hand << card
-      game.trade_deck.trade_row = Realms::Zone.new(5.times.map { |i| Realms::Cards::BlobFighter.new(index: i) })
+      game.trade_deck.trade_row.cards[0] = trade_row_card
       game.start
     end
 
@@ -18,9 +19,8 @@ RSpec.describe Realms::Actions::AcquireCard do
       }.to change { game.active_turn.trade }.by(1)
 
       expect {
-        new_card = game.trade_deck.trade_row.first
-        game.acquire(new_card)
-        expect(new_card.player).to eq(game.p1)
+        game.acquire(trade_row_card)
+        expect(trade_row_card.owner).to eq(game.p1)
       }.to change { game.p1.deck.discard_pile.length }.by(1).and \
            change { game.trade_deck.trade_row.length }.by(0)
 
@@ -29,25 +29,29 @@ RSpec.describe Realms::Actions::AcquireCard do
   end
 
   context "when the turn doesn't have enough trade" do
-    before do
-      game.p1.deck.hand = Realms::Zone.new([
+    let(:trade_row_card) { Realms::Cards::BlobWheel.new(game.trade_deck) }
+    let(:cards_in_hand) do
+      [
         Realms::Cards::Scout.new(game.p1, index: 10),
         Realms::Cards::Scout.new(game.p1, index: 11),
         Realms::Cards::Viper.new(game.p1, index: 10),
-      ])
-      game.trade_deck.trade_row = Realms::Zone.new(5.times.map { |i| Realms::Cards::BlobWheel.new(index: i) })
+      ]
+    end
+
+    before do
+      cards_in_hand.each { |card| game.p1.deck.hand << card }
+      game.trade_deck.trade_row.cards[0] = trade_row_card
       game.start
     end
 
     it "only sees explorer as an option" do
       expect {
-        game.play(:scout_10)
-        game.play(:scout_11)
-        game.play(:viper_10)
+        cards_in_hand.each { |card| game.play(card) }
       }.to change { game.active_turn.trade }.by(2).and \
            change { game.active_turn.combat }.by(1)
 
       expect(game.current_choice.options).to have_key(:"acquire.explorer_0")
+      expect(game.current_choice.options.keys).to_not include(:"acquire.#{trade_row_card.key}")
     end
   end
 end

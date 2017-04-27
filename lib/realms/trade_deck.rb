@@ -2,32 +2,33 @@ require "realms/sets"
 
 module Realms
   class TradeDeck
+    attr_reader :game
     attr_accessor :draw_pile,
                   :scrap_heap,
                   :trade_row,
-                  :explorers
+                  :explorers,
+                  :zones
 
     delegate :include?,
       to: :trade_row
 
+    delegate :active_turn,
+      to: :game
+
     def initialize(game)
-      @draw_pile = Zone.new(Sets::Vanilla.new.cards)
-      @scrap_heap = Zone.new
-      @trade_row = Zone.new
-      @explorers = Zone.new(10.times.map { |i| Cards::Explorer.new(index: i) })
+      @game = game
+      @zones = [
+        @draw_pile = Zones::Zone.new(self, Sets::Vanilla.new(self).cards),
+        @scrap_heap = Zones::Zone.new(self),
+        @trade_row = Zones::TradeRow.new(self),
+        @explorers = Zones::Zone.new(self, 10.times.map { |i| Cards::Explorer.new(self, index: i) }),
+      ]
       draw_pile.shuffle!(random: game.rng)
       5.times { draw_pile.transfer!(to: trade_row) }
-      ZoneTransfer.subscribe(self)
     end
 
     def scrap(card)
       trade_row.transfer!(card: card, to: scrap_heap)
-    end
-
-    def zone_transfer(zt)
-      if zt.source == trade_row
-        draw_pile.transfer!(to: trade_row, pos: trade_row.index(zt.card))
-      end
     end
   end
 end

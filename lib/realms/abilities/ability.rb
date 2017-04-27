@@ -3,7 +3,7 @@ module Realms
     class Ability < Yielder
       attr_reader :card, :turn, :optional
 
-      delegate :active_player, to: :turn
+      delegate :active_player, :trade_deck, to: :turn
 
       def initialize(card, turn, optional: false)
         @card = card

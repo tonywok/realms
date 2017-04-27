@@ -1,7 +1,9 @@
 require "spec_helper"
 
 RSpec.describe Realms::Sets::Vanilla do
-  let(:set) { described_class.new }
+  let(:game) { Realms::Game.new }
+  let(:trade_deck) { game.trade_deck }
+  let(:set) { described_class.new(trade_deck) }
 
   it "has cards" do
     expect(set.cards).to_not be_empty
@@ -10,6 +12,6 @@ RSpec.describe Realms::Sets::Vanilla do
       :blob_fighter_1,
       :blob_fighter_2,
     ])
-    expect(Realms::Game.new.start.trade_deck.trade_row.cards).to_not be_empty
+    expect(trade_deck.trade_row.cards).to_not be_empty
   end
 end

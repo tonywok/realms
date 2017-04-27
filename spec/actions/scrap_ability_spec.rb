@@ -8,12 +8,12 @@ RSpec.describe Realms::Actions::ScrapAbility do
   before do
     game.p1.deck.battlefield << card
     game.start
-    game.scrap_ability(:explorer_0)
+    game.scrap_ability(card)
   end
 
   it do
-    expect(card.player).to eq(Realms::Player::Unclaimed.instance)
-    expect(game.p1.deck).to_not include(card)
+    expect(card.owner).to eq(game.trade_deck)
+    expect(card.zone).to eq(game.trade_deck.scrap_heap)
     expect(game.active_turn.combat).to eq(2)
   end
 end

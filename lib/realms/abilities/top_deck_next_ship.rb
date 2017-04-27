@@ -6,14 +6,12 @@ module Realms
       end
 
       def execute
-        ZoneTransfer.subscribe(self)
-      end
-
-      def zone_transfer(zt)
-        if zt.source == turn.trade_deck.trade_row && zt.card.ship?
-          zt.destination = active_player.deck.draw_pile
-          zt.position = 0
-          Wisper.unsubscribe(self)
+        trade_deck.trade_row.on(:before_card_removed) do |zt|
+          if zt.card.ship? && @once.nil?
+            zt.destination = active_player.deck.draw_pile
+            zt.destination_position = 0
+            @once = true # NOTE: hack since you can't unsubscribe?!
+          end
         end
       end
     end

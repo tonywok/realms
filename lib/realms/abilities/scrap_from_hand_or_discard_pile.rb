@@ -7,7 +7,7 @@ module Realms
 
       def execute
         choose(Choice.new(cards_in_hand_or_discard_pile, optional: optional)) do |card|
-          turn.trade_deck.scrap_heap << turn.active_player.deck.scrap(card)
+          active_player.deck.scrap(card)
         end
       end
 

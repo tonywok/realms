@@ -2,17 +2,13 @@ require "realms/deck"
 
 module Realms
   class Player
-    class Unclaimed
-      include Singleton
-    end
-
     attr_reader :game, :name, :deck, :upkeep
     attr_accessor :authority
 
     delegate :active_turn, :trade_deck,
       to: :game
 
-    delegate :draw_pile, :hand, :discard_pile, :battlefield,
+    delegate :draw_pile, :hand, :discard_pile, :battlefield, :zones,
       to: :deck
 
     def initialize(game, name)
@@ -34,3 +30,4 @@ module Realms
     end
   end
 end
+
