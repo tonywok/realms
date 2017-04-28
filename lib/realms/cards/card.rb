@@ -148,7 +148,7 @@ module Realms
 
       def ally_ability_activated?
         return false if factions.reject { |f| f == :unaligned }.empty?
-        (owner.deck.battlefield - [self]).any? { |card| (card.ally_factions & factions).present? }
+        (owner.deck.in_play - [self]).any? { |card| (card.ally_factions & factions).present? }
       end
 
       def inspect

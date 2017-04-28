@@ -6,7 +6,7 @@ RSpec.describe Realms::Actions::ScrapAbility do
   let(:action) { described_class.new(card) }
 
   before do
-    game.p1.deck.battlefield << card
+    game.p1.deck.in_play << card
     game.start
     game.scrap_ability(card)
   end

@@ -13,7 +13,7 @@ module Realms
       end
 
       def bases_in_play
-        all_bases = turn.active_player.deck.battlefield.select(&:base?)
+        all_bases = turn.active_player.deck.in_play.select(&:base?)
         all_bases.any?(&:outpost?) ? all_bases.select(&:outpost?) : all_bases
       end
     end

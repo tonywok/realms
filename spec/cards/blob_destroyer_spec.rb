@@ -29,7 +29,7 @@ RSpec.describe Realms::Cards::BlobDestroyer do
     it "you may destroy target base and/or and scrap a card in the trade row" do
       game.ally_ability(card)
       game.decide(:blob_wheel_0)
-      expect(game.p1.deck.battlefield).to_not include(ally_card)
+      expect(game.p1.deck.in_play).to_not include(ally_card)
       expect(game.p1.deck.discard_pile).to include(ally_card)
       trade_row_card = game.trade_deck.trade_row.sample
       game.decide(trade_row_card.key)

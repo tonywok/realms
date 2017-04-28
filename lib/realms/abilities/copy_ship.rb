@@ -16,7 +16,7 @@ module Realms
       end
 
       def ships
-        active_player.deck.battlefield.select(&:ship?)
+        active_player.deck.in_play.select(&:ship?)
       end
     end
   end

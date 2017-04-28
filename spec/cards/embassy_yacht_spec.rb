@@ -26,7 +26,7 @@ RSpec.describe Realms::Cards::EmbassyYacht do
     context "one base in play" do
       before do
         game.p1.deck.hand << card
-        game.p1.deck.battlefield << Realms::Cards::BlobWheel.new(game.p1)
+        game.p1.deck.in_play << Realms::Cards::BlobWheel.new(game.p1)
         game.start
       end
 
@@ -41,8 +41,8 @@ RSpec.describe Realms::Cards::EmbassyYacht do
     context "two bases in play" do
       before do
         game.p1.deck.hand << card
-        game.p1.deck.battlefield << Realms::Cards::BlobWheel.new(game.p1, index: 0)
-        game.p1.deck.battlefield << Realms::Cards::BlobWheel.new(game.p1, index: 1)
+        game.p1.deck.in_play << Realms::Cards::BlobWheel.new(game.p1, index: 0)
+        game.p1.deck.in_play << Realms::Cards::BlobWheel.new(game.p1, index: 1)
         game.start
       end
 

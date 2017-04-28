@@ -7,7 +7,7 @@ module Realms
 
       def execute
         # TODO this is not sufficient
-        num = turn.active_player.deck.battlefield.select(&:blob?).length
+        num = turn.active_player.deck.in_play.select(&:blob?).length
         turn.active_player.draw(num)
       end
     end

@@ -81,16 +81,16 @@ RSpec.describe Realms::Deck do
         expect { deck.draw }.to change { deck.hand.length }.by(0).and \
                                 change { deck.draw_pile.length }.by(0).and \
                                 change { deck.discard_pile.length }.by(0).and \
-                                change { deck.battlefield.length }.by(0)
+                                change { deck.in_play.length }.by(0)
       end
     end
   end
 
   describe "#play" do
-    it "moves a card from the hand to the battlefield" do
+    it "moves a card from the hand to the in_play" do
       5.times { deck.draw }
       expect { deck.play(deck.hand.first) }.to change { deck.hand.length }.by(-1).and \
-                                               change { deck.battlefield.length }.by(1)
+                                               change { deck.in_play.length }.by(1)
     end
 
     context "when given a card not in the hand" do

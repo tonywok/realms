@@ -14,7 +14,7 @@ shared_examples "destroy_target_base" do
     let(:base_card) { Realms::Cards::BlobWheel.new(game.p1) }
 
     def setup(game)
-      game.p1.deck.battlefield << base_card
+      game.p1.deck.in_play << base_card
       game.p1.deck.hand << card
     end
 
@@ -29,8 +29,8 @@ shared_examples "destroy_target_base" do
     let(:outpost_card) { Realms::Cards::BattleStation.new(game.p1) }
 
     def setup(game)
-      game.p1.deck.battlefield << base_card
-      game.p1.deck.battlefield << outpost_card
+      game.p1.deck.in_play << base_card
+      game.p1.deck.in_play << outpost_card
       game.p1.deck.hand << card
     end
 

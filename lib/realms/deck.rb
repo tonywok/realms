@@ -5,7 +5,7 @@ module Realms
     attr_accessor :draw_pile,
                   :hand,
                   :discard_pile,
-                  :battlefield,
+                  :in_play,
                   :player,
                   :zones,
                   :trade_row,
@@ -16,8 +16,8 @@ module Realms
       @zones = [
         @draw_pile = Zones::Zone.new(player, starting_deck),
         @discard_pile = Zones::Zone.new(player),
-        @hand = Zones::Zone.new(player),
-        @battlefield = Zones::Zone.new(player),
+        @hand = Zones::Hand.new(player),
+        @in_play = Zones::InPlay.new(player),
       ]
     end
 
@@ -26,11 +26,11 @@ module Realms
     end
 
     def play(card)
-      hand.transfer!(card: card, to: battlefield)
+      hand.transfer!(card: card, to: in_play)
     end
 
     def destroy(card)
-      battlefield.transfer!(card: card, to: discard_pile)
+      in_play.transfer!(card: card, to: discard_pile)
     end
 
     def acquire(card, zone: discard_pile, pos: 0)

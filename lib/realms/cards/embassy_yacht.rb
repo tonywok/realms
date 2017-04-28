@@ -2,7 +2,7 @@ module Realms
   module Abilities
     class DrawTwoCardsIfTwoBases < Ability
       def execute
-        active_player.draw(2) if active_player.deck.battlefield.count(&:base?) >= 2
+        active_player.draw(2) if active_player.deck.in_play.count(&:base?) >= 2
       end
     end
   end

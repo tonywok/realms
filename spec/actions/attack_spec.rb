@@ -38,7 +38,7 @@ RSpec.describe Realms::Actions::Attack do
     let(:base) { Realms::Cards::BlobWheel.new(game.p1) }
 
     before do
-      game.p2.deck.battlefield << base
+      game.p2.deck.in_play << base
       game.start
       game.play(card)
     end
@@ -93,7 +93,7 @@ RSpec.describe Realms::Actions::Attack do
     let(:base) { Realms::Cards::DefenseCenter.new(game.p1) }
 
     before do
-      game.p2.deck.battlefield << base
+      game.p2.deck.in_play << base
       game.start
       game.play(card)
     end
@@ -147,8 +147,8 @@ RSpec.describe Realms::Actions::Attack do
     let(:combat) { outpost.defense + outpost.defense + 1 }
 
     before do
-      game.p2.deck.battlefield << base
-      game.p2.deck.battlefield << outpost
+      game.p2.deck.in_play << base
+      game.p2.deck.in_play << outpost
       game.start
       game.play(card)
     end

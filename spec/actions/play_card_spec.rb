@@ -17,7 +17,7 @@ RSpec.describe Realms::Actions::PlayCard do
     expect {
       game.play(:scout_10)
     }.to change { game.active_player.deck.hand.length }.by(-1).and \
-         change { game.active_player.deck.battlefield.length }.by(1)
+         change { game.active_player.deck.in_play.length }.by(1)
     game.play(:scout_11)
     game.play(:scout_12)
     expect(game.active_turn.trade).to eq(3)

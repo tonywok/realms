@@ -4,7 +4,7 @@ module Realms
       def execute
         turn.trade = 0
         turn.combat = 0
-        deck.battlefield.select(&:ship?).each { |ship| deck.destroy(ship) }
+        deck.in_play.select(&:ship?).each { |ship| deck.destroy(ship) }
         deck.discard_hand
       end
 

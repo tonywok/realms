@@ -8,7 +8,7 @@ module Realms
     delegate :active_turn, :trade_deck,
       to: :game
 
-    delegate :draw_pile, :hand, :discard_pile, :battlefield, :zones,
+    delegate :draw_pile, :hand, :discard_pile, :in_play, :zones,
       to: :deck
 
     def initialize(game, name)
