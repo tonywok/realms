@@ -5,10 +5,10 @@ module Realms
         owner.draw_pile.transfer!(to: self, pos: zt.source_position)
       end
 
-      def actions(turn)
+      def actions
         cards.each_with_object([]) do |card, actions|
-          if turn.trade >= card.cost
-            actions << Actions::AcquireCard.new(turn, card)
+          if active_turn.trade >= card.cost
+            actions << Actions::AcquireCard.new(active_turn, card)
           end
         end
       end

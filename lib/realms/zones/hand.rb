@@ -1,8 +1,8 @@
 module Realms
   module Zones
     class Hand < Zone
-      def actions(turn)
-        cards.map { |card| Actions::PlayCard.new(turn, card) }
+      def actions
+        cards.map { |card| Actions::PlayCard.new(active_turn, card) }
       end
     end
   end

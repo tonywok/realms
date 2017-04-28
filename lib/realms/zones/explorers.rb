@@ -6,9 +6,9 @@ module Realms
         @cards = 10.times.map { |i| Cards::Explorer.new(owner, index: i) }
       end
 
-      def actions(turn)
-        return [] unless turn.trade >= Cards::Explorer.definition.cost
-        [Actions::AcquireCard.new(turn, cards.first)]
+      def actions
+        return [] unless active_turn.trade >= Cards::Explorer.definition.cost
+        [Actions::AcquireCard.new(active_turn, cards.first)]
       end
     end
   end

@@ -12,6 +12,9 @@ module Realms
         :insert, :concat, :second,
         to: :cards
 
+      delegate :active_turn,
+        to: :owner
+
       def <<(card)
         self.cards << card
       end
@@ -24,6 +27,10 @@ module Realms
         @owner = owner
         @cards = cards
         subscribe(self)
+      end
+
+      def actions
+        []
       end
 
       def transfer!(card: first, to:, pos: to.length)
