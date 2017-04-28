@@ -14,17 +14,17 @@ RSpec.describe Realms::Actions::AllyAbility do
     end
 
     it "triggers both cards" do
-      game.play(:blob_fighter_0)
-      expect(game.current_choice.options).to_not have_key(:blob_fighter_0)
+      game.play(card1)
+      expect(game.current_choice.options).to_not have_key(:"ally_ability.blob_fighter_0")
 
-      game.play(:battle_pod_0)
+      game.play(card2)
       game.decide(game.trade_deck.trade_row.sample.key)
 
-      expect { game.ally_ability(:blob_fighter_0) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)
-      expect { game.ally_ability(:battle_pod_0) }.to change { game.active_turn.combat }.by(2)
+      expect { game.ally_ability(card1) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)
+      expect { game.ally_ability(card2) }.to change { game.active_turn.combat }.by(2)
 
-      expect(game.current_choice.options).to_not have_key(:blob_fighter_0)
-      expect(game.current_choice.options).to_not have_key(:battle_pod_0)
+      expect(game.current_choice.options).to_not have_key(:"ally_ability.blob_fighter_0")
+      expect(game.current_choice.options).to_not have_key(:"ally_ability.battle_pod_0")
     end
   end
 
@@ -39,14 +39,14 @@ RSpec.describe Realms::Actions::AllyAbility do
     end
 
     it "triggers both cards once" do
-      game.play(:blob_fighter_0)
-      game.play(:blob_fighter_1)
+      game.play(card1)
+      game.play(card2)
 
-      expect { game.ally_ability(:blob_fighter_0) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)
-      expect { game.ally_ability(:blob_fighter_1) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)
+      expect { game.ally_ability(card1) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)
+      expect { game.ally_ability(card2) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)
 
-      expect(game.current_choice.options).to_not have_key(:blob_fighter_0)
-      expect(game.current_choice.options).to_not have_key(:blob_fighter_1)
+      expect(game.current_choice.options).to_not have_key(:"ally_ability.blob_fighter_0")
+      expect(game.current_choice.options).to_not have_key(:"ally_ability.blob_fighter_1")
     end
   end
 end
