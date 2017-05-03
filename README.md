@@ -1,6 +1,6 @@
 # Realms
 
-Star Realms is a spaceship combat deckbuilding game
+Star Realms is a spaceship combat deckbuilding game. To learn to play, read the rules over at [White Wizard Games](http://www.starrealms.com/learn-to-play/)
 
 I've created this to learn about and practice implementing strategic digital card games. If you're reading this and are also interested, shoot me an email.
 
