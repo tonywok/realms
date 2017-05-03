@@ -22,7 +22,11 @@ Or install it yourself as:
 
 ## Usage
 
-This article is a stub #7
+This article is a stub [#7](https://github.com/tonywok/realms/issues/7)
+
+### Web Client
+
+There is a web client, but it's still a WIP.
 
 ## Development
 
