@@ -54,6 +54,14 @@ module Realms
           return scrap_abilities.first unless scrap_abilities.many?
           Abilities::Multi[scrap_abilities]
         end
+
+        def initialize_copy(source)
+          super
+          @factions = source.factions.dup
+          @primary_abilities = source.primary_abilities.dup
+          @ally_abilities = source.ally_abilities.dup
+          @scrap_abilities = source.scrap_abilities.dup
+        end
       end
 
       include Equalizer.new(:key)
@@ -140,6 +148,10 @@ module Realms
 
       def blob?
         factions.include?(:blob)
+      end
+
+      def static?
+        definition.primary_abilities.any?(&:static?)
       end
 
       def ship?

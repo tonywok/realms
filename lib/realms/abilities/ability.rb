@@ -11,6 +11,10 @@ module Realms
         @optional = optional
       end
 
+      def self.static?
+        false
+      end
+
       class_attribute :arg, instance_predicate: false, instance_writer: false
 
       def self.[](arg)
