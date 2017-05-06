@@ -48,7 +48,8 @@ RSpec.describe Realms::Actions::Attack do
 
       it "can attack the base" do
         game.attack(base)
-        expect(game.p2.deck.discard_pile).to include(base)
+        expect(base.zone).to eq(game.p2.discard_pile)
+        expect(base.class).to eq(Realms::Cards::BlobWheel)
         expect(game.p2.authority).to eq(50)
         game.attack(game.p2)
         expect(game.p2.authority).to eq(49)

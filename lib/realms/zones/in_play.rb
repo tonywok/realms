@@ -48,6 +48,10 @@ module Realms
         cards.include?(card) || cards.map(&:card).include?(card)
       end
 
+      def remove(card)
+        super.card
+      end
+
       def actions
         return attack_actions if owner == active_turn.passive_player
         base_actions + ally_actions + scrap_actions
