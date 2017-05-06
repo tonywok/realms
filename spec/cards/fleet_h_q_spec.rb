@@ -42,7 +42,19 @@ RSpec.describe Realms::Cards::FleetHQ do
       expect { game.play(scout_2) }.to change { game.active_turn.combat }.by(1)
       expect { game.play(viper_1) }.to change { game.active_turn.combat }.by(2)
       expect(game.active_turn.combat).to eq(5)
+
+      expect(viper_0.definition.primary_abilities.map(&:key)).to eq([:combat])
+      expect(scout_0.definition.primary_abilities.map(&:key)).to eq([:trade])
+
+      expect(scout_1.definition.primary_abilities.map(&:key)).to eq([:trade, :combat])
+      expect(scout_2.definition.primary_abilities.map(&:key)).to eq([:trade, :combat])
+      expect(viper_1.definition.primary_abilities.map(&:key)).to eq([:combat, :combat])
+
       game.end_turn
+
+      expect(scout_1.definition.primary_abilities.map(&:key)).to eq([:trade])
+      expect(scout_2.definition.primary_abilities.map(&:key)).to eq([:trade])
+      expect(viper_1.definition.primary_abilities.map(&:key)).to eq([:combat])
     end
   end
 end
