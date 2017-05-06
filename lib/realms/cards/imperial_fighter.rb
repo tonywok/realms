@@ -1,7 +1,7 @@
 module Realms
   module Cards
     class ImperialFighter < Card
-      faction :star_empire
+      faction Factions::STAR_ALLIANCE
       cost 1
       primary_ability Abilities::Combat[2]
       primary_ability Abilities::Discard[1]

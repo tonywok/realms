@@ -3,7 +3,7 @@ module Realms
     class RecyclingStation < Card
       type :outpost
       defense 4
-      faction :star_empire
+      faction Factions::STAR_ALLIANCE
       cost 4
       primary_ability Abilities::Choose[
         Abilities::Trade[1],

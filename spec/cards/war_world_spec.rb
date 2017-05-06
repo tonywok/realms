@@ -6,7 +6,7 @@ RSpec.describe Realms::Cards::WarWorld do
 
   include_examples "type", :outpost
   include_examples "defense", 4
-  include_examples "factions", :star_empire
+  include_examples "factions", Realms::Cards::Card::Factions::STAR_ALLIANCE
   include_examples "cost", 5
 
   describe "#primary_ability" do

@@ -12,7 +12,14 @@ module Realms
           MACHINE_CULT = :machine_cult,
           STAR_ALLIANCE = :star_alliance,
         ]
+        UNALIGNED = :unaligned
+
+        def self.valid?(faction)
+          ALL.include?(faction) || faction == UNALIGNED
+        end
       end
+
+      class CardConfigurationError < StandardError; end
 
       class CardDefinition
         attr_accessor :type,
@@ -60,6 +67,7 @@ module Realms
       end
 
       def self.faction(faction)
+        raise CardConfigurationError, "invalid faction: #{faction}" unless Factions.valid?(faction)
         definition.factions << faction
       end
 
@@ -144,11 +152,6 @@ module Realms
 
       def outpost?
         type == :outpost
-      end
-
-      def ally_ability_activated?
-        return false if factions.reject { |f| f == :unaligned }.empty?
-        (owner.deck.in_play - [self]).any? { |card| (card.ally_factions & factions).present? }
       end
 
       def inspect
