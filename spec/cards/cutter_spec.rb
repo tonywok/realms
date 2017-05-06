@@ -29,6 +29,7 @@ RSpec.describe Realms::Cards::Cutter do
       game.p1.deck.hand << ally_card
       game.start
       game.play(card)
+      game.play(ally_card)
     end
 
     it { expect { game.ally_ability(card) }.to change { game.active_turn.combat }.by(4) }

@@ -102,7 +102,7 @@ module Realms
       end
 
       def zone
-        if_none = ->() { raise "card lost: #{card}" }
+        if_none = ->() { raise "card lost: #{self}" }
         owner.zones.find(if_none) { |z| z.include?(self) }
       end
 

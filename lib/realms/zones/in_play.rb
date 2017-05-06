@@ -1,23 +1,51 @@
 module Realms
   module Zones
-    class InPlay < Zone
-      attr_accessor :ally_abilities,
-                    :base_abilities
+    class CardInPlay
+      attr_reader :card
+      attr_accessor :ally_activated, :base_activated
 
-      def initialize(*args)
-        super
-        @ally_abilities = []
-        @base_abilities = []
+      delegate_missing_to :card
+
+      def initialize(card)
+        @card = card
+        reset!
       end
 
-      # TODO: The timing is going to be a little tricky here.
-      #
-      # 1) Keep track of used ally/base abilities (rm from turn state)
-      # 2) Keep track of when ally abilities are eligible for use
-      # 3) Hook for automatic execution of ally/passive abilities
-      def on_card_added(zt)
-        # self.ally_abilities << zt.card if card.ally_ability?
-        # self.base_abilities << zt.card if card.base?
+      def ally_activated?
+        ally_ability? && ally_activated
+      end
+
+      def base_activated?
+        base? && base_activated
+      end
+
+      def ally_ability
+        super.tap { self.ally_activated = false }
+      end
+
+      def base_ability
+        super.tap { self.base_actviated = false }
+      end
+
+      private
+
+      def reset!
+        self.ally_activated = true
+        self.base_activated = true
+      end
+    end
+
+    class InPlay < Zone
+      def insert(pos, card)
+        super(pos, CardInPlay.new(card))
+      end
+
+      def <<(card)
+        super(CardInPlay.new(card))
+      end
+
+      def include?(card)
+        cards.include?(card) || cards.map(&:card).include?(card)
       end
 
       def actions
@@ -28,16 +56,14 @@ module Realms
       private
 
       def base_actions
-        cards.each_with_object([]) do |card, actions|
-          if card.base? && active_turn.activated_base_ability.exclude?(card)
-            actions << Actions::BaseAbility.new(active_turn, card)
-          end
-        end
+        cards.select(&:base_activated?).map { |card| Actions::BaseAbility.new(active_turn, card) }
       end
 
       def ally_actions
         cards.each_with_object([]) do |card, actions|
-          if card.ally_ability? && active_turn.activated_ally_ability.exclude?(card)
+          next unless card.ally_activated?
+
+          if (cards - [card]).any? { |cip| (cip.factions & card.factions).present? }
             actions << Actions::AllyAbility.new(active_turn, card)
           end
         end
