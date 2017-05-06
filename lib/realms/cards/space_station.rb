@@ -3,7 +3,7 @@ module Realms
     class SpaceStation < Card
       type :outpost
       defense 4
-      faction :star_empire
+      faction Factions::STAR_ALLIANCE
       cost 4
       primary_ability Abilities::Combat[2]
       ally_ability Abilities::Combat[2]

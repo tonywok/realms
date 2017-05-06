@@ -3,7 +3,7 @@ module Realms
     class WarWorld < Card
       type :outpost
       defense 4
-      faction :star_empire
+      faction Factions::STAR_ALLIANCE
       cost 5
       primary_ability Abilities::Combat[3]
       ally_ability Abilities::Combat[4]

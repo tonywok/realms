@@ -7,7 +7,6 @@ module Realms
 
       def execute
         perform card.ally_ability
-        turn.activated_ally_ability << card
       end
     end
   end

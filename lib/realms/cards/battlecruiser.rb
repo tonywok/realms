@@ -1,7 +1,7 @@
 module Realms
   module Cards
     class Battlecruiser < Card
-      faction :star_empire
+      faction Factions::STAR_ALLIANCE
       cost 6
       primary_ability Abilities::Combat[5]
       primary_ability Abilities::Draw[1]

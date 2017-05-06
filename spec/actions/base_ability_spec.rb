@@ -8,11 +8,11 @@ RSpec.describe Realms::Actions::BaseAbility do
   before do
     game.p1.deck.in_play << card
     game.start
-    game.base_ability(:blob_wheel_0)
+    game.base_ability(card)
   end
 
   it do
     expect(game.active_turn.combat).to eq(1)
-    expect { game.base_ability(:blob_wheel_0) }.to raise_error(Realms::Choice::InvalidOption)
+    expect { game.base_ability(card) }.to raise_error(Realms::Choice::InvalidOption)
   end
 end

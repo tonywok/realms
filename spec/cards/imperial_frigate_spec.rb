@@ -4,7 +4,7 @@ RSpec.describe Realms::Cards::ImperialFrigate do
   let(:game) { Realms::Game.new }
   let(:card) { described_class.new(game.p1) }
 
-  include_examples "factions", :star_empire
+  include_examples "factions", Realms::Cards::Card::Factions::STAR_ALLIANCE
   include_examples "cost", 3
 
   describe "#primary_ability" do

@@ -18,7 +18,7 @@ RSpec.describe Realms::Cards::BrainWorld do
       before do
         game.p1.deck.hand.concat(Array.wrap(hand))
         game.p1.deck.discard_pile.concat(Array.wrap(discard_pile))
-        game.p1.deck.in_play.concat(Array.wrap(discard_pile))
+        game.p1.deck.in_play.concat(Array.wrap(in_play))
         game.start
         game.play(card)
         game.base_ability(card)

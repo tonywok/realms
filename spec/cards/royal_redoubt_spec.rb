@@ -6,7 +6,7 @@ RSpec.describe Realms::Cards::RoyalRedoubt do
 
   include_examples "type", :outpost
   include_examples "defense", 6
-  include_examples "factions", :star_empire
+  include_examples "factions", Realms::Cards::Card::Factions::STAR_ALLIANCE
   include_examples "cost", 6
 
   describe "#primary_ability" do

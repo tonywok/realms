@@ -7,7 +7,6 @@ module Realms
 
       def execute
         perform card.primary_ability
-        turn.activated_base_ability << card
       end
     end
   end

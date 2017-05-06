@@ -35,8 +35,8 @@ shared_examples "destroy_target_base" do
     end
 
     it "must choose the outpost card first" do
-      expect(game.current_choice.options).to have_value(outpost_card)
-      expect(game.current_choice.options).to_not have_value(base_card)
+      expect(game.current_choice.options).to have_key(outpost_card.key)
+      expect(game.current_choice.options).to_not have_key(base_card.key)
       game.decide(outpost_card.key)
       expect(game.p1.deck.discard_pile).to include(outpost_card)
     end

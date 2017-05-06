@@ -1,7 +1,7 @@
 module Realms
   module Cards
     class ImperialFrigate < Card
-      faction :star_empire
+      faction Factions::STAR_ALLIANCE
       cost 3
       primary_ability Abilities::Combat[4]
       primary_ability Abilities::Discard[1]
