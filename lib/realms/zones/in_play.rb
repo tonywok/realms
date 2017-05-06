@@ -23,8 +23,8 @@ module Realms
         super.tap { self.ally_activated = false }
       end
 
-      def base_ability
-        super.tap { self.base_actviated = false }
+      def primary_ability
+        super.tap { self.base_activated = false }
       end
 
       private
@@ -67,7 +67,7 @@ module Realms
         cards.each_with_object([]) do |card, actions|
           next unless card.ally_activated?
 
-          if (cards - [card]).any? { |cip| (cip.factions & card.factions).present? }
+          if (cards - [card]).any? { |cip| (cip.ally_factions & card.ally_factions).present? }
             actions << Actions::AllyAbility.new(active_turn, card)
           end
         end
