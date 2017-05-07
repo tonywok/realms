@@ -64,7 +64,7 @@ RSpec.describe Realms::Cards::BlobWorld do
           game.p1.deck.hand << blob_card
         end
 
-        it "draws 2" do
+        it "draws 1" do
           game.start
           game.play(card)
           game.base_ability(card)
@@ -73,8 +73,28 @@ RSpec.describe Realms::Cards::BlobWorld do
         end
       end
 
-      xcontext "already in play" do
-        it "only draws for blobs played this turn"
+      context "already in play" do
+        let(:blob_card) { Realms::Cards::BlobWheel.new(game.p1) }
+
+        before do
+          game.p1.deck.hand << blob_card
+        end
+
+        it "only draws for blobs played this turn" do
+          game.start
+          game.play(card)
+
+          game.end_turn # p2 turn
+          game.end_turn # p1 turn again
+
+          some_card = game.p1.hand.sample
+          game.p1.deck.hand << blob_card
+          game.play(some_card)
+          expect { game.play(blob_card) }.to change { game.p1.deck.hand.length }.by(-1)
+
+          game.base_ability(card)
+          expect { game.decide(:draw_for_each_blob_card_played_this_turn) }.to change { game.p1.deck.hand.length }.by(1)
+        end
       end
     end
   end

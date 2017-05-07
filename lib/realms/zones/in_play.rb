@@ -1,40 +1,5 @@
 module Realms
   module Zones
-    class CardInPlay
-      attr_reader :card
-      attr_accessor :ally_activated, :base_activated
-
-      delegate_missing_to :card
-
-      def initialize(card)
-        @card = card
-        reset!
-      end
-
-      def ally_activated?
-        ally_ability? && ally_activated
-      end
-
-      def base_activated?
-        base? && base_activated
-      end
-
-      def ally_ability
-        super.tap { self.ally_activated = false }
-      end
-
-      def primary_ability
-        super.tap { self.base_activated = false }
-      end
-
-      private
-
-      def reset!
-        self.ally_activated = true
-        self.base_activated = true
-      end
-    end
-
     class InPlay < Zone
       def insert(pos, card)
         super(pos, CardInPlay.new(card))
@@ -88,6 +53,44 @@ module Realms
           targets << Actions::Attack.new(active_turn, owner) if active_turn.combat.positive?
           targets
         end
+      end
+    end
+
+    class CardInPlay
+      attr_reader :card
+      attr_accessor :ally_activated, :base_activated, :played_this_turn
+
+      delegate_missing_to :card
+
+      def initialize(card)
+        @card = card
+        reset!(true)
+      end
+
+      def ally_activated?
+        ally_ability? && ally_activated
+      end
+
+      def base_activated?
+        base? && base_activated
+      end
+
+      def played_this_turn?
+        played_this_turn
+      end
+
+      def ally_ability
+        super.tap { self.ally_activated = false }
+      end
+
+      def primary_ability
+        super.tap { self.base_activated = false }
+      end
+
+      def reset!(first_time = false)
+        self.ally_activated = true
+        self.base_activated = true
+        self.played_this_turn = first_time
       end
     end
   end
