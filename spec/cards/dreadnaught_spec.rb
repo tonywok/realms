@@ -1,17 +1,11 @@
 require "spec_helper"
 
 RSpec.describe Realms::Cards::Dreadnaught do
-  let(:game) { Realms::Game.new }
-  let(:card) { described_class.new(game.p1) }
-
   include_examples "factions", Realms::Cards::Card::Factions::STAR_ALLIANCE
   include_examples "cost", 7
 
   describe "#primary_ability" do
-    before do
-      game.p1.deck.hand << card
-      game.start
-    end
+    include_context "primary_ability"
 
     it {
       expect {
@@ -22,11 +16,7 @@ RSpec.describe Realms::Cards::Dreadnaught do
   end
 
   describe "#scrap_ability" do
-    before do
-      game.p1.deck.hand << card
-      game.start
-      game.play(card)
-    end
+    include_context "scrap_ability"
     it { expect { game.scrap_ability(card) }.to change { game.active_turn.combat }.by(5) }
   end
 end

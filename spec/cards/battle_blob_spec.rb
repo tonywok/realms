@@ -8,15 +8,17 @@ RSpec.describe Realms::Cards::BattleBlob do
   include_examples "cost", 6
 
   describe "#primary_ability" do
-    before { card.primary_ability.execute }
-    it { expect(game.active_turn.combat).to eq(8) }
+    include_context "primary_ability"
+    it { expect { game.play(card) }.to change { game.active_turn.combat }.by(8) }
   end
 
   describe "#ally_ability" do
-    it { expect { card.ally_ability.execute }.to change { game.p1.deck.hand.length }.by(1) }
+    include_context "ally_ability", Realms::Cards::BlobFighter
+    it { expect { game.ally_ability(card) }.to change { game.p1.deck.hand.length }.by(1) }
   end
 
   describe "#scrap_ability" do
+    include_context "scrap_ability"
     it { expect { card.scrap_ability.execute }.to change { game.active_turn.combat }.by(4) }
   end
 end

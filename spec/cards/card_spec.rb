@@ -5,10 +5,14 @@ RSpec.describe Realms::Cards::Card do
     before do
       class SomeCard < described_class; end
     end
-    let(:card) { SomeCard.new("test") }
 
-    include_examples "factions", []
-    include_examples "cost", 0
+    include_examples "factions", [] do
+      let(:card) { SomeCard.new("test") }
+    end
+
+    include_examples "cost", 0 do
+      let(:card) { SomeCard.new("test") }
+    end
   end
 
   describe "overriding defaults" do
@@ -20,8 +24,12 @@ RSpec.describe Realms::Cards::Card do
     end
     let(:card) { SomeCard.new("test") }
 
-    include_examples "factions", :blob
-    include_examples "cost", 1
+    include_examples "factions", :blob do
+      let(:card) { SomeCard.new("test") }
+    end
+    include_examples "cost", 1 do
+      let(:card) { SomeCard.new("test") }
+    end
   end
 
   describe "shuffling" do

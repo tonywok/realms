@@ -1,9 +1,11 @@
 shared_examples "destroy_target_base" do
-  context "no bases in play" do
-    def setup(game)
-      game.p1.deck.hand << card
-    end
+  def setup; end
 
+  before do
+    setup
+  end
+
+  context "no bases in play" do
     it "has no eligible attack.<base> targets" do
       attack_targets = game.current_choice.options.except(:"attack.#{game.p2.name}").keys.select { |key| key =~ /attack/ }
       expect(attack_targets).to be_empty
@@ -13,9 +15,8 @@ shared_examples "destroy_target_base" do
   context "base in play" do
     let(:base_card) { Realms::Cards::BlobWheel.new(game.p1) }
 
-    def setup(game)
+    def setup
       game.p1.deck.in_play << base_card
-      game.p1.deck.hand << card
     end
 
     it {
@@ -28,10 +29,9 @@ shared_examples "destroy_target_base" do
     let(:base_card) { Realms::Cards::BlobWheel.new(game.p1) }
     let(:outpost_card) { Realms::Cards::BattleStation.new(game.p1) }
 
-    def setup(game)
+    def setup
       game.p1.deck.in_play << base_card
       game.p1.deck.in_play << outpost_card
-      game.p1.deck.hand << card
     end
 
     it "must choose the outpost card first" do
@@ -44,6 +44,13 @@ shared_examples "destroy_target_base" do
 end
 
 shared_examples "scrap_card_from_hand_or_discard_pile" do
+  let(:game) { Realms::Game.new }
+  let(:discarded_card) { Realms::Cards::Scout.new(game.p1, index: 42) }
+
+  before do
+    game.p1.discard_pile << discarded_card
+  end
+
   context "opting out of the scrap" do
     it {
       expect { game.decide(:none) }.to change { game.trade_deck.scrap_heap.length }.by(0)
@@ -59,7 +66,6 @@ shared_examples "scrap_card_from_hand_or_discard_pile" do
   end
 
   context "scrapping from discard pile" do
-    let(:discarded_card) { game.p1.deck.discard_pile.first }
     it {
       game.decide(discarded_card.key)
       expect(game.trade_deck.scrap_heap).to include(discarded_card)
@@ -68,6 +74,8 @@ shared_examples "scrap_card_from_hand_or_discard_pile" do
 end
 
 shared_examples "factions" do |factions|
+  let(:game) { Realms::Game.new }
+  let(:card) { described_class.new(game.p1) }
   describe "#factions" do
     subject { card.factions }
     it { is_expected.to contain_exactly(*factions) }
@@ -75,6 +83,8 @@ shared_examples "factions" do |factions|
 end
 
 shared_examples "cost" do |cost|
+  let(:game) { Realms::Game.new }
+  let(:card) { described_class.new(game.p1) }
   describe "#cost" do
     subject { card.cost }
     it { is_expected.to eq(cost) }
@@ -82,6 +92,8 @@ shared_examples "cost" do |cost|
 end
 
 shared_examples "type" do |type|
+  let(:game) { Realms::Game.new }
+  let(:card) { described_class.new(game.p1) }
   describe "#type" do
     subject { card.type }
     it { is_expected.to eq(type) }
@@ -89,8 +101,51 @@ shared_examples "type" do |type|
 end
 
 shared_examples "defense" do |defense|
-  describe "#type" do
+  let(:game) { Realms::Game.new }
+  let(:card) { described_class.new(game.p1) }
+  describe "#defense" do
     subject { card.defense }
     it { is_expected.to eq(defense) }
   end
 end
+
+RSpec.shared_context "primary_ability" do
+  let(:game) { Realms::Game.new }
+  let(:card) { described_class.new(game.p1, index: 42) }
+
+  before do
+    game.p1.deck.hand << card
+    game.start
+  end
+end
+
+RSpec.shared_context "base_ability" do
+  include_context "primary_ability"
+
+  before do
+    game.play(card)
+  end
+end
+
+RSpec.shared_context "scrap_ability" do
+  include_context "primary_ability"
+
+  before do
+    game.play(card)
+  end
+end
+
+RSpec.shared_context "ally_ability" do |ally_card_klass|
+  let(:game) { Realms::Game.new }
+  let(:card) { described_class.new(game.p1, index: 42) }
+  let(:ally) { ally_card_klass.new(game.p1) }
+
+  before do
+    game.p1.deck.hand << card
+    game.p1.deck.hand << ally
+    game.start
+    game.play(ally)
+    game.play(card)
+  end
+end
+

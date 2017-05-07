@@ -1,18 +1,11 @@
 require "spec_helper"
 
 RSpec.describe Realms::Cards::Battlecruiser do
-  let(:game) { Realms::Game.new }
-  let(:card) { described_class.new(game.p1) }
-
   include_examples "factions", Realms::Cards::Card::Factions::STAR_ALLIANCE
   include_examples "cost", 6
 
   describe "#primary_ability" do
-    before do
-      game.p1.deck.hand << card
-      game.start
-    end
-
+    include_context "primary_ability"
     it {
       expect {
         game.play(card)
@@ -22,16 +15,7 @@ RSpec.describe Realms::Cards::Battlecruiser do
   end
 
   describe "#ally_ability" do
-    let(:ally_card) { Realms::Cards::ImperialFighter.new(game.p1) }
-
-    before do
-      game.p1.deck.hand << card
-      game.p1.deck.hand << ally_card
-      game.start
-      game.play(ally_card)
-      game.play(card)
-    end
-
+    include_context "ally_ability", Realms::Cards::ImperialFighter
     it {
       game.ally_ability(card)
       game.end_turn
@@ -42,14 +26,11 @@ RSpec.describe Realms::Cards::Battlecruiser do
   end
 
   describe "#scrap_ability" do
+    include_context "scrap_ability"
+
     include_examples "destroy_target_base" do
       before do
-        setup(game)
-        game.start
-        game.play(card)
-        expect {
-          game.scrap_ability(card)
-        }.to change { game.p1.draw_pile.length }.by(-1)
+        expect { game.scrap_ability(card) }.to change { game.p1.draw_pile.length }.by(-1)
       end
     end
   end

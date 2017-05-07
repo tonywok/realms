@@ -1,20 +1,13 @@
 require "spec_helper"
 
 RSpec.describe Realms::Cards::EmbassyYacht do
-  let(:game) { Realms::Game.new }
-  let(:card) { described_class.new(game.p1) }
-
   include_examples "factions", :trade_federation
   include_examples "cost", 3
 
   describe "#primary_ability" do
-    before do
-      game.p1.deck.hand << card
-      game.start
-    end
+    include_context "primary_ability"
 
     context "no bases in play" do
-      before { game.start }
       it {
         expect {
           game.play(card)
@@ -25,9 +18,7 @@ RSpec.describe Realms::Cards::EmbassyYacht do
 
     context "one base in play" do
       before do
-        game.p1.deck.hand << card
         game.p1.deck.in_play << Realms::Cards::BlobWheel.new(game.p1)
-        game.start
       end
 
       it {
@@ -40,10 +31,8 @@ RSpec.describe Realms::Cards::EmbassyYacht do
 
     context "two bases in play" do
       before do
-        game.p1.deck.hand << card
         game.p1.deck.in_play << Realms::Cards::BlobWheel.new(game.p1, index: 0)
         game.p1.deck.in_play << Realms::Cards::BlobWheel.new(game.p1, index: 1)
-        game.start
       end
 
       it {
