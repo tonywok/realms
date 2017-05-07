@@ -34,7 +34,11 @@ module Realms
     end
 
     def acquire(card, zone: discard_pile, pos: 0)
-      trade_row.transfer!(card: card, to: zone, pos: pos)
+      if card.is_a?(Cards::Explorer)
+        explorers.transfer!(card: card, to: zone, pos: pos)
+      else
+        trade_row.transfer!(card: card, to: zone, pos: pos)
+      end
     end
 
     def scrap(card)
@@ -74,6 +78,10 @@ module Realms
     # TODO: zone registry for easier access
     def trade_row
       player.game.trade_deck.trade_row
+    end
+
+    def explorers
+      player.game.trade_deck.explorers
     end
 
     def scrap_heap

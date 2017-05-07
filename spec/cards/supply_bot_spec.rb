@@ -1,37 +1,29 @@
 require "spec_helper"
 
 RSpec.describe Realms::Cards::SupplyBot do
-  let(:game) { Realms::Game.new }
-  let(:card) { described_class.new(game.p1) }
-
   include_examples "factions", :machine_cult
   include_examples "cost", 3
 
   describe "#primary_ability" do
-    let(:another_card) { Realms::Cards::Scout.new(game.p1, index: 42) }
+    include_context "primary_ability"
 
-    before do
-      game.p1.deck.hand << card
-      game.p1.deck.discard_pile << another_card
-      game.start
-      game.play(card)
+    include_examples "scrap_card_from_hand_or_discard_pile" do
+      before do
+        expect {
+          game.play(card)
+        }.to change { game.active_turn.trade }.by(2)
+      end
     end
-
-    include_examples "scrap_card_from_hand_or_discard_pile"
   end
 
   describe "#ally_ability" do
-    let(:ally_card) { Realms::Cards::BattleStation.new(game.p1) }
+    include_context "ally_ability", Realms::Cards::BattleStation
 
-    before do
-      game.p1.deck.hand << card
-      game.p1.deck.hand << ally_card
-      game.start
-      game.play(ally_card)
-      game.play(card)
+    it {
       game.decide(:none)
-    end
-
-    it { expect { game.ally_ability(card) }.to change { game.active_turn.combat }.by(2) }
+      expect {
+        game.ally_ability(card)
+      }.to change { game.active_turn.combat }.by(2)
+    }
   end
 end

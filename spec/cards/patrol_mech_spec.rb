@@ -1,17 +1,12 @@
 require "spec_helper"
 
 RSpec.describe Realms::Cards::PatrolMech do
-  let(:game) { Realms::Game.new }
-  let(:card) { described_class.new(game.p1) }
-
   include_examples "factions", :machine_cult
   include_examples "cost", 4
 
   describe "#primary_ability" do
-    before do
-      game.p1.deck.hand << card
-      game.start
-      game.play(card)
+    include_context "primary_ability" do
+      before { game.play(card) }
     end
 
     context "trade" do
@@ -24,20 +19,13 @@ RSpec.describe Realms::Cards::PatrolMech do
   end
 
   describe "#ally_ability" do
-    let(:ally_card) { Realms::Cards::BattleStation.new(game.p1) }
-    let(:another_card) { Realms::Cards::Scout.new(game.p1, index: 42) }
+    include_context "ally_ability", Realms::Cards::BattleStation
 
-    before do
-      game.p1.deck.hand << card
-      game.p1.deck.hand << ally_card
-      game.p1.deck.discard_pile << another_card
-      game.start
-      game.play(ally_card)
-      game.play(card)
-      game.decide(:trade)
-      game.ally_ability(card)
+    include_examples "scrap_card_from_hand_or_discard_pile" do
+      before do
+        game.decide(:trade)
+        game.ally_ability(card)
+      end
     end
-
-    include_examples "scrap_card_from_hand_or_discard_pile"
   end
 end

@@ -1,20 +1,16 @@
 require "spec_helper"
 
 RSpec.describe Realms::Cards::RecyclingStation do
-  let(:game) { Realms::Game.new }
-  let(:card) { described_class.new(game.p1) }
-
   include_examples "type", :outpost
   include_examples "defense", 4
   include_examples "factions", Realms::Cards::Card::Factions::STAR_ALLIANCE
   include_examples "cost", 4
 
   describe "#primary_ability" do
-    before do
-      game.p1.deck.hand << card
-      game.start
-      game.play(card)
-      game.base_ability(card)
+    include_context "base_ability" do
+      before do
+        game.base_ability(card)
+      end
     end
 
     context "trade" do

@@ -1,19 +1,24 @@
 require "spec_helper"
 
 RSpec.describe Realms::Cards::Explorer do
-  let(:game) { Realms::Game.new.start }
-  let(:card) { described_class.new(game.p1) }
-
   include_examples "factions", :unaligned
   include_examples "cost", 2
 
   describe "#primary_ability" do
-    before { card.primary_ability.execute }
-    it { expect(game.active_turn.trade).to eq(2) }
+    include_context "primary_ability"
+    it {
+      expect {
+        game.play(card)
+      }.to change { game.active_turn.trade }.by(2)
+    }
   end
 
   describe "#scrap_ability" do
-    before { card.scrap_ability.execute }
-    it { expect(game.active_turn.combat).to eq(2) }
+    include_context "scrap_ability"
+    it {
+      expect {
+        game.scrap_ability(card)
+      }.to change { game.active_turn.combat }.by(2)
+    }
   end
 end

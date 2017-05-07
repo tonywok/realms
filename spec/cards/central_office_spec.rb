@@ -1,22 +1,17 @@
 require "spec_helper"
 
 RSpec.describe Realms::Cards::CentralOffice do
-  let(:game) { Realms::Game.new }
-  let(:card) { described_class.new(game.p1) }
-
   include_examples "type", :base
   include_examples "defense", 6
   include_examples "factions", :trade_federation
   include_examples "cost", 7
 
   describe "#primary_ability" do
-    let(:selected_card) { Realms::Cards::Cutter.new(index: 10) }
-
-    before do
-      game.p1.deck.hand << card
-      game.start
-      game.trade_deck.trade_row.cards[0] = selected_card
-      game.play(card)
+    include_context "base_ability" do
+      let(:selected_card) { Realms::Cards::Cutter.new(index: 10) }
+      before do
+        game.trade_deck.trade_row.cards[0] = selected_card
+      end
     end
 
     it {
@@ -31,15 +26,14 @@ RSpec.describe Realms::Cards::CentralOffice do
   end
 
   describe "#ally_ability" do
-    let(:selected_card) { Realms::Cards::Cutter.new(index: 10) }
-    let(:ally_card) { Realms::Cards::FederationShuttle.new(game.p1) }
+    include_context "base_ability" do
+      let(:selected_card) { Realms::Cards::Cutter.new(index: 10) }
+      let(:ally_card) { Realms::Cards::FederationShuttle.new(game.p1) }
 
-    before do
-      game.p1.deck.hand << ally_card
-      game.p1.deck.hand << card
-      game.start
-      game.trade_deck.trade_row.cards[0] = selected_card
-      game.play(card)
+      before do
+        game.p1.hand << ally_card
+        game.trade_deck.trade_row.cards[0] = selected_card
+      end
     end
 
     it {

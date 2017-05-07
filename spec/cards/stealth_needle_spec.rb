@@ -1,19 +1,19 @@
 require "spec_helper"
 
 RSpec.describe Realms::Cards::StealthNeedle do
-  let(:game) { Realms::Game.new }
-  let(:card) { described_class.new(game.p1) }
-
   include_examples "factions", :machine_cult
   include_examples "cost", 4
 
   describe "#primary_ability" do
-    context "no ships" do
-      before do
-        game.p1.deck.hand << card
-        game.start
-      end
+    let(:another_ship) { Realms::Cards::Cutter.new(game.p1) }
 
+    before do
+      game.p1.hand << another_ship
+    end
+
+    include_context "primary_ability"
+
+    context "no ships" do
       it "is just machine cult card with no abilities" do
         game.play(card)
         expect(card.factions).to contain_exactly(:machine_cult)
@@ -21,14 +21,6 @@ RSpec.describe Realms::Cards::StealthNeedle do
     end
 
     context "copying a ship" do
-      let(:another_ship) { Realms::Cards::Cutter.new(game.p1) }
-
-      before do
-        game.p1.deck.hand << another_ship
-        game.p1.deck.hand << card
-        game.start
-      end
-
       it "copies another ship played this turn" do
         expect {
           game.play(another_ship)

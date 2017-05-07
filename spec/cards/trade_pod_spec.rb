@@ -1,18 +1,24 @@
 require "spec_helper"
 
 RSpec.describe Realms::Cards::TradePod do
-  let(:game) { Realms::Game.new.start }
-  let(:card) { described_class.new(game.p1) }
-
   include_examples "factions", :blob
   include_examples "cost", 2
 
   describe "#primary_ability" do
-    before { card.primary_ability.execute }
-    it { expect(game.active_turn.trade).to eq(3) }
+    include_context "primary_ability"
+    it {
+      expect {
+        game.play(card)
+      }.to change { game.active_turn.trade }.by(3)
+    }
   end
 
   describe "#ally_ability" do
-    it { expect { card.ally_ability.execute }.to change { game.active_turn.combat }.by(2) }
+    include_context "ally_ability", Realms::Cards::BlobFighter
+    it {
+      expect {
+        game.ally_ability(card)
+      }.to change { game.active_turn.combat }.by(2)
+    }
   end
 end
