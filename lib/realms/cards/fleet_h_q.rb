@@ -10,17 +10,20 @@ module Realms
       end
 
       def execute
-        card.zone.on(:on_card_added) do |zt|
-          played_card = zt.card
+        card.owner.in_play.events.attach(self)
+      end
 
-          turn.on(:turn_end) { played_card.definition = played_card.class.definition }
-
-          if played_card.ship?
-            played_card.definition = played_card.definition.dup.tap do |defn|
-              defn.primary_abilities << Abilities::Combat[arg]
-            end
+      def on_card_added(event)
+        played_card = event.args.first.card
+        if played_card.ship?
+          played_card.definition = played_card.definition.dup.tap do |defn|
+            defn.primary_abilities << Abilities::Combat[arg]
           end
         end
+      end
+
+      def on_card_removed(event)
+        card.owner.in_play.events.detach(self)
       end
     end
   end

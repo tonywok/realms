@@ -3,8 +3,6 @@ require "realms/phases"
 
 module Realms
   class Turn < Yielder
-    include Wisper::Publisher
-
     @id = 0
 
     def self.next_id
@@ -32,7 +30,6 @@ module Realms
       perform Phases::Main.new(self)
       perform Phases::Discard.new(self)
       perform Phases::Draw.new(self)
-      broadcast(:turn_end)
     end
   end
 end

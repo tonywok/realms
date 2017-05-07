@@ -6,7 +6,8 @@ module Realms
       attr_accessor :owner, :cards
 
       include Enumerable
-      include Wisper::Publisher
+      include Brainguy::Observable
+      include Brainguy::Observer
 
       delegate :include?, :shuffle!, :empty?, :first, :last, :length, :sample, :delete, :remove, :index,
         :insert, :concat, :second,
@@ -26,7 +27,7 @@ module Realms
       def initialize(owner, cards = [])
         @owner = owner
         @cards = cards
-        subscribe(self)
+        events.attach(self)
       end
 
       def actions
@@ -35,10 +36,11 @@ module Realms
 
       def transfer!(card: first, to:, pos: to.length)
         zt = Transfer.new(card: card, source: self, destination: to, destination_position: pos)
-        broadcast(:before_card_removed, zt)
+
+        emit(:removing_card, zt)
         zt.transfer!
-        broadcast(:on_card_removed, zt)
-        to.send(:broadcast, :on_card_added, zt)
+        emit(:card_removed, zt)
+        to.send(:emit, :card_added, zt)
       end
 
       def remove(card)
