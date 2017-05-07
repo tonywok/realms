@@ -1,6 +1,8 @@
 module Realms
   module Abilities
     class Ability < Yielder
+      include Brainguy::Observer
+
       attr_reader :card, :turn, :optional
 
       delegate :active_player, :trade_deck, to: :turn

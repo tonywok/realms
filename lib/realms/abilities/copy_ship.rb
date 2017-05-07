@@ -7,7 +7,6 @@ module Realms
 
       def execute
         choose(Choice.new(ships)) do |ship|
-          turn.on(:turn_end) { card.definition = card.class.definition }
           card.definition = ship.definition.clone.tap do |definition|
             card.factions.each { |faction| definition.factions << faction }
           end

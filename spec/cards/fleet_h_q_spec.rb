@@ -55,6 +55,27 @@ RSpec.describe Realms::Cards::FleetHQ do
       expect(scout_1.definition.primary_abilities.map(&:key)).to eq([:trade])
       expect(scout_2.definition.primary_abilities.map(&:key)).to eq([:trade])
       expect(viper_1.definition.primary_abilities.map(&:key)).to eq([:combat])
+
+      # kill fleethq
+      #
+      dreadnaught = Realms::Cards::Dreadnaught.new(game.p2)
+      some_card = game.p2.hand.sample
+      game.p2.hand << dreadnaught
+      game.play(some_card)
+      expect {
+        game.play(dreadnaught)
+        game.scrap_ability(dreadnaught)
+      }.to change { game.active_turn.combat }.by(12)
+      game.attack(card)
+      expect(card.zone).to eq(game.p1.discard_pile)
+
+      game.end_turn
+
+      # Check to see that fleet hq isn't still active - this kinda sucks
+      #
+      some_card = game.p1.hand.sample
+      game.play(some_card)
+      expect(some_card.definition.primary_abilities.length).to eq(1)
     end
   end
 end

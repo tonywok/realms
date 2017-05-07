@@ -18,7 +18,8 @@ module Realms
       def transfer!
         raise InvalidTarget, card.key if !source.include?(card) || destination.include?(card)
         card.owner = destination.owner
-        destination.insert(destination_position, source.remove(card))
+        self.card = source.remove(card)
+        destination.insert(destination_position, card)
       end
     end
   end

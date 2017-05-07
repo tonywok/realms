@@ -1,8 +1,8 @@
 module Realms
   module Zones
     class TradeRow < Zone
-      def on_card_removed(zt)
-        owner.draw_pile.transfer!(to: self, pos: zt.source_position)
+      def on_card_removed(event)
+        owner.draw_pile.transfer!(to: self, pos: event.args.first.source_position)
       end
 
       def actions

@@ -1,6 +1,6 @@
 require "realms/version"
 require "active_support/all"
-require "wisper"
+require "brainguy"
 require "realms/game"
 
 module Realms
