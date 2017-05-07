@@ -24,9 +24,9 @@ Or install it yourself as:
 
 This article is a stub [#7](https://github.com/tonywok/realms/issues/7)
 
-### Web Client
+### Game Client & Server
 
-There is a web client, but it's still a WIP.
+At the moment, there is only a super minimal [game server and client](https://github.com/tonywok/realms-world)
 
 ## Development
 
