@@ -12,13 +12,13 @@ module Realms
       end
 
       def player_actions
-        [Actions::EndMainPhase.new(turn)] +
-          # TODO: roll these up to trade_deck and player
+        # TODO: roll these up to trade_deck and player
+        active_player.hand.actions +
           trade_deck.trade_row.actions +
-          trade_deck.explorers.actions +
-          active_player.hand.actions +
           active_player.in_play.actions +
-          passive_player.in_play.actions
+          passive_player.in_play.actions +
+          trade_deck.explorers.actions +
+          [Actions::EndMainPhase.new(turn)]
       end
     end
   end
