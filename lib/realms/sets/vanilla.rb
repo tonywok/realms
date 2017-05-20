@@ -46,7 +46,7 @@ module Realms
       card RecyclingStation, 2
       card WarWorld, 1
       card RoyalRedoubt, 1
-      # TODO: card FleetHQ, 1
+      card FleetHQ, 1
 
       # Trade Federation
       card FederationShuttle, 3
