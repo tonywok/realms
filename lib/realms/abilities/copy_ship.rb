@@ -15,7 +15,7 @@ module Realms
       end
 
       def ships
-        active_player.deck.in_play.select(&:ship?)
+        active_player.in_play.select(&:ship?).index_by(&:key).except(card.key).values
       end
     end
   end
