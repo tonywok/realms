@@ -28,6 +28,7 @@ RSpec.describe Realms::Cards::StealthNeedle do
              change { game.p1.authority }.by(4)
 
         game.play(card)
+        expect(game.current_choice.options.keys).to_not include(card.key)
 
         expect {
           game.decide(another_ship.key)
