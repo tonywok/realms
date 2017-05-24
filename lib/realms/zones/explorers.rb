@@ -1,9 +1,21 @@
 module Realms
   module Zones
     class Explorers < Zone
+      attr_reader :explorers
+
       def initialize(*args)
         super
-        @cards = 10.times.map { |i| Cards::Explorer.new(owner, index: i) }
+        @explorers = (0..Float::INFINITY).lazy.map do |i|
+          Cards::Explorer.new(owner, index: i)
+        end
+      end
+
+      def cards
+        [explorers.peek]
+      end
+
+      def remove(card)
+        explorers.next
       end
 
       def actions
