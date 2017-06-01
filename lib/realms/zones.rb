@@ -1,4 +1,5 @@
 require "realms/zones/zone"
+require "realms/zones/null"
 require "realms/zones/trade_row"
 require "realms/zones/explorers"
 require "realms/zones/hand"
