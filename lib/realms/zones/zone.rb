@@ -17,7 +17,7 @@ module Realms
         to: :owner
 
       def <<(card)
-        self.cards << card
+        null_zone.transfer!(card: card, to: self)
       end
 
       def each(&block)
@@ -45,6 +45,12 @@ module Realms
 
       def remove(card)
         cards.delete_at(cards.index(card) || cards.length)
+      end
+
+      private
+
+      def null_zone
+        @null_zone ||= Null.new(owner)
       end
     end
   end

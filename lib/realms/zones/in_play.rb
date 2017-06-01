@@ -1,20 +1,21 @@
 module Realms
   module Zones
     class InPlay < Zone
-      def insert(pos, card)
-        super(pos, CardInPlay.new(card))
+      attr_reader :in_play
+
+      def initialize(*args)
+        super
+        @cards = []
+        @in_play = {}
       end
 
-      def <<(card)
-        super(CardInPlay.new(card))
+      def on_card_added(event)
+        card = event.args.first.card
+        add_card(card)
       end
 
-      def include?(card)
-        cards.include?(card) || cards.map(&:card).include?(card)
-      end
-
-      def remove(card)
-        super.card
+      def on_card_removed(event)
+        @in_play.delete(event.args.first.card.key)
       end
 
       def actions
@@ -22,17 +23,25 @@ module Realms
         base_actions + ally_actions + scrap_actions
       end
 
+      def cards_in_play
+        in_play.values
+      end
+
       private
 
+      def add_card(card)
+        @in_play[card.key] = CardInPlay.new(card)
+      end
+
       def base_actions
-        cards.select(&:base_activated?).map { |card| Actions::BaseAbility.new(active_turn, card) }
+        cards_in_play.select(&:base_activated?).map { |card| Actions::BaseAbility.new(active_turn, card) }
       end
 
       def ally_actions
-        cards.each_with_object([]) do |card, actions|
+        cards_in_play.each_with_object([]) do |card, actions|
           next unless card.ally_activated?
 
-          if (cards - [card]).any? { |cip| (cip.ally_factions & card.ally_factions).present? }
+          if in_play.except(card.key).values.any? { |cip| (cip.ally_factions & card.ally_factions).present? }
             actions << Actions::AllyAbility.new(active_turn, card)
           end
         end

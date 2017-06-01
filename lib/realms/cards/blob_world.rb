@@ -6,7 +6,7 @@ module Realms
       end
 
       def execute
-        num = active_player.in_play.select { |c| c.played_this_turn? && c.blob? }.length
+        num = active_player.in_play.cards_in_play.count { |c| c.played_this_turn? && c.blob? }
         turn.active_player.draw(num)
       end
     end
