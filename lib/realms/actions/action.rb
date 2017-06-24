@@ -21,6 +21,10 @@ module Realms
         "#{self.class.key}.#{target.key}"
       end
 
+      def auto?
+        false
+      end
+
       def execute
       end
     end

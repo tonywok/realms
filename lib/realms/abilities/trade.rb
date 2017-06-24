@@ -5,6 +5,10 @@ module Realms
         :trade
       end
 
+      def self.auto?
+        true
+      end
+
       def execute
         turn.trade += arg
       end

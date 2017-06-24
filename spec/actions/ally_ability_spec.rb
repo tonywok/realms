@@ -17,11 +17,12 @@ RSpec.describe Realms::Actions::AllyAbility do
       game.play(card1)
       expect(game.current_choice.options).to_not have_key(:"ally_ability.blob_fighter_0")
 
-      game.play(card2)
-      game.decide(game.trade_deck.trade_row.sample.key)
+      expect {
+        game.play(card2)
+        game.decide(game.trade_deck.trade_row.sample.key)
+      }.to change { game.active_turn.combat }.by(6)
 
       expect { game.ally_ability(card1) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)
-      expect { game.ally_ability(card2) }.to change { game.active_turn.combat }.by(2)
 
       expect(game.current_choice.options).to_not have_key(:"ally_ability.blob_fighter_0")
       expect(game.current_choice.options).to_not have_key(:"ally_ability.battle_pod_0")

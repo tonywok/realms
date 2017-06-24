@@ -13,6 +13,10 @@ module Realms
         @optional = optional
       end
 
+      def self.auto?
+        false
+      end
+
       def self.static?
         false
       end

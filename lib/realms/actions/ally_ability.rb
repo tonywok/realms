@@ -5,6 +5,10 @@ module Realms
         :ally_ability
       end
 
+      def auto?
+        card.automatic_ally_ability?
+      end
+
       def execute
         perform card.ally_ability
       end

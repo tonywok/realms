@@ -5,6 +5,10 @@ module Realms
         :combat
       end
 
+      def self.auto?
+        true
+      end
+
       def execute
         turn.combat += arg
       end

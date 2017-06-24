@@ -15,11 +15,11 @@ RSpec.describe Realms::Cards::FederationShuttle do
   end
 
   describe "#ally_ability" do
-    include_context "ally_ability", Realms::Cards::Cutter
+    include_context "automatic_ally_ability", Realms::Cards::Cutter
 
     it {
       expect {
-        game.ally_ability(card)
+        game.play(card)
       }.to change { game.p1.authority }.by(4)
     }
   end

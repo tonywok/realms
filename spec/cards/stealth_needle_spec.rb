@@ -33,17 +33,10 @@ RSpec.describe Realms::Cards::StealthNeedle do
         expect {
           game.decide(another_ship.key)
         }.to change { game.active_turn.trade }.by(2).and \
-             change { game.p1.authority }.by(4)
+             change { game.p1.authority }.by(4).and \
+             change { game.active_turn.combat }.by(8)
 
         expect(card.factions).to contain_exactly(:trade_federation, :machine_cult)
-
-        expect {
-          game.ally_ability(another_ship)
-        }.to change { game.active_turn.combat }.by(4)
-
-        expect {
-          game.ally_ability(card)
-        }.to change { game.active_turn.combat }.by(4)
 
         game.end_turn
 
@@ -55,19 +48,26 @@ RSpec.describe Realms::Cards::StealthNeedle do
           another_stealth_needle = Realms::Cards::StealthNeedle.new(game.p1, index: 1)
           game.p1.hand << another_stealth_needle
 
-          expect { game.play(another_ship) }.to change { game.p1.authority }.by(4)
+          expect {
+            game.play(another_ship)
+          }.to change { game.p1.authority }.by(4).and \
+               change { game.active_turn.trade }.by(2)
 
           game.play(card)
-          expect { game.decide(another_ship.key) }.to change { game.p1.authority }.by(4)
-
-          game.play(another_stealth_needle)
-          expect { game.decide(card.key) }.to change { game.p1.authority }.by(4)
 
           expect {
-            game.ally_ability(another_ship)
-            game.ally_ability(card)
-            game.ally_ability(another_stealth_needle)
-          }.to change { game.active_turn.combat }.by(12)
+            game.decide(another_ship.key)
+          }.to change { game.p1.authority }.by(4).and \
+               change { game.active_turn.trade }.by(2)
+               change { game.active_turn.combat }.by(8)
+
+          game.play(another_stealth_needle)
+
+          expect {
+            game.decide(card.key)
+          }.to change { game.p1.authority }.by(4).and \
+               change { game.active_turn.trade }.by(2).and \
+               change { game.active_turn.combat }.by(4)
 
           game.end_turn
 

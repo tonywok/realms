@@ -149,3 +149,15 @@ RSpec.shared_context "ally_ability" do |ally_card_klass|
   end
 end
 
+RSpec.shared_context "automatic_ally_ability" do |ally_card_klass|
+  let(:game) { Realms::Game.new }
+  let(:card) { described_class.new(game.p1, index: 42) }
+  let(:ally) { ally_card_klass.new(game.p1) }
+
+  before do
+    game.p1.deck.hand << card
+    game.p1.deck.hand << ally
+    game.start
+    game.play(ally)
+  end
+end

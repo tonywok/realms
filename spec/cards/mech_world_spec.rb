@@ -7,10 +7,10 @@ RSpec.describe Realms::Cards::MechWorld do
   include_examples "cost", 5
 
   describe "#static_ability" do
-    include_context "ally_ability", Realms::Cards::Cutter
+    include_context "automatic_ally_ability", Realms::Cards::Cutter
 
     it "counts as an ally ability for all factions" do
-      expect { game.ally_ability(ally) }.to change { game.active_turn.combat }.by(4)
+      expect { game.play(card) }.to change { game.active_turn.combat }.by(4)
     end
   end
 end

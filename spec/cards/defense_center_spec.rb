@@ -23,8 +23,8 @@ RSpec.describe Realms::Cards::DefenseCenter do
   end
 
   describe "#ally_ability" do
-    include_context "ally_ability", Realms::Cards::FederationShuttle
-    it { expect { game.ally_ability(card) }.to change { game.active_turn.combat }.by(2) }
+    include_context "automatic_ally_ability", Realms::Cards::FederationShuttle
+    it { expect { game.play(card) }.to change { game.active_turn.combat }.by(2) }
   end
 end
 

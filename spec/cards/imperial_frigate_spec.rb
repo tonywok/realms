@@ -19,8 +19,8 @@ RSpec.describe Realms::Cards::ImperialFrigate do
   end
 
   describe "#ally_ability" do
-    include_context "ally_ability", Realms::Cards::ImperialFighter
-    it { expect { game.ally_ability(card) }.to change { game.active_turn.combat }.by(2) }
+    include_context "automatic_ally_ability", Realms::Cards::ImperialFighter
+    it { expect { game.play(card) }.to change { game.active_turn.combat }.by(8) }
   end
 
   describe "#scrap_ability" do

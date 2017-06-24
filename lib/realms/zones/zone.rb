@@ -47,6 +47,10 @@ module Realms
         cards.delete_at(cards.index(card) || cards.length)
       end
 
+      def inspect
+        "<#{self.class} cards=#{cards}>"
+      end
+
       private
 
       def null_zone
