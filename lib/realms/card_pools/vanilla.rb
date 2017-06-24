@@ -1,26 +1,8 @@
+require "realms/card_pools/card_pool"
+
 module Realms
-  module Sets
-    class Vanilla
-      include Cards
-
-      def self.cards
-        @cards ||= {}
-      end
-
-      def self.card(klass, num)
-        cards[klass] = num
-      end
-
-      attr_reader :cards
-
-      def initialize(trade_deck)
-        @cards = self.class.cards.each_with_object([]) do |(klass, num), cards|
-          num.times do |i|
-            cards << klass.new(trade_deck, index: i)
-          end
-        end
-      end
-
+  module CardPools
+    class Vanilla < CardPool
       # Machine Cult
       card TradeBot, 3
       card MissileBot, 3

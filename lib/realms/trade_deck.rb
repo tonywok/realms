@@ -1,4 +1,4 @@
-require "realms/sets"
+require "realms/card_pools"
 
 module Realms
   class TradeDeck
@@ -18,7 +18,7 @@ module Realms
     def initialize(game)
       @game = game
       @zones = [
-        @draw_pile = Zones::Zone.new(self, Sets::Vanilla.new(self).cards),
+        @draw_pile = Zones::Zone.new(self, CardPools::Vanilla.new(self).cards),
         @scrap_heap = Zones::Zone.new(self),
         @trade_row = Zones::TradeRow.new(self),
         @explorers = Zones::Explorers.new(self),

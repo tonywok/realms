@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Realms::Sets::Vanilla do
+RSpec.describe Realms::CardPools::Vanilla do
   let(:game) { Realms::Game.new }
   let(:trade_deck) { game.trade_deck }
   let(:set) { described_class.new(trade_deck) }
