@@ -31,7 +31,7 @@ Or install it yourself as:
 
 ## Usage
 
-I present to you, brave adventurer, the worlds dumbest StarRealms AI.
+I present to you, kind reader, the world's most uninteresting StarRealms game -- death by Viper.
 
 ```ruby
 game = Realms::Game.new
@@ -48,6 +48,8 @@ until game.over?
   game.end_turn
 end
 ```
+
+There's a very early game client and server under development [here](https://github.com/tonywok/realms-world).
 
 If you'd like to learn more about the underlying concepts and how to script the game, head over to the [wiki](https://github.com/tonywok/realms/wiki)
 
