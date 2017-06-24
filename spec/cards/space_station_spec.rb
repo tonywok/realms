@@ -7,13 +7,13 @@ RSpec.describe Realms::Cards::SpaceStation do
   include_examples "cost", 4
 
   describe "#primary_ability" do
-    include_context "base_ability"
-    it { expect { game.base_ability(card) }.to change { game.active_turn.combat }.by(2) }
+    include_context "primary_ability"
+    it { expect { game.play(card) }.to change { game.active_turn.combat }.by(2) }
   end
 
   describe "#ally_ability" do
     include_context "automatic_ally_ability", Realms::Cards::SurveyShip
-    it { expect { game.play(card) }.to change { game.active_turn.combat }.by(2) }
+    it { expect { game.play(card) }.to change { game.active_turn.combat }.by(4) }
   end
 
   describe "#scrap_ability" do
