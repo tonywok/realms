@@ -23,6 +23,10 @@ module Realms
         base_actions + ally_actions + scrap_actions
       end
 
+      def automatic_actions
+        actions.select(&:auto?)
+      end
+
       def cards_in_play
         in_play.values
       end

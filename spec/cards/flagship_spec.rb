@@ -16,7 +16,7 @@ RSpec.describe Realms::Cards::Flagship do
   end
 
   describe "#ally_ability" do
-    include_context "ally_ability", Realms::Cards::FederationShuttle
-    it { expect { game.ally_ability(card) }.to change { game.p1.authority }.by(5) }
+    include_context "automatic_ally_ability", Realms::Cards::FederationShuttle
+    it { expect { game.play(card) }.to change { game.p1.authority }.by(9) }
   end
 end

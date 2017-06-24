@@ -28,13 +28,13 @@ RSpec.describe Realms::Cards::BattlePod do
   end
 
   describe "#ally_ability" do
-    include_context "ally_ability", Realms::Cards::BlobFighter
+    include_context "automatic_ally_ability", Realms::Cards::BlobFighter
 
     it {
       expect {
+        game.play(card)
         game.decide(:none)
-        game.ally_ability(card)
-      }.to change { game.active_turn.combat }.by(2)
+      }.to change { game.active_turn.combat }.by(6)
     }
   end
 end

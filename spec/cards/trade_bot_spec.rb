@@ -17,12 +17,12 @@ RSpec.describe Realms::Cards::TradeBot do
   end
 
   describe "#ally_ability" do
-    include_context "ally_ability", Realms::Cards::BattleStation
+    include_context "automatic_ally_ability", Realms::Cards::BattleStation
 
     it {
-      game.decide(:none)
       expect {
-        game.ally_ability(card)
+        game.play(card)
+        game.decide(:none)
       }.to change { game.active_turn.combat }.by(2)
     }
   end

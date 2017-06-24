@@ -14,10 +14,10 @@ RSpec.describe Realms::Cards::TradePod do
   end
 
   describe "#ally_ability" do
-    include_context "ally_ability", Realms::Cards::BlobFighter
+    include_context "automatic_ally_ability", Realms::Cards::BlobFighter
     it {
       expect {
-        game.ally_ability(card)
+        game.play(card)
       }.to change { game.active_turn.combat }.by(2)
     }
   end

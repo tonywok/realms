@@ -146,6 +146,10 @@ module Realms
         definition.ally_abilities.any?
       end
 
+      def automatic_ally_ability?
+        definition.ally_abilities.any?(&:auto?)
+      end
+
       def blob?
         factions.include?(:blob)
       end

@@ -5,6 +5,10 @@ module Realms
         :authority
       end
 
+      def self.auto?
+        true
+      end
+
       def execute
         turn.active_player.authority += arg
       end
