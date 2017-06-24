@@ -7,12 +7,12 @@ RSpec.describe Realms::Cards::WarWorld do
   include_examples "cost", 5
 
   describe "#primary_ability" do
-    include_context "base_ability"
-    it { expect { game.base_ability(card) }.to change { game.active_turn.combat }.by(3) }
+    include_context "primary_ability"
+    it { expect { game.play(card) }.to change { game.active_turn.combat }.by(3) }
   end
 
   describe "#ally_ability" do
     include_context "automatic_ally_ability", Realms::Cards::SurveyShip
-    it { expect { game.play(card) }.to change { game.active_turn.combat }.by(4) }
+    it { expect { game.play(card) }.to change { game.active_turn.combat }.by(7) }
   end
 end
