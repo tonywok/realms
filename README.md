@@ -4,6 +4,15 @@ Star Realms is a spaceship combat deckbuilding game. To learn to play, read the 
 
 I've created this to learn about and practice implementing strategic digital card games. If you're reading this and are also interested, shoot me an email.
 
+## Table of Contents
+
+* [Installation](#installation)
+* [Usage](#usage)
+* [Development](#development)
+* [Contributing](#contributing)
+* [License](#license)
+* [Copyright](#copyright)
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -22,11 +31,25 @@ Or install it yourself as:
 
 ## Usage
 
-This article is a stub [#7](https://github.com/tonywok/realms/issues/7)
+I present to you, brave adventurer, the worlds dumbest StarRealms AI.
 
-### Game Client & Server
+```ruby
+game = Realms::Game.new
+game.start
 
-At the moment, there is only a super minimal [game server and client](https://github.com/tonywok/realms-world)
+until game.over?
+  hand = game.active_player.hand
+
+  until hand.empty?
+    game.play(hand.first)
+  end
+
+  game.attack(game.passive_player) if game.active_turn.combat.positive?
+  game.end_turn
+end
+```
+
+If you'd like to learn more about the underlying concepts and how to script the game, head over to the [wiki](https://github.com/tonywok/realms/wiki)
 
 ## Development
 
@@ -38,11 +61,10 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/tonywok/realms. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
-
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
 ## Copyright
 
-This is an implementation of the game Star Realms, which was created by [White Wizard Games](http://www.whitewizardgames.com). While the code conforms to the MIT license, any intellectual property falls under their copyright.
+This is an implementation of the game Star Realms, which was created by [White Wizard Games](http://www.whitewizardgames.com). While the code conforms to the MIT license, any intellectual property, of which I've made an effort to include none of, falls under their copyright.

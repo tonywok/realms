@@ -16,14 +16,14 @@ RSpec.describe Realms::Game do
       expect(p2.deck.hand.length).to eq(5)
 
       until game.over?
-        turn = game.active_turn
-        deck = turn.active_player.deck
+        hand = game.active_player.hand
 
-        until deck.hand.empty?
-          game.play(deck.hand.first)
+        until hand.empty?
+          game.play(hand.first)
         end
 
-        game.attack(turn.passive_player) if turn.combat.positive?
+        game.attack(game.passive_player) if game.active_turn.combat.positive?
+
         game.end_turn
       end
     end
