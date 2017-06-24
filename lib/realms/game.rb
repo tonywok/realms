@@ -8,6 +8,9 @@ module Realms
   class Game < Yielder
     attr_reader :p1, :p2, :players, :active_turn, :trade_deck, :seed
 
+    delegate :active_player, :passive_player,
+      to: :active_turn
+
     def initialize(seed = Random.new_seed)
       @seed = seed
       @trade_deck = TradeDeck.new(self)
@@ -38,10 +41,6 @@ module Realms
         perform @active_turn
         break if over?
       end
-    end
-
-    def active_player
-      active_turn.active_player
     end
 
     def play(key)
