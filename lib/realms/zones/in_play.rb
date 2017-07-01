@@ -10,8 +10,7 @@ module Realms
       end
 
       def on_card_added(event)
-        card = event.args.first.card
-        add_card(card)
+        add_card(event.args.first.card)
       end
 
       def on_card_removed(event)
@@ -23,12 +22,20 @@ module Realms
         base_actions + ally_actions + scrap_actions
       end
 
-      def automatic_actions
-        actions.select(&:auto?)
+      def execute
+        cards_in_play.each do |card|
+          perform(card.primary_ability) if card.auto_primary_available?
+          perform(card.ally_ability) if auto_ally_available?(card)
+        end
       end
 
       def cards_in_play
         in_play.values
+      end
+
+      def reset!(card)
+        card_in_play = in_play.fetch(card.key)
+        card_in_play.reset!
       end
 
       private
@@ -38,16 +45,12 @@ module Realms
       end
 
       def base_actions
-        cards_in_play.select(&:base_activated?).map { |card| Actions::BaseAbility.new(active_turn, card) }
+        cards_in_play.reject(&:primary_used?).map { |card| Actions::BaseAbility.new(active_turn, card) }
       end
 
       def ally_actions
         cards_in_play.each_with_object([]) do |card, actions|
-          next unless card.ally_activated?
-
-          if in_play.except(card.key).values.any? { |cip| (cip.ally_factions & card.ally_factions).present? }
-            actions << Actions::AllyAbility.new(active_turn, card)
-          end
+          actions << Actions::AllyAbility.new(active_turn, card) if ally_available?(card)
         end
       end
 
@@ -67,43 +70,58 @@ module Realms
           targets
         end
       end
+
+      def ally_available?(card)
+        return false unless card.ally_ability?
+        return false if card.ally_used
+        in_play.except(card.key).values.any? { |other| card.ally?(other) }
+      end
+
+      def auto_ally_available?(card)
+        card.automatic_ally_ability? && ally_available?(card)
+      end
     end
 
     class CardInPlay
       attr_reader :card
-      attr_accessor :ally_activated, :base_activated, :played_this_turn
+      attr_accessor :primary_used, :ally_used, :played_this_turn
 
       delegate_missing_to :card
 
       def initialize(card)
         @card = card
-        reset!(true)
+        @primary_used = false
+        @ally_used = false
+        @played_this_turn = true
       end
 
-      def ally_activated?
-        ally_ability? && ally_activated
+      alias_method :primary_used?, :primary_used
+      alias_method :ally_used?, :ally_used
+      # maybe make this private and ask the zone for cards played this turn
+      # then we wouldn't have to have CardInPlay exposed externally
+      alias_method :played_this_turn?, :played_this_turn
+
+      def primary_available?
+        !primary_used?
       end
 
-      def base_activated?
-        base? && base_activated
-      end
-
-      def played_this_turn?
-        played_this_turn
-      end
-
-      def ally_ability
-        super.tap { self.ally_activated = false }
+      def auto_primary_available?
+        return false if primary_used?
+        ship? ? true : automatic_primary_ability?
       end
 
       def primary_ability
-        super.tap { self.base_activated = false }
+        super.tap { self.primary_used = true }
       end
 
-      def reset!(first_time = false)
-        self.ally_activated = true
-        self.base_activated = true
-        self.played_this_turn = first_time
+      def ally_ability
+        super.tap { self.ally_used = true }
+      end
+
+      def reset!
+        self.primary_used = false
+        self.ally_used = false
+        self.played_this_turn = false if base?
       end
     end
   end

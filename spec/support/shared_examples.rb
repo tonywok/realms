@@ -13,7 +13,7 @@ shared_examples "destroy_target_base" do
   end
 
   context "base in play" do
-    let(:base_card) { Realms::Cards::BlobWheel.new(game.p1) }
+    let(:base_card) { Realms::Cards::BarterWorld.new(game.p1) }
 
     def setup
       game.p1.deck.in_play << base_card
@@ -26,7 +26,7 @@ shared_examples "destroy_target_base" do
   end
 
   context "both outpost and base in play" do
-    let(:base_card) { Realms::Cards::BlobWheel.new(game.p1) }
+    let(:base_card) { Realms::Cards::BarterWorld.new(game.p1) }
     let(:outpost_card) { Realms::Cards::BattleStation.new(game.p1) }
 
     def setup
@@ -138,7 +138,7 @@ end
 RSpec.shared_context "ally_ability" do |ally_card_klass|
   let(:game) { Realms::Game.new }
   let(:card) { described_class.new(game.p1, index: 42) }
-  let(:ally) { ally_card_klass.new(game.p1) }
+  let(:ally) { ally_card_klass.new(game.p1, index: 43) }
 
   before do
     game.p1.deck.hand << card
@@ -152,7 +152,7 @@ end
 RSpec.shared_context "automatic_ally_ability" do |ally_card_klass|
   let(:game) { Realms::Game.new }
   let(:card) { described_class.new(game.p1, index: 42) }
-  let(:ally) { ally_card_klass.new(game.p1) }
+  let(:ally) { ally_card_klass.new(game.p1, index: 43) }
 
   before do
     game.p1.deck.hand << card

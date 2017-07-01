@@ -7,10 +7,10 @@ RSpec.describe Realms::Cards::TheHive do
   include_examples "cost", 5
 
   describe "#primary_ability" do
-    include_context "base_ability"
+    include_context "primary_ability"
     it {
       expect {
-        game.base_ability(card)
+        game.play(card)
       }.to change { game.active_turn.combat }.by(3)
     }
   end

@@ -31,7 +31,7 @@ RSpec.describe Realms::Cards::StealthNeedle do
         expect(game.current_choice.options.keys).to_not include(card.key)
 
         expect {
-          game.decide(another_ship.key)
+          game.decide(another_ship)
         }.to change { game.active_turn.trade }.by(2).and \
              change { game.p1.authority }.by(4).and \
              change { game.active_turn.combat }.by(8)

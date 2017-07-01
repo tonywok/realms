@@ -7,7 +7,7 @@ RSpec.describe Realms::Cards::CentralOffice do
   include_examples "cost", 7
 
   describe "#primary_ability" do
-    include_context "base_ability" do
+    include_context "primary_ability" do
       let(:selected_card) { Realms::Cards::Cutter.new(index: 10) }
       before do
         game.trade_deck.trade_row.cards[0] = selected_card
@@ -16,7 +16,7 @@ RSpec.describe Realms::Cards::CentralOffice do
 
     it {
       expect {
-        game.base_ability(card)
+        game.play(card)
       }.to change { game.active_turn.trade }.by(2)
       trade_row_card = game.trade_deck.trade_row.first
       expect {
@@ -26,7 +26,7 @@ RSpec.describe Realms::Cards::CentralOffice do
   end
 
   describe "#ally_ability" do
-    include_context "base_ability" do
+    include_context "primary_ability" do
       let(:selected_card) { Realms::Cards::Cutter.new(index: 10) }
       let(:ally_card) { Realms::Cards::FederationShuttle.new(game.p1) }
 
@@ -37,7 +37,7 @@ RSpec.describe Realms::Cards::CentralOffice do
     end
 
     it {
-      expect { game.base_ability(card) }.to change { game.active_turn.trade }.by(2)
+      expect { game.play(card) }.to change { game.active_turn.trade }.by(2)
       trade_row_card = game.trade_deck.trade_row.first
       expect {
         game.acquire(trade_row_card)

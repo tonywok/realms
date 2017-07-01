@@ -7,9 +7,9 @@ RSpec.describe Realms::Cards::PortOfCall do
   include_examples "cost", 6
 
   describe "#primary_ability" do
-    include_context "base_ability"
+    include_context "primary_ability"
 
-    it { expect { game.base_ability(card) }.to change { game.active_turn.trade }.by(3) }
+    it { expect { game.play(card) }.to change { game.active_turn.trade }.by(3) }
   end
 
   describe "#scrap_ability" do

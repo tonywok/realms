@@ -43,6 +43,10 @@ module Realms
       end
     end
 
+    def decide(key)
+      super(safe(key))
+    end
+
     def play(key)
       decide("play.#{safe(key)}")
     end
