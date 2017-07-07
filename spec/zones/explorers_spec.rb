@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Realms::Actions::AcquireCard do
+RSpec.describe Realms::Zones::Explorers do
   let(:game) { Realms::Game.new }
   let(:hand) do
     Realms::Zones::Hand.new(game.p1, 100.times.map { |i| Realms::Cards::Scout.new(game.p1, index: 10 + i) })

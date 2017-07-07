@@ -174,6 +174,10 @@ module Realms
         type == :outpost
       end
 
+      def ally?(other)
+        (ally_factions & other.ally_factions).present?
+      end
+
       def inspect
         key
       end

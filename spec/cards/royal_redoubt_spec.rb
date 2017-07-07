@@ -7,8 +7,8 @@ RSpec.describe Realms::Cards::RoyalRedoubt do
   include_examples "cost", 6
 
   describe "#primary_ability" do
-    include_context "base_ability"
-    it { expect { game.base_ability(card) }.to change { game.active_turn.combat }.by(3) }
+    include_context "primary_ability"
+    it { expect { game.play(card) }.to change { game.active_turn.combat }.by(3) }
   end
 
   describe "#ally_ability" do
