@@ -10,13 +10,13 @@ RSpec.describe Realms::Cards::TradeEscort do
       expect {
         game.play(card)
       }.to change { game.active_turn.combat }.by(4).and \
-           change { game.p1.authority }.by(4)
+           change { game.active_player.authority }.by(4)
     }
   end
 
   describe "#ally_ability" do
     include_context "ally_ability", Realms::Cards::FederationShuttle
 
-    it { expect { game.ally_ability(card) }.to change { game.p1.deck.hand.length }.by(1) }
+    it { expect { game.ally_ability(card) }.to change { game.active_player.deck.hand.length }.by(1) }
   end
 end

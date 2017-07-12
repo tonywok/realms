@@ -5,7 +5,7 @@ RSpec.describe Realms::Actions::PlayCard do
 
   before do
     cards.each do |card|
-      game.p1.deck.hand << card
+      game.active_player.deck.hand << card
     end
     game.start
   end
@@ -13,9 +13,9 @@ RSpec.describe Realms::Actions::PlayCard do
   context "playing a card" do
     let(:cards) do
       [
-        Realms::Cards::Scout.new(game.p1, index: 10),
-        Realms::Cards::Scout.new(game.p1, index: 11),
-        Realms::Cards::Scout.new(game.p1, index: 12),
+        Realms::Cards::Scout.new(game.active_player, index: 10),
+        Realms::Cards::Scout.new(game.active_player, index: 11),
+        Realms::Cards::Scout.new(game.active_player, index: 12),
       ]
     end
 
@@ -33,8 +33,8 @@ RSpec.describe Realms::Actions::PlayCard do
   context "playing a card with an automatically performed ally ability" do
     let(:cards) do
       [
-        Realms::Cards::Corvette.new(game.p1, index: 0),
-        Realms::Cards::Corvette.new(game.p1, index: 1),
+        Realms::Cards::Corvette.new(game.active_player, index: 0),
+        Realms::Cards::Corvette.new(game.active_player, index: 1),
       ]
     end
 
@@ -53,8 +53,8 @@ RSpec.describe Realms::Actions::PlayCard do
   context "playing a card with manually performed ally ability" do
     let(:cards) do
       [
-        Realms::Cards::BlobFighter.new(game.p1, index: 0),
-        Realms::Cards::BlobFighter.new(game.p1, index: 1),
+        Realms::Cards::BlobFighter.new(game.active_player, index: 0),
+        Realms::Cards::BlobFighter.new(game.active_player, index: 1),
       ]
     end
 

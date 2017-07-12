@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe Realms::Deck do
   let(:game) { Realms::Game.new }
-  let(:deck) { described_class.new(game.p1) }
+  let(:deck) { described_class.new(game.active_player) }
 
   describe "#cards" do
     subject { deck.draw_pile.map(&:key) }
@@ -32,7 +32,7 @@ RSpec.describe Realms::Deck do
     end
 
     context "when given a card not in the hand" do
-      let(:card) { Realms::Cards::Cutter.new(game.p1) }
+      let(:card) { Realms::Cards::Cutter.new(game.active_player) }
       it { expect { deck.discard(card) }.to raise_error(Realms::InvalidTarget) }
     end
   end
@@ -94,7 +94,7 @@ RSpec.describe Realms::Deck do
     end
 
     context "when given a card not in the hand" do
-      let(:card) { Realms::Cards::Cutter.new(game.p1) }
+      let(:card) { Realms::Cards::Cutter.new(game.active_player) }
       it { expect { deck.play(card) }.to raise_error(Realms::InvalidTarget) }
     end
   end

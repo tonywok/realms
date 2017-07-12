@@ -10,7 +10,7 @@ RSpec.describe Realms::Cards::Cutter do
       expect {
         game.play(card)
       }.to change { game.active_turn.trade }.by(2).and \
-           change { game.p1.authority }.by(4)
+           change { game.active_player.authority }.by(4)
     }
   end
 

@@ -19,7 +19,7 @@ RSpec.describe Realms::Cards::PortOfCall do
       before do
         expect {
           game.scrap_ability(card)
-        }.to change { game.p1.deck.hand.length }.by(1)
+        }.to change { game.active_player.deck.hand.length }.by(1)
       end
     end
   end

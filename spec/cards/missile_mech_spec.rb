@@ -20,7 +20,7 @@ RSpec.describe Realms::Cards::MissileMech do
       game.decide(:none)
       expect {
         game.ally_ability(card)
-      }.to change { game.p1.deck.hand.length }.by(1)
+      }.to change { game.active_player.deck.hand.length }.by(1)
     }
   end
 end

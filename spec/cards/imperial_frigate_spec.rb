@@ -13,8 +13,8 @@ RSpec.describe Realms::Cards::ImperialFrigate do
       }.to change { game.active_turn.combat }.by(4)
       game.end_turn
       expect {
-        game.decide(game.p2.hand.sample.key)
-      }.to change { game.p2.hand.length }.by(-1)
+        game.decide(game.active_player.hand.sample)
+      }.to change { game.active_player.hand.length }.by(-1)
     }
   end
 
@@ -25,6 +25,6 @@ RSpec.describe Realms::Cards::ImperialFrigate do
 
   describe "#scrap_ability" do
     include_context "scrap_ability"
-    it { expect { game.scrap_ability(card) }.to change { game.p1.draw_pile.length }.by(-1) }
+    it { expect { game.scrap_ability(card) }.to change { game.active_player.draw_pile.length }.by(-1) }
   end
 end

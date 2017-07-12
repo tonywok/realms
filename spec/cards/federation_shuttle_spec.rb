@@ -20,7 +20,7 @@ RSpec.describe Realms::Cards::FederationShuttle do
     it {
       expect {
         game.play(card)
-      }.to change { game.p1.authority }.by(4)
+      }.to change { game.active_player.authority }.by(4)
     }
   end
 end

@@ -14,7 +14,7 @@ RSpec.describe Realms::Cards::TradingPost do
     end
 
     context "authority" do
-      it { expect { game.decide(:authority) }.to change { game.p1.authority }.by(1) }
+      it { expect { game.decide(:authority) }.to change { game.active_player.authority }.by(1) }
     end
 
     context "trade" do

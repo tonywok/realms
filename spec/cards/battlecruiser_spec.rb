@@ -10,7 +10,7 @@ RSpec.describe Realms::Cards::Battlecruiser do
       expect {
         game.play(card)
       }.to change { game.active_turn.combat }.by(5).and \
-           change { game.p1.draw_pile.length }.by(-1)
+           change { game.active_player.draw_pile.length }.by(-1)
     }
   end
 
@@ -20,8 +20,8 @@ RSpec.describe Realms::Cards::Battlecruiser do
       game.ally_ability(card)
       game.end_turn
       expect {
-        game.decide(game.p2.hand.sample.key)
-      }.to change { game.p2.hand.length }.by(-1)
+        game.decide(game.active_player.hand.sample.key)
+      }.to change { game.active_player.hand.length }.by(-1)
     }
   end
 
@@ -30,7 +30,7 @@ RSpec.describe Realms::Cards::Battlecruiser do
 
     include_examples "destroy_target_base" do
       before do
-        expect { game.scrap_ability(card) }.to change { game.p1.draw_pile.length }.by(-1)
+        expect { game.scrap_ability(card) }.to change { game.active_player.draw_pile.length }.by(-1)
       end
     end
   end

@@ -2,11 +2,11 @@ require "spec_helper"
 
 RSpec.describe Realms::Actions::ScrapAbility do
   let(:game) { Realms::Game.new }
-  let(:card) { Realms::Cards::Explorer.new(game.p1) }
+  let(:card) { Realms::Cards::Explorer.new(game.active_player) }
   let(:action) { described_class.new(card) }
 
   before do
-    game.p1.deck.in_play << card
+    game.active_player.deck.in_play << card
     game.start
     game.scrap_ability(card)
   end
