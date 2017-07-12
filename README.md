@@ -1,6 +1,8 @@
 # Realms
 
-Star Realms is a spaceship combat deckbuilding game. To learn to play, read the rules over at [White Wizard Games](http://www.starrealms.com/learn-to-play/)
+Star Realms is a spaceship combat deckbuilding game created by [White Wizard Games](http://www.whitewizardgames.com/). Very little of this will make sense if you've never played the game. So I'd suggest you head over to the [official rules]((http://www.starrealms.com/learn-to-play/) to get an idea of how the game is played.
+
+This gem is a generic implementation of the StarRealms game system. It can be used to simulate and script the playing of games.
 
 I've created this to learn about and practice implementing strategic digital card games. If you're reading this and are also interested, shoot me an email.
 
