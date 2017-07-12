@@ -10,18 +10,18 @@ RSpec.describe Realms::Cards::SurveyShip do
       expect {
         game.play(card)
       }.to change { game.active_turn.trade }.by(1).and \
-           change { game.p1.deck.draw_pile.length }.by(-1)
+           change { game.active_player.deck.draw_pile.length }.by(-1)
     }
   end
 
   describe "#scrap_ability" do
     include_context "scrap_ability"
     it {
+      game.scrap_ability(card)
+      game.end_turn
       expect {
-        game.scrap_ability(card)
-        game.end_turn
-        game.decide(game.p2.hand.sample.key)
-      }.to change { game.p2.hand.length }.by(-1)
+        game.decide(game.active_player.hand.sample)
+      }.to change { game.active_player.hand.length }.by(-1)
     }
   end
 end

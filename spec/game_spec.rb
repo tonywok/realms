@@ -2,8 +2,8 @@ require "spec_helper"
 
 RSpec.describe Realms::Game do
   let(:game) { described_class.new }
-  let(:p1) { game.p1 }
-  let(:p2) { game.p2 }
+  let(:p1) { game.active_player }
+  let(:p2) { game.passive_player }
 
   context "death by viper" do
     it "plays" do

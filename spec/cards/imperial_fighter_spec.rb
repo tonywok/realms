@@ -13,8 +13,8 @@ RSpec.describe Realms::Cards::ImperialFighter do
       }.to change { game.active_turn.combat }.by(2)
       game.end_turn
       expect {
-        game.decide(game.p2.hand.sample.key)
-      }.to change { game.p2.hand.length }.by(-1)
+        game.decide(game.active_player.hand.sample)
+      }.to change { game.active_player.hand.length }.by(-1)
     }
   end
 

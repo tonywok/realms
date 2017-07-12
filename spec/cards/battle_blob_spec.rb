@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe Realms::Cards::BattleBlob do
   let(:game) { Realms::Game.new.start }
-  let(:card) { described_class.new(game.p1) }
+  let(:card) { described_class.new(game.active_player) }
 
   include_examples "factions", :blob
   include_examples "cost", 6
@@ -14,7 +14,7 @@ RSpec.describe Realms::Cards::BattleBlob do
 
   describe "#ally_ability" do
     include_context "ally_ability", Realms::Cards::BlobFighter
-    it { expect { game.ally_ability(card) }.to change { game.p1.deck.hand.length }.by(1) }
+    it { expect { game.ally_ability(card) }.to change { game.active_player.deck.hand.length }.by(1) }
   end
 
   describe "#scrap_ability" do

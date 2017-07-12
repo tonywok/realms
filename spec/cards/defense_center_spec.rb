@@ -14,7 +14,7 @@ RSpec.describe Realms::Cards::DefenseCenter do
     end
 
     context "authority" do
-      it { expect { game.decide(:authority) }.to change { game.p1.authority }.by(3) }
+      it { expect { game.decide(:authority) }.to change { game.active_player.authority }.by(3) }
     end
 
     context "combat" do

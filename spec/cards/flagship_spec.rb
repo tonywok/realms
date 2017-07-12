@@ -11,12 +11,12 @@ RSpec.describe Realms::Cards::Flagship do
       expect {
         game.play(card)
       }.to change { game.active_turn.combat }.by(5).and \
-           change { game.p1.deck.draw_pile.length }.by(-1)
+           change { game.active_player.deck.draw_pile.length }.by(-1)
     }
   end
 
   describe "#ally_ability" do
     include_context "automatic_ally_ability", Realms::Cards::FederationShuttle
-    it { expect { game.play(card) }.to change { game.p1.authority }.by(9) }
+    it { expect { game.play(card) }.to change { game.active_player.authority }.by(9) }
   end
 end

@@ -11,7 +11,7 @@ RSpec.describe Realms::Cards::Dreadnaught do
       expect {
         game.play(card)
       }.to change { game.active_turn.combat }.by(7).and \
-           change { game.p1.draw_pile.length }.by(-1)
+           change { game.active_player.draw_pile.length }.by(-1)
     }
   end
 

@@ -11,7 +11,7 @@ RSpec.describe Realms::Cards::Corvette do
       expect {
         game.play(card)
       }.to change { game.active_turn.combat }.by(1).and \
-           change { game.p1.deck.draw_pile.length }.by(-1)
+           change { game.active_player.deck.draw_pile.length }.by(-1)
     }
   end
 

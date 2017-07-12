@@ -9,9 +9,9 @@ RSpec.describe Realms::Cards::CommandShip do
     it {
       expect {
         game.play(card)
-      }.to change { game.p1.authority }.by(4).and \
-           change { game.p1.active_turn.combat }.by(5).and \
-           change { game.p1.deck.draw_pile.length }.by(-2)
+      }.to change { game.active_player.authority }.by(4).and \
+           change { game.active_player.active_turn.combat }.by(5).and \
+           change { game.active_player.deck.draw_pile.length }.by(-2)
     }
   end
 

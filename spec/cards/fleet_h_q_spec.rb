@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe Realms::Cards::FleetHQ do
   let(:game) { Realms::Game.new }
-  let(:card) { described_class.new(game.p1) }
+  let(:card) { described_class.new(game.active_player) }
 
   include_examples "type", :base
   include_examples "defense", 8
@@ -12,14 +12,14 @@ RSpec.describe Realms::Cards::FleetHQ do
   # NOTE: http://www.starrealms.com/faq/
   #
   describe "#primary_ability" do
-    let(:viper_0) { Realms::Cards::Viper.new(game.p1, index: 10) }
-    let(:viper_1) { Realms::Cards::Viper.new(game.p1, index: 11) }
-    let(:scout_0) { Realms::Cards::Scout.new(game.p1, index: 10) }
-    let(:scout_1) { Realms::Cards::Scout.new(game.p1, index: 11) }
-    let(:scout_2) { Realms::Cards::Scout.new(game.p1, index: 12) }
+    let(:viper_0) { Realms::Cards::Viper.new(game.active_player, index: 10) }
+    let(:viper_1) { Realms::Cards::Viper.new(game.active_player, index: 11) }
+    let(:scout_0) { Realms::Cards::Scout.new(game.active_player, index: 10) }
+    let(:scout_1) { Realms::Cards::Scout.new(game.active_player, index: 11) }
+    let(:scout_2) { Realms::Cards::Scout.new(game.active_player, index: 12) }
 
     let(:hand) do
-      Realms::Zones::Hand.new(game.p1, [
+      Realms::Zones::Hand.new(game.active_player, [
         viper_0,
         viper_1,
         scout_0,
@@ -29,8 +29,8 @@ RSpec.describe Realms::Cards::FleetHQ do
     end
 
     before do
-      game.p1.deck.hand = hand
-      game.p1.hand << card
+      game.active_player.deck.hand = hand
+      game.active_player.hand << card
       game.start
     end
 
@@ -58,22 +58,22 @@ RSpec.describe Realms::Cards::FleetHQ do
 
       # kill fleethq
       #
-      dreadnaught = Realms::Cards::Dreadnaught.new(game.p2)
-      some_card = game.p2.hand.sample
-      game.p2.hand << dreadnaught
+      dreadnaught = Realms::Cards::Dreadnaught.new(game.active_player)
+      some_card = game.active_player.hand.sample
+      game.active_player.hand << dreadnaught
       game.play(some_card)
       expect {
         game.play(dreadnaught)
         game.scrap_ability(dreadnaught)
       }.to change { game.active_turn.combat }.by(12)
       game.attack(card)
-      expect(card.zone).to eq(game.p1.discard_pile)
+      expect(card.zone).to eq(game.passive_player.discard_pile)
 
       game.end_turn
 
       # Check to see that fleet hq isn't still active - this kinda sucks
       #
-      some_card = game.p1.hand.sample
+      some_card = game.active_player.hand.sample
       game.play(some_card)
       expect(some_card.definition.primary_abilities.length).to eq(1)
     end

@@ -18,7 +18,7 @@ RSpec.describe Realms::Cards::BlobFighter do
     it {
       expect {
         game.ally_ability(card)
-      }.to change { game.p1.hand.length }.by(1)
+      }.to change { game.active_player.hand.length }.by(1)
     }
   end
 end

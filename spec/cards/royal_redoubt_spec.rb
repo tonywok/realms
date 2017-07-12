@@ -17,8 +17,8 @@ RSpec.describe Realms::Cards::RoyalRedoubt do
       game.ally_ability(card)
       game.end_turn
       expect {
-        game.decide(game.p2.hand.sample.key)
-      }.to change { game.p2.hand.length }.by(-1)
+        game.decide(game.active_player.hand.sample)
+      }.to change { game.active_player.hand.length }.by(-1)
     }
   end
 end

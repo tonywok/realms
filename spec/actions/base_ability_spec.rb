@@ -5,11 +5,11 @@ RSpec.describe Realms::Actions::BaseAbility do
   let(:action) { described_class.new(card) }
 
   context "automatically triggered base abilities" do
-    let(:card) { Realms::Cards::BlobWheel.new(game.p1) }
+    let(:card) { Realms::Cards::BlobWheel.new(game.active_player) }
 
     context "playing a base" do
       before do
-        game.p1.deck.hand << card
+        game.active_player.deck.hand << card
         game.start
       end
 
@@ -34,11 +34,11 @@ RSpec.describe Realms::Actions::BaseAbility do
   end
 
   context "manually executed base abilities" do
-    let(:card) { Realms::Cards::TradingPost.new(game.p1) }
+    let(:card) { Realms::Cards::TradingPost.new(game.active_player) }
 
     context "playing a base" do
       before do
-        game.p1.deck.hand << card
+        game.active_player.deck.hand << card
         game.start
       end
 
@@ -53,7 +53,7 @@ RSpec.describe Realms::Actions::BaseAbility do
 
     context "a base in play" do
       before do
-        game.p1.deck.in_play << card
+        game.active_player.deck.in_play << card
         game.start
       end
 

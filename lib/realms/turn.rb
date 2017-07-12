@@ -1,28 +1,44 @@
-require "realms/choice"
 require "realms/phases"
 
 module Realms
   class Turn < Yielder
-    @id = 0
-
-    def self.next_id
-      @id+=1
-    end
-
     attr_reader :id,
                 :active_player,
                 :passive_player,
                 :trade_deck
+
     attr_accessor :trade,
                   :combat
 
-    def initialize(active_player, passive_player, trade_deck)
-      @id = self.class.next_id
+    def self.first(game)
+      active_player, passive_player = game.players.shuffle(random: game.rng)
+      active_player.draw(3)
+      passive_player.draw(5)
+
+      new(
+        id: 0,
+        active_player: active_player,
+        passive_player: passive_player,
+        trade_deck: game.trade_deck,
+      )
+    end
+
+    def initialize(id:, active_player:, passive_player:, trade_deck:)
+      @id = id
       @active_player = active_player
       @passive_player = passive_player
       @trade_deck = trade_deck
       @trade = 0
       @combat = 0
+    end
+
+    def next
+      self.class.new(
+        id: id + 1,
+        active_player: passive_player,
+        passive_player: active_player,
+        trade_deck: trade_deck,
+      )
     end
 
     def execute

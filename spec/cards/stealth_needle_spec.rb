@@ -5,10 +5,10 @@ RSpec.describe Realms::Cards::StealthNeedle do
   include_examples "cost", 4
 
   describe "#primary_ability" do
-    let(:another_ship) { Realms::Cards::Cutter.new(game.p1) }
+    let(:another_ship) { Realms::Cards::Cutter.new(game.active_player) }
 
     before do
-      game.p1.hand << another_ship
+      game.active_player.hand << another_ship
     end
 
     include_context "primary_ability"
@@ -25,7 +25,7 @@ RSpec.describe Realms::Cards::StealthNeedle do
         expect {
           game.play(another_ship)
         }.to change { game.active_turn.trade }.by(2).and \
-             change { game.p1.authority }.by(4)
+             change { game.active_player.authority }.by(4)
 
         game.play(card)
         expect(game.current_choice.options.keys).to_not include(card.key)
@@ -33,7 +33,7 @@ RSpec.describe Realms::Cards::StealthNeedle do
         expect {
           game.decide(another_ship)
         }.to change { game.active_turn.trade }.by(2).and \
-             change { game.p1.authority }.by(4).and \
+             change { game.active_player.authority }.by(4).and \
              change { game.active_turn.combat }.by(8)
 
         expect(card.factions).to contain_exactly(:trade_federation, :machine_cult)
@@ -45,19 +45,19 @@ RSpec.describe Realms::Cards::StealthNeedle do
 
       context "multiple stealth needles, why not" do
         it "can copy an already copied stealth needle" do
-          another_stealth_needle = Realms::Cards::StealthNeedle.new(game.p1, index: 1)
-          game.p1.hand << another_stealth_needle
+          another_stealth_needle = Realms::Cards::StealthNeedle.new(game.active_player, index: 1)
+          game.active_player.hand << another_stealth_needle
 
           expect {
             game.play(another_ship)
-          }.to change { game.p1.authority }.by(4).and \
+          }.to change { game.active_player.authority }.by(4).and \
                change { game.active_turn.trade }.by(2)
 
           game.play(card)
 
           expect {
             game.decide(another_ship.key)
-          }.to change { game.p1.authority }.by(4).and \
+          }.to change { game.active_player.authority }.by(4).and \
                change { game.active_turn.trade }.by(2)
                change { game.active_turn.combat }.by(8)
 
@@ -65,7 +65,7 @@ RSpec.describe Realms::Cards::StealthNeedle do
 
           expect {
             game.decide(card.key)
-          }.to change { game.p1.authority }.by(4).and \
+          }.to change { game.active_player.authority }.by(4).and \
                change { game.active_turn.trade }.by(2).and \
                change { game.active_turn.combat }.by(4)
 

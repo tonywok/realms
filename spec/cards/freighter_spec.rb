@@ -24,17 +24,17 @@ RSpec.describe Realms::Cards::Freighter do
       game.ally_ability(card)
       expect {
         game.acquire(selected_card_1)
-      }.to change { game.p1.deck.draw_pile.length }.by(1)
+      }.to change { game.active_player.deck.draw_pile.length }.by(1)
 
-      expect(game.p1.deck.draw_pile.first).to eq(selected_card_1)
-      expect(game.p1.deck.discard_pile).to_not include(selected_card_1)
+      expect(game.active_player.deck.draw_pile.first).to eq(selected_card_1)
+      expect(game.active_player.deck.discard_pile).to_not include(selected_card_1)
 
       expect {
         game.acquire(selected_card_2)
-      }.to change { game.p1.deck.discard_pile.length }.by(1)
+      }.to change { game.active_player.deck.discard_pile.length }.by(1)
 
-      expect(game.p1.deck.discard_pile.first).to eq(selected_card_2)
-      expect(game.p1.deck.draw_pile).to_not include(selected_card_2)
+      expect(game.active_player.deck.discard_pile.first).to eq(selected_card_2)
+      expect(game.active_player.deck.draw_pile).to_not include(selected_card_2)
     }
   end
 end

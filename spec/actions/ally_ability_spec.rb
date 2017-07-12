@@ -4,12 +4,12 @@ RSpec.describe Realms::Actions::AllyAbility do
   let(:game) { Realms::Game.new }
 
   context "when playing two different, same faction cards" do
-    let(:card1) { Realms::Cards::BlobFighter.new(game.p1) }
-    let(:card2) { Realms::Cards::BattlePod.new(game.p1) }
+    let(:card1) { Realms::Cards::BlobFighter.new(game.active_player) }
+    let(:card2) { Realms::Cards::BattlePod.new(game.active_player) }
 
     before do
-      game.p1.deck.hand << card1
-      game.p1.deck.hand << card2
+      game.active_player.deck.hand << card1
+      game.active_player.deck.hand << card2
       game.start
     end
 
@@ -30,12 +30,12 @@ RSpec.describe Realms::Actions::AllyAbility do
   end
 
   context "when playing two of the same card" do
-    let(:card1) { Realms::Cards::BlobFighter.new(game.p1, index: 0) }
-    let(:card2) { Realms::Cards::BlobFighter.new(game.p1, index: 1) }
+    let(:card1) { Realms::Cards::BlobFighter.new(game.active_player, index: 0) }
+    let(:card2) { Realms::Cards::BlobFighter.new(game.active_player, index: 1) }
 
     before do
-      game.p1.deck.hand << card1
-      game.p1.deck.hand << card2
+      game.active_player.deck.hand << card1
+      game.active_player.deck.hand << card2
       game.start
     end
 

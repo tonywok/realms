@@ -20,7 +20,7 @@ RSpec.describe Realms::Cards::TheHive do
     it {
       expect {
         game.ally_ability(card)
-      }.to change { game.p1.draw_pile.length }.by(-1)
+      }.to change { game.active_player.draw_pile.length }.by(-1)
     }
   end
 end
