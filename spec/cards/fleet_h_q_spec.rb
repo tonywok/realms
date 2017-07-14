@@ -12,11 +12,11 @@ RSpec.describe Realms::Cards::FleetHQ do
   # NOTE: http://www.starrealms.com/faq/
   #
   describe "#primary_ability" do
-    let(:viper_0) { Realms::Cards::Viper.new(game.active_player, index: 10) }
-    let(:viper_1) { Realms::Cards::Viper.new(game.active_player, index: 11) }
-    let(:scout_0) { Realms::Cards::Scout.new(game.active_player, index: 10) }
-    let(:scout_1) { Realms::Cards::Scout.new(game.active_player, index: 11) }
-    let(:scout_2) { Realms::Cards::Scout.new(game.active_player, index: 12) }
+    let(:viper_0) { game.active_player.viper }
+    let(:viper_1) { game.active_player.viper }
+    let(:scout_0) { game.active_player.scout }
+    let(:scout_1) { game.active_player.scout }
+    let(:scout_2) { game.active_player.scout }
 
     let(:hand) do
       Realms::Zones::Hand.new(game.active_player, [

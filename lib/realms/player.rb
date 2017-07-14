@@ -25,6 +25,14 @@ module Realms
       n.times { deck.draw }
     end
 
+    def scout
+      game.scout(self)
+    end
+
+    def viper
+      game.viper(self)
+    end
+
     def to_s
       @name
     end

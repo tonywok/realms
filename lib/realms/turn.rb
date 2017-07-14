@@ -12,9 +12,6 @@ module Realms
 
     def self.first(game)
       active_player, passive_player = game.players.shuffle(random: game.rng)
-      active_player.draw(3)
-      passive_player.draw(5)
-
       new(
         id: 0,
         active_player: active_player,

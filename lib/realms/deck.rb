@@ -70,8 +70,8 @@ module Realms
     private
 
     def starting_deck
-      scouts = 8.times.map { |i| Cards::Scout.new(player, index: i) }
-      vipers = 2.times.map { |i| Cards::Viper.new(player, index: i) }
+      scouts = 8.times.map { |i| player.scout }
+      vipers = 2.times.map { |i| player.viper }
       (scouts + vipers).shuffle(random: player.game.rng)
     end
 
