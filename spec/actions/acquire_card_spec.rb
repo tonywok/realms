@@ -4,7 +4,7 @@ RSpec.describe Realms::Actions::AcquireCard do
   let(:game) { Realms::Game.new }
 
   context "acquiring cards from the trade row" do
-    let(:card) { Realms::Cards::Scout.new(game.active_player, index: 10) }
+    let(:card) { game.active_player.scout }
     let(:trade_row_card) { Realms::Cards::BlobFighter.new(game.trade_deck) }
 
     before do
@@ -32,9 +32,9 @@ RSpec.describe Realms::Actions::AcquireCard do
     let(:trade_row_card) { Realms::Cards::BlobWheel.new(game.trade_deck) }
     let(:cards_in_hand) do
       [
-        Realms::Cards::Scout.new(game.active_player, index: 10),
-        Realms::Cards::Scout.new(game.active_player, index: 11),
-        Realms::Cards::Viper.new(game.active_player, index: 10),
+        game.active_player.scout,
+        game.active_player.scout,
+        game.active_player.viper,
       ]
     end
 

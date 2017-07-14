@@ -28,7 +28,7 @@ module Realms
     end
 
     def scrap(card)
-      trade_row.transfer!(card: card, to: scrap_heap)
+      card.zone.transfer!(card: card, to: scrap_heap)
     end
   end
 end

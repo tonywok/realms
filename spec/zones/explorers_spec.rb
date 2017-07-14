@@ -3,7 +3,7 @@ require "spec_helper"
 RSpec.describe Realms::Zones::Explorers do
   let(:game) { Realms::Game.new }
   let(:hand) do
-    Realms::Zones::Hand.new(game.active_player, 100.times.map { |i| Realms::Cards::Scout.new(game.active_player, index: 10 + i) })
+    Realms::Zones::Hand.new(game.active_player, 100.times.map { |i| game.active_player.scout })
   end
 
   before do

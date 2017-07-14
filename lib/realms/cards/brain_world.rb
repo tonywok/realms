@@ -7,9 +7,8 @@ module Realms
 
       def execute
         choose(MultiChoice.new(zones.flat_map(&:cards), count: arg)) do |cards|
-          cards.each do |card|
-            zone = zones.find { |z| z.include?(card) }
-            zone.transfer!(card: card, to: turn.trade_deck.scrap_heap)
+          cards.each do |selected_card|
+            turn.trade_deck.scrap(selected_card)
           end
           cards.length.times { active_player.draw_pile.transfer!(to: active_player.hand) }
         end

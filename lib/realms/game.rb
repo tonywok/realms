@@ -7,19 +7,25 @@ require "realms/trade_deck"
 
 module Realms
   class Game < Yielder
-    attr_reader :players, :active_turn, :trade_deck, :seed
+    attr_reader :players, :active_turn, :trade_deck, :seed, :p1, :p2, :starter_deck
 
     delegate :active_player, :passive_player,
       to: :active_turn
 
+    delegate :scout, :viper,
+      to: :starter_deck
+
     def initialize(seed = Random.new_seed)
       @seed = seed
       @trade_deck = TradeDeck.new(self)
+      @starter_deck = StarterDeck.new
       @players = [
         Player.new(self, "frog"),
-        Player.new(self, "bear")
+        Player.new(self, "bear"),
       ]
       @active_turn = Turn.first(self)
+      @p1 = active_turn.active_player
+      @p2 = active_turn.passive_player
     end
 
     def rng
@@ -27,6 +33,8 @@ module Realms
     end
 
     def start
+      active_player.draw(3)
+      passive_player.draw(5)
       next_choice
       self
     end
@@ -86,6 +94,23 @@ module Realms
 
     def next_turn
       @active_turn = @active_turn.next
+    end
+
+    class StarterDeck
+      attr_reader :scout_count, :viper_count
+
+      def initialize
+        @scout_count = 0
+        @viper_count = 0
+      end
+
+      def scout(player)
+        Cards::Scout.new(player, index: scout_count).tap { @scout_count += 1 }
+      end
+
+      def viper(player)
+        Cards::Viper.new(player, index: viper_count).tap { @viper_count += 1 }
+      end
     end
   end
 end

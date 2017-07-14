@@ -12,20 +12,16 @@ RSpec.describe Realms::Actions::PlayCard do
 
   context "playing a card" do
     let(:cards) do
-      [
-        Realms::Cards::Scout.new(game.active_player, index: 10),
-        Realms::Cards::Scout.new(game.active_player, index: 11),
-        Realms::Cards::Scout.new(game.active_player, index: 12),
-      ]
+      3.times.map { game.active_player.scout }
     end
 
     it do
       expect {
-        game.play(:scout_10)
+        game.play(cards[0])
       }.to change { game.active_player.deck.hand.length }.by(-1).and \
            change { game.active_player.deck.in_play.length }.by(1)
-      game.play(:scout_11)
-      game.play(:scout_12)
+      game.play(cards[1])
+      game.play(cards[2])
       expect(game.active_turn.trade).to eq(3)
     end
   end

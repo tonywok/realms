@@ -5,9 +5,10 @@ RSpec.describe Realms::Deck do
   let(:deck) { described_class.new(game.active_player) }
 
   describe "#cards" do
-    subject { deck.draw_pile.map(&:key) }
     it do
-      is_expected.to contain_exactly(
+      cards = game.active_player.draw_pile.map(&:key) +
+              game.passive_player.draw_pile.cards.map(&:key)
+      expect(cards).to contain_exactly(
         :scout_0,
         :scout_1,
         :scout_2,
@@ -16,8 +17,18 @@ RSpec.describe Realms::Deck do
         :scout_5,
         :scout_6,
         :scout_7,
+        :scout_8,
+        :scout_9,
+        :scout_10,
+        :scout_11,
+        :scout_12,
+        :scout_13,
+        :scout_14,
+        :scout_15,
         :viper_0,
         :viper_1,
+        :viper_2,
+        :viper_3
       )
     end
   end
