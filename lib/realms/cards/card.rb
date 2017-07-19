@@ -112,9 +112,13 @@ module Realms
                to: :definition
 
       def initialize(owner, index: 0)
-        @key = "#{self.class.to_s.demodulize.underscore}_#{index}".to_sym
+        @key = "#{name}_#{index}".to_sym
         @owner = owner
         @definition = self.class.definition
+      end
+
+      def name
+        self.class.to_s.demodulize.underscore
       end
 
       def zone
