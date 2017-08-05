@@ -28,6 +28,7 @@ module Realms
         @owner = owner
         @cards = cards
         events.attach(self)
+        events.attach(owner.game)
       end
 
       def actions

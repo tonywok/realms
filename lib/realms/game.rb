@@ -7,7 +7,7 @@ require "realms/trade_deck"
 
 module Realms
   class Game < Yielder
-    attr_reader :players, :active_turn, :trade_deck, :seed, :p1, :p2, :starter_deck
+    attr_reader :players, :active_turn, :turn_checkpoint, :trade_deck, :seed, :p1, :p2, :starter_deck
 
     delegate :active_player, :passive_player,
       to: :active_turn
@@ -15,8 +15,12 @@ module Realms
     delegate :scout, :viper,
       to: :starter_deck
 
-    def initialize(seed = Random.new_seed)
+    include Brainguy::Observable
+    include Brainguy::Observer
+
+    def initialize(seed: Random.new_seed, turn_checkpoint: 0)
       @seed = seed
+      @turn_checkpoint = turn_checkpoint
       @trade_deck = TradeDeck.new(self)
       @starter_deck = StarterDeck.new
       @players = [
@@ -26,6 +30,12 @@ module Realms
       @active_turn = Turn.first(self)
       @p1 = active_turn.active_player
       @p2 = active_turn.passive_player
+    end
+
+    def on_card_removed(event)
+      if active_turn && active_turn.id >= turn_checkpoint
+        emit(:card_moved, event.args[0])
+      end
     end
 
     def rng

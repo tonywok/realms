@@ -5,6 +5,36 @@ RSpec.describe Realms::Game do
   let(:p1) { game.active_player }
   let(:p2) { game.passive_player }
 
+  context "observing non player happenings" do
+    it "can be subscribed to" do
+      zts = []
+      game.on(:card_moved) do |zt|
+        zts << zt
+      end
+      game.start
+      expect(zts.length).to eq(8)
+    end
+  end
+
+  context "replaying card movement" do
+    let(:game) { described_class.new(turn_checkpoint: 2) }
+
+    it "only broadcasts card movements for the latest turn" do
+      zts = []
+      game.on(:card_moved) do |zt|
+        zts << zt
+      end
+      game.start
+      game.end_turn
+      game.end_turn
+      expect(zts.length).to eq(0)
+      game.play(game.active_player.hand.sample)
+      expect(zts.length).to eq(1)
+      game.play(game.active_player.hand.sample)
+      expect(zts.length).to eq(2)
+    end
+  end
+
   context "death by viper" do
     it "plays" do
       game.start
@@ -31,7 +61,7 @@ RSpec.describe Realms::Game do
 
   describe 'Game 1 test' do
     let(:seed) { 309599894551866961338950272150965224107 }
-    let(:game) { described_class.new(seed) }
+    let(:game) { described_class.new(seed: seed) }
     it 'plays successfully' do
       game.start
       game.play(:scout_12)

@@ -8,9 +8,9 @@ RSpec.describe Realms::TradeDeck do
     let(:seed) { Random.new_seed }
 
     it "generates the same trade row" do
-      g1 = Realms::Game.new(seed)
+      g1 = Realms::Game.new(seed: seed)
       10.times.map do
-        gn = Realms::Game.new(seed)
+        gn = Realms::Game.new(seed: seed)
         cards = gn.trade_deck.trade_row.cards
 
         expect(g1.seed).to eq(gn.seed)
