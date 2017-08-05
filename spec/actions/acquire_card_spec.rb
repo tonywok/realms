@@ -5,7 +5,7 @@ RSpec.describe Realms::Actions::AcquireCard do
 
   context "acquiring cards from the trade row" do
     let(:card) { game.active_player.scout }
-    let(:trade_row_card) { Realms::Cards::BlobFighter.new(game.trade_deck) }
+    let(:trade_row_card) { Realms::Cards::BlobFighter.new(game.trade_deck, index: 10) }
 
     before do
       game.active_player.deck.hand << card
