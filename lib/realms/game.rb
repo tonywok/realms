@@ -33,9 +33,7 @@ module Realms
     end
 
     def on_card_removed(event)
-      if active_turn && active_turn.id >= turn_checkpoint
-        emit(:card_moved, event.args[0])
-      end
+      emit(:card_moved, event.args[0])
     end
 
     def rng

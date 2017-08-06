@@ -18,13 +18,17 @@ module Realms
     def initialize(game)
       @game = game
       @zones = [
-        @draw_pile = Zones::Zone.new(self, CardPools::Vanilla.new(self).cards),
-        @scrap_heap = Zones::Zone.new(self),
+        @draw_pile = Zones::DrawPile.new(self, CardPools::Vanilla.new(self).cards),
+        @scrap_heap = Zones::ScrapHeap.new(self),
         @trade_row = Zones::TradeRow.new(self),
         @explorers = Zones::Explorers.new(self),
       ]
       draw_pile.shuffle!(random: game.rng)
       5.times { draw_pile.transfer!(to: trade_row) }
+    end
+
+    def key
+      "trade_deck"
     end
 
     def scrap(card)

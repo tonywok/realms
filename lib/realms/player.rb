@@ -11,9 +11,8 @@ module Realms
     delegate :draw_pile, :hand, :discard_pile, :in_play, :zones,
       to: :deck
 
-    def initialize(game, name)
+    def initialize(game)
       @game = game
-      @name = name
       @authority = 50
       @deck = Deck.new(self)
       @upkeep = []

@@ -14,7 +14,7 @@ module Realms
     def initialize(player)
       @player = player
       @zones = [
-        @draw_pile = Zones::Zone.new(player, starting_deck),
+        @draw_pile = Zones::DrawPile.new(player, starting_deck),
         @discard_pile = Zones::DiscardPile.new(player),
         @hand = Zones::Hand.new(player),
         @in_play = Zones::InPlay.new(player),

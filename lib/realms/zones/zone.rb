@@ -31,6 +31,10 @@ module Realms
         events.attach(owner.game)
       end
 
+      def key
+        [owner.key, self.class.to_s.demodulize.underscore].join(".")
+      end
+
       def actions
         []
       end
