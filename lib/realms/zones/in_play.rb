@@ -45,7 +45,7 @@ module Realms
       end
 
       def base_actions
-        cards_in_play.reject(&:primary_used?).map { |card| Actions::BaseAbility.new(active_turn, card) }
+        cards_in_play.select(&:primary_available?).map { |card| Actions::BaseAbility.new(active_turn, card) }
       end
 
       def ally_actions
@@ -102,6 +102,7 @@ module Realms
       alias_method :played_this_turn?, :played_this_turn
 
       def primary_available?
+        return false unless primary_ability?
         !primary_used?
       end
 

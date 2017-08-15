@@ -142,6 +142,10 @@ module Realms
         factions
       end
 
+      def primary_ability?
+        definition.primary_abilities.any?
+      end
+
       def scrap_ability?
         definition.scrap_abilities.any?
       end

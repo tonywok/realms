@@ -11,6 +11,7 @@ RSpec.describe Realms::Cards::MechWorld do
 
     it "counts as an ally ability for all factions" do
       expect { game.play(card) }.to change { game.active_turn.combat }.by(4)
+      expect(game.active_player.in_play.actions.map(&:key)).to_not include("base_ability.#{card.key}")
     end
   end
 end
