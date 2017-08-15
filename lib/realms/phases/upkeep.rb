@@ -2,9 +2,10 @@ module Realms
   module Phases
     class Upkeep < Phase
       def execute
-        turn.active_player.upkeep.each do |action|
+        active_player.upkeep.each do |action|
           perform action.new(turn)
         end
+        active_player.upkeep.clear
       end
     end
   end
