@@ -10,7 +10,7 @@ RSpec.describe Realms::Cards::CommandShip do
       expect {
         game.play(card)
       }.to change { game.active_player.authority }.by(4).and \
-           change { game.active_player.active_turn.combat }.by(5).and \
+           change { game.active_turn.combat }.by(5).and \
            change { game.active_player.deck.draw_pile.length }.by(-2)
     }
   end

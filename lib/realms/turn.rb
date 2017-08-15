@@ -10,13 +10,12 @@ module Realms
     attr_accessor :trade,
                   :combat
 
-    def self.first(game)
-      active_player, passive_player = game.players.shuffle(random: game.rng)
+    def self.first(trade_deck, active_player, passive_player)
       new(
         id: 0,
         active_player: active_player,
         passive_player: passive_player,
-        trade_deck: game.trade_deck,
+        trade_deck: trade_deck,
       )
     end
 

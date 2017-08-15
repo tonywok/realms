@@ -7,7 +7,7 @@ require "realms/trade_deck"
 
 module Realms
   class Game < Yielder
-    attr_reader :players, :active_turn, :turn_checkpoint, :trade_deck, :seed, :p1, :p2, :starter_deck
+    attr_reader :players, :active_turn, :trade_deck, :seed, :p1, :p2, :starter_deck
 
     delegate :active_player, :passive_player,
       to: :active_turn
@@ -18,18 +18,21 @@ module Realms
     include Brainguy::Observable
     include Brainguy::Observer
 
-    def initialize(seed: Random.new_seed, turn_checkpoint: 0)
+    def initialize(seed: Random.new_seed)
       @seed = seed
-      @turn_checkpoint = turn_checkpoint
-      @trade_deck = TradeDeck.new(self)
       @starter_deck = StarterDeck.new
-      @players = [
-        Player.new(self, "frog"),
-        Player.new(self, "bear"),
-      ]
-      @active_turn = Turn.first(self)
-      @p1 = active_turn.active_player
-      @p2 = active_turn.passive_player
+      @trade_deck = TradeDeck.new(self)
+      @players = ["p1", "p2"].shuffle(random: rng).map do |key|
+        instance_variable_set("@#{key}", Player.new(self, key))
+      end
+      @active_turn = Turn.first(trade_deck, p1, p2)
+    end
+
+    def start
+      p1.draw(3)
+      p2.draw(5)
+      next_choice
+      self
     end
 
     def on_card_removed(event)
@@ -38,13 +41,6 @@ module Realms
 
     def rng
       Random.new(seed)
-    end
-
-    def start
-      active_player.draw(3)
-      passive_player.draw(5)
-      next_choice
-      self
     end
 
     def over?
