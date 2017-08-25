@@ -18,14 +18,14 @@ RSpec.describe Realms::Cards::BlobWorld do
     context "choosing nothing" do
       it "does nothing" do
         game.base_ability(card)
-        expect { game.decide(:none) }.to change { game.active_turn.combat }.by(0)
+        expect { game.decide(:blob_world, :none) }.to change { game.active_turn.combat }.by(0)
       end
     end
 
     context "choosing combat" do
       it "adds 5 combat" do
         game.base_ability(card)
-        expect { game.decide(:combat) }.to change { game.active_turn.combat }.by(5)
+        expect { game.decide(:blob_world, :combat) }.to change { game.active_turn.combat }.by(5)
       end
     end
 
@@ -33,7 +33,7 @@ RSpec.describe Realms::Cards::BlobWorld do
       context "when played alone" do
         it "draws 1" do
           game.base_ability(card)
-          expect { game.decide(:draw_for_each_blob_card_played_this_turn) }.to change { game.active_player.deck.hand.length }.by(1)
+          expect { game.decide(:blob_world, :draw_for_each_blob_card_played_this_turn) }.to change { game.active_player.deck.hand.length }.by(1)
         end
       end
 
@@ -41,7 +41,7 @@ RSpec.describe Realms::Cards::BlobWorld do
         it "draws 2" do
           game.play(blob_card)
           game.base_ability(card)
-          expect { game.decide(:draw_for_each_blob_card_played_this_turn) }.to change { game.active_player.deck.hand.length }.by(2)
+          expect { game.decide(:blob_world, :draw_for_each_blob_card_played_this_turn) }.to change { game.active_player.deck.hand.length }.by(2)
         end
       end
 
@@ -49,7 +49,7 @@ RSpec.describe Realms::Cards::BlobWorld do
         let(:blob_card) { Realms::Cards::BlobWheel.new(game.active_player) }
         it "draws 1" do
           game.base_ability(card)
-          expect { game.decide(:draw_for_each_blob_card_played_this_turn) }.to change { game.active_player.deck.hand.length }.by(1)
+          expect { game.decide(:blob_world, :draw_for_each_blob_card_played_this_turn) }.to change { game.active_player.deck.hand.length }.by(1)
           expect { game.play(blob_card) }.to change { game.active_player.deck.hand.length }.by(-1)
         end
       end
@@ -57,7 +57,7 @@ RSpec.describe Realms::Cards::BlobWorld do
       context "already in play" do
         it "only draws for blobs played this turn" do
           game.base_ability(card)
-          game.decide(:none)
+          game.decide(:blob_world, :none)
           game.end_turn # p2 turn
           game.end_turn # active_player turn again
 
@@ -67,7 +67,7 @@ RSpec.describe Realms::Cards::BlobWorld do
           expect { game.play(blob_card) }.to change { game.active_player.deck.hand.length }.by(-1)
 
           game.base_ability(card)
-          expect { game.decide(:draw_for_each_blob_card_played_this_turn) }.to change { game.active_player.deck.hand.length }.by(1)
+          expect { game.decide(:blob_world, :draw_for_each_blob_card_played_this_turn) }.to change { game.active_player.deck.hand.length }.by(1)
         end
       end
     end

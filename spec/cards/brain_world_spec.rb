@@ -33,7 +33,7 @@ RSpec.describe Realms::Cards::BrainWorld do
 
     context "scrap no cards" do
       it "draws no cards" do
-        expect { game.decide(:none) }.to_not change { game.active_player.deck.hand.length }
+        expect { game.decide(:draw_for_each_scrap_from_hand_or_discard_pile, :none) }.to_not change { game.active_player.deck.hand.length }
       end
     end
 
@@ -42,8 +42,8 @@ RSpec.describe Realms::Cards::BrainWorld do
 
       it "draws 1 card" do
         expect {
-          game.decide(card_from_hand.key)
-          game.decide(:none)
+          game.decide(:draw_for_each_scrap_from_hand_or_discard_pile, card_from_hand)
+          game.decide(:draw_for_each_scrap_from_hand_or_discard_pile, :none)
           expect(game.trade_deck.scrap_heap).to contain_exactly(card_from_hand)
         }.to change { game.active_player.deck.draw_pile.length }.by(-1)
       end
@@ -55,8 +55,8 @@ RSpec.describe Realms::Cards::BrainWorld do
 
       it "draws 1 card" do
         expect {
-          game.decide(card_from_discard_pile.key)
-          game.decide(:none)
+          game.decide(:draw_for_each_scrap_from_hand_or_discard_pile, card_from_discard_pile)
+          game.decide(:draw_for_each_scrap_from_hand_or_discard_pile, :none)
           expect(game.trade_deck.scrap_heap).to contain_exactly(card_from_discard_pile)
         }.to change { game.active_player.deck.draw_pile.length }.by(-1)
       end
@@ -68,8 +68,8 @@ RSpec.describe Realms::Cards::BrainWorld do
 
       it "draws 1 card" do
         expect {
-          game.decide(card_from_hand_0.key)
-          game.decide(card_from_hand_1.key)
+          game.decide(:draw_for_each_scrap_from_hand_or_discard_pile, card_from_hand_0)
+          game.decide(:draw_for_each_scrap_from_hand_or_discard_pile, card_from_hand_1)
           expect(game.trade_deck.scrap_heap).to contain_exactly(card_from_hand_0, card_from_hand_1)
         }.to change { game.active_player.deck.draw_pile.length }.by(-2)
       end
@@ -80,8 +80,8 @@ RSpec.describe Realms::Cards::BrainWorld do
 
       it "draws 2 cards" do
         expect {
-          game.decide(discard_pile.first.key)
-          game.decide(discard_pile.second.key)
+          game.decide(:draw_for_each_scrap_from_hand_or_discard_pile, discard_pile.first)
+          game.decide(:draw_for_each_scrap_from_hand_or_discard_pile, discard_pile.second)
           expect(game.trade_deck.scrap_heap).to contain_exactly(*discard_pile)
         }.to change { game.active_player.deck.draw_pile.length }.by(-2)
       end
@@ -94,8 +94,8 @@ RSpec.describe Realms::Cards::BrainWorld do
 
       it "draws 2 cards" do
         expect {
-          game.decide(card_from_discard_pile.key)
-          game.decide(card_from_hand.key)
+          game.decide(:draw_for_each_scrap_from_hand_or_discard_pile, card_from_discard_pile)
+          game.decide(:draw_for_each_scrap_from_hand_or_discard_pile, card_from_hand)
           expect(game.trade_deck.scrap_heap).to contain_exactly(card_from_discard_pile, card_from_hand)
         }.to change { game.active_player.deck.draw_pile.length }.by(-2)
       end

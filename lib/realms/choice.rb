@@ -13,10 +13,12 @@ module Realms
       alias_method :inspect, :key
     end
 
-    def initialize(options, optional: false)
+    def initialize(options, name: nil, optional: false)
       opts = options
       opts = opts + [NullOption.instance] if optional
-      @options = opts.index_by(&:key).transform_keys(&:to_sym)
+      @options = opts.index_by(&:key).transform_keys do |key|
+        [name, key].compact.join(".").to_sym
+      end
     end
 
     def decide(key)
@@ -46,8 +48,8 @@ module Realms
   class MultiChoice < Choice
     attr_reader :count
 
-    def initialize(options, count:)
-      super(options, optional: true)
+    def initialize(options, name: nil, count:)
+      super(options, name: name, optional: true)
       @count = count
       @decision = []
     end

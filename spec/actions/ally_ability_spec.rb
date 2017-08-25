@@ -19,7 +19,8 @@ RSpec.describe Realms::Actions::AllyAbility do
 
       expect {
         game.play(card2)
-        game.decide(game.trade_deck.trade_row.sample.key)
+        selected_card = game.trade_deck.trade_row.sample
+        game.decide(:scrap_card_from_trade_row, selected_card)
       }.to change { game.active_turn.combat }.by(6)
 
       expect { game.ally_ability(card1) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)

@@ -6,7 +6,7 @@ module Realms
       end
 
       def execute
-        choose(Choice.new(arg, optional: true)) do |ability|
+        may_choose(arg, name: card.name) do |ability|
           perform ability.new(card, turn)
         end
       end

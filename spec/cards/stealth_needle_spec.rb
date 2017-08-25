@@ -31,7 +31,7 @@ RSpec.describe Realms::Cards::StealthNeedle do
         expect(game.current_choice.options.keys).to_not include(card.key)
 
         expect {
-          game.decide(another_ship)
+          game.decide(:copy_ship, another_ship)
         }.to change { game.active_turn.trade }.by(2).and \
              change { game.active_player.authority }.by(4).and \
              change { game.active_turn.combat }.by(8)
@@ -56,7 +56,7 @@ RSpec.describe Realms::Cards::StealthNeedle do
           game.play(card)
 
           expect {
-            game.decide(another_ship.key)
+            game.decide(:copy_ship, another_ship.key)
           }.to change { game.active_player.authority }.by(4).and \
                change { game.active_turn.trade }.by(2)
                change { game.active_turn.combat }.by(8)
@@ -64,7 +64,7 @@ RSpec.describe Realms::Cards::StealthNeedle do
           game.play(another_stealth_needle)
 
           expect {
-            game.decide(card.key)
+            game.decide(:copy_ship, card.key)
           }.to change { game.active_player.authority }.by(4).and \
                change { game.active_turn.trade }.by(2).and \
                change { game.active_turn.combat }.by(4)

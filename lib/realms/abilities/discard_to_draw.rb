@@ -6,7 +6,7 @@ module Realms
       end
 
       def execute
-        choose(MultiChoice.new(cards_in_hand, count: arg)) do |cards|
+        choose_many(cards_in_hand, count: arg) do |cards|
           cards.each do |card|
             active_player.hand.transfer!(card: card, to: active_player.discard_pile)
           end

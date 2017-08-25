@@ -20,7 +20,7 @@ RSpec.describe Realms::Cards::BattleMech do
     include_context "ally_ability", Realms::Cards::BattleStation
 
     it {
-      game.decide(:none)
+      game.decide(:"scrap_from_hand_or_discard_pile.none")
       expect {
         game.ally_ability(card)
       }.to change { game.active_player.deck.hand.length }.by(1)

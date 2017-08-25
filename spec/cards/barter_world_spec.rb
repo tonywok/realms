@@ -12,11 +12,11 @@ RSpec.describe Realms::Cards::BarterWorld do
     end
 
     context "authority" do
-      it { expect { game.decide(:authority) }.to change { game.active_player.authority }.by(2) }
+      it { expect { game.decide(:"barter_world.authority") }.to change { game.active_player.authority }.by(2) }
     end
 
     context "trade" do
-      it { expect { game.decide(:trade) }.to change { game.active_turn.trade }.by(2) }
+      it { expect { game.decide(:"barter_world.trade") }.to change { game.active_turn.trade }.by(2) }
     end
   end
 

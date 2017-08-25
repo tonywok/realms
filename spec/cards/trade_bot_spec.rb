@@ -22,7 +22,7 @@ RSpec.describe Realms::Cards::TradeBot do
     it {
       expect {
         game.play(card)
-        game.decide(:none)
+        game.decide(:scrap_from_hand_or_discard_pile, :none)
       }.to change { game.active_turn.combat }.by(2)
     }
   end

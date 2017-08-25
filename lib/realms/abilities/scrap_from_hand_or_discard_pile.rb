@@ -6,7 +6,7 @@ module Realms
       end
 
       def execute
-        choose(Choice.new(cards_in_hand_or_discard_pile, optional: optional)) do |card|
+        choose(cards_in_hand_or_discard_pile) do |card|
           active_player.deck.scrap(card)
         end
       end

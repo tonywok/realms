@@ -54,40 +54,41 @@ module Realms
       end
     end
 
-    def decide(key)
-      super(safe(key))
+    def decide(*args)
+      action, key = args
+      if args.many?
+        super([action, safe(key)].compact.join("."))
+      else
+        super(safe(action))
+      end
     end
 
-    def play(key)
-      decide("play.#{safe(key)}")
+    def play(card)
+      decide(:play, card)
     end
 
-    def base_ability(key)
-      decide("base_ability.#{safe(key)}")
+    def base_ability(card)
+      decide(:base_ability, card)
     end
 
-    def ally_ability(key)
-      decide("ally_ability.#{safe(key)}")
+    def ally_ability(card)
+      decide(:ally_ability, card)
     end
 
-    def scrap_ability(key)
-      decide("scrap_ability.#{safe(key)}")
+    def scrap_ability(card)
+      decide(:scrap_ability, card)
     end
 
-    def acquire(key)
-      decide("acquire.#{safe(key)}")
+    def acquire(card)
+      decide(:acquire, card)
     end
 
     def attack(key)
-      decide("attack.#{safe(key)}")
-    end
-
-    def safe(key_or_thing)
-      key_or_thing.respond_to?(:key) ? key_or_thing.key : key_or_thing
+      decide(:attack, key)
     end
 
     def end_turn
-      decide("end_turn")
+      decide(:end_turn)
     end
 
     def inspect
@@ -95,6 +96,10 @@ module Realms
     end
 
     private
+
+    def safe(key_or_thing)
+      key_or_thing.respond_to?(:key) ? key_or_thing.key : key_or_thing
+    end
 
     def next_turn
       @active_turn = @active_turn.next
