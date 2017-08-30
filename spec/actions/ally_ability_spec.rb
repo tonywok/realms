@@ -4,12 +4,12 @@ RSpec.describe Realms::Actions::AllyAbility do
   let(:game) { Realms::Game.new }
 
   context "when playing two different, same faction cards" do
-    let(:card1) { Realms::Cards::BlobFighter.new(game.active_player) }
-    let(:card2) { Realms::Cards::BattlePod.new(game.active_player) }
+    let(:card1) { Realms::Cards::BlobFighter.new(game.p1) }
+    let(:card2) { Realms::Cards::BattlePod.new(game.p1) }
 
     before do
-      game.active_player.deck.hand << card1
-      game.active_player.deck.hand << card2
+      game.p1.hand << card1
+      game.p1.hand << card2
       game.start
     end
 
@@ -23,7 +23,7 @@ RSpec.describe Realms::Actions::AllyAbility do
         game.decide(:scrap_card_from_trade_row, selected_card)
       }.to change { game.active_turn.combat }.by(6)
 
-      expect { game.ally_ability(card1) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)
+      expect { game.ally_ability(card1) }.to change { game.active_turn.active_player.hand.length }.by(1)
 
       expect(game.current_choice.options).to_not have_key(:"ally_ability.blob_fighter_0")
       expect(game.current_choice.options).to_not have_key(:"ally_ability.battle_pod_0")
@@ -35,8 +35,8 @@ RSpec.describe Realms::Actions::AllyAbility do
     let(:card2) { Realms::Cards::BlobFighter.new(game.active_player, index: 1) }
 
     before do
-      game.active_player.deck.hand << card1
-      game.active_player.deck.hand << card2
+      game.p1.hand << card1
+      game.p1.hand << card2
       game.start
     end
 
@@ -44,8 +44,8 @@ RSpec.describe Realms::Actions::AllyAbility do
       game.play(card1)
       game.play(card2)
 
-      expect { game.ally_ability(card1) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)
-      expect { game.ally_ability(card2) }.to change { game.active_turn.active_player.deck.hand.length }.by(1)
+      expect { game.ally_ability(card1) }.to change { game.active_turn.active_player.hand.length }.by(1)
+      expect { game.ally_ability(card2) }.to change { game.active_turn.active_player.hand.length }.by(1)
 
       expect(game.current_choice.options).to_not have_key(:"ally_ability.blob_fighter_0")
       expect(game.current_choice.options).to_not have_key(:"ally_ability.blob_fighter_1")

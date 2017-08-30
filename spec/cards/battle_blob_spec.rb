@@ -14,11 +14,11 @@ RSpec.describe Realms::Cards::BattleBlob do
 
   describe "#ally_ability" do
     include_context "ally_ability", Realms::Cards::BlobFighter
-    it { expect { game.ally_ability(card) }.to change { game.active_player.deck.hand.length }.by(1) }
+    it { expect { game.ally_ability(card) }.to change { game.active_player.hand.length }.by(1) }
   end
 
   describe "#scrap_ability" do
     include_context "scrap_ability"
-    it { expect { card.scrap_ability.execute }.to change { game.active_turn.combat }.by(4) }
+    it { expect { game.scrap_ability(card) }.to change { game.active_turn.combat }.by(4) }
   end
 end

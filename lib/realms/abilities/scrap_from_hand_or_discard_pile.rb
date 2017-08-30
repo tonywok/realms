@@ -7,12 +7,12 @@ module Realms
 
       def execute
         choose(cards_in_hand_or_discard_pile) do |card|
-          active_player.deck.scrap(card)
+          active_player.scrap(card)
         end
       end
 
       def cards_in_hand_or_discard_pile
-        turn.active_player.deck.hand.cards + turn.active_player.deck.discard_pile.cards
+        active_player.hand.cards + active_player.discard_pile.cards
       end
     end
   end

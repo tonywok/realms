@@ -24,8 +24,8 @@ module Realms
 
       def execute
         cards_in_play.each do |card|
-          perform(card.primary_ability) if card.auto_primary_available?
-          perform(card.ally_ability) if auto_ally_available?(card)
+          perform(card.primary_ability(active_turn)) if card.auto_primary_available?
+          perform(card.ally_ability(active_turn)) if auto_ally_available?(card)
         end
       end
 
@@ -111,12 +111,12 @@ module Realms
         ship? ? true : automatic_primary_ability?
       end
 
-      def primary_ability
-        super.tap { self.primary_used = true }
+      def primary_ability(turn)
+        super(turn).tap { self.primary_used = true }
       end
 
-      def ally_ability
-        super.tap { self.ally_used = true }
+      def ally_ability(turn)
+        super(turn).tap { self.ally_used = true }
       end
 
       def reset!

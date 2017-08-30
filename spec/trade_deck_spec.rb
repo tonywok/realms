@@ -4,6 +4,8 @@ RSpec.describe Realms::TradeDeck do
   let(:game) { Realms::Game.new }
   let(:trade_deck) { game.trade_deck }
 
+  before { game.start }
+
   describe "with a seed" do
     let(:seed) { Random.new_seed }
 

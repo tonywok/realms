@@ -11,7 +11,7 @@ RSpec.describe Realms::Cards::BlobCarrier do
 
   describe "#ally_ability" do
     include_context "ally_ability", Realms::Cards::BlobWheel do
-      let(:selected_card) { Realms::Cards::BlobDestroyer.new(game.active_player, index: 10) }
+      let(:selected_card) { Realms::Cards::BlobDestroyer.new(game.trade_deck, index: 10) }
       before do
         game.trade_deck.trade_row.cards[0] = selected_card
       end
@@ -22,9 +22,9 @@ RSpec.describe Realms::Cards::BlobCarrier do
       game.decide(:acquire_ship_and_top_deck, selected_card)
       expect(game.trade_deck.trade_row).to_not include(selected_card)
       expect(game.trade_deck.trade_row.length).to eq(5)
-      expect(game.active_player.deck.draw_pile.first).to eq(selected_card)
+      expect(game.active_player.draw_pile.first).to eq(selected_card)
       game.active_player.draw(1)
-      expect(game.active_player.deck.hand).to include(selected_card)
+      expect(game.active_player.hand).to include(selected_card)
     end
   end
 end

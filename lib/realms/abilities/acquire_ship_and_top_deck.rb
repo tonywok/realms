@@ -7,7 +7,7 @@ module Realms
 
       def execute
         choose(trade_row_ships) do |card|
-          active_player.deck.acquire(card, zone: active_player.draw_pile, pos: 0)
+          active_player.acquire(card, zone: active_player.draw_pile, pos: 0)
         end
       end
 

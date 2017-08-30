@@ -18,7 +18,7 @@ RSpec.describe Realms::Cards::EmbassyYacht do
 
     context "one base in play" do
       before do
-        game.active_player.deck.in_play << Realms::Cards::BlobWheel.new(game.active_player)
+        game.active_player.in_play << Realms::Cards::BlobWheel.new(game.active_player)
       end
 
       it {
@@ -31,8 +31,8 @@ RSpec.describe Realms::Cards::EmbassyYacht do
 
     context "two bases in play" do
       before do
-        game.active_player.deck.in_play << Realms::Cards::BlobWheel.new(game.active_player, index: 0)
-        game.active_player.deck.in_play << Realms::Cards::BlobWheel.new(game.active_player, index: 1)
+        game.active_player.in_play << Realms::Cards::BlobWheel.new(game.active_player, index: 0)
+        game.active_player.in_play << Realms::Cards::BlobWheel.new(game.active_player, index: 1)
       end
 
       it {
@@ -40,7 +40,7 @@ RSpec.describe Realms::Cards::EmbassyYacht do
           game.play(card)
         }.to change { game.active_player.authority }.by(3).and \
              change { game.active_turn.trade }.by(2).and \
-             change { game.active_player.deck.draw_pile.length }.by(-2)
+             change { game.active_player.draw_pile.length }.by(-2)
       }
     end
   end

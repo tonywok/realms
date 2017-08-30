@@ -8,7 +8,7 @@ RSpec.describe Realms::Cards::StealthNeedle do
     let(:another_ship) { Realms::Cards::Cutter.new(game.active_player) }
 
     before do
-      game.active_player.hand << another_ship
+      game.p1.hand << another_ship
     end
 
     include_context "primary_ability"

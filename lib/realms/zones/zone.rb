@@ -13,8 +13,8 @@ module Realms
         :insert, :concat, :second,
         to: :cards
 
-      delegate :active_turn,
-        to: :owner
+      delegate :active_turn, :next_transfer_id,
+        to: :registry
 
       def <<(card)
         null_zone.transfer!(card: card, to: self)
@@ -24,11 +24,11 @@ module Realms
         cards.each(&block)
       end
 
-      def initialize(owner, cards = [])
+      def initialize(registry, owner, cards = [])
+        @registry = registry
         @owner = owner
         @cards = cards
         events.attach(self)
-        events.attach(owner.game)
       end
 
       def key
@@ -58,8 +58,10 @@ module Realms
 
       private
 
+      attr_reader :registry
+
       def null_zone
-        @null_zone ||= Null.new(owner)
+        @null_zone ||= Null.new(self, owner)
       end
     end
   end

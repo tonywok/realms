@@ -12,7 +12,7 @@ RSpec.describe Realms::Actions::Attack do
   end
 
   before do
-    game.active_player.deck.hand << card
+    game.p1.hand << card
   end
 
   context "opponent has no bases in play" do
@@ -38,7 +38,7 @@ RSpec.describe Realms::Actions::Attack do
     let(:base) { Realms::Cards::BlobWheel.new(game.active_player) }
 
     before do
-      game.passive_player.deck.in_play << base
+      game.p2.in_play << base
       game.start
       game.play(card)
     end
@@ -66,7 +66,7 @@ RSpec.describe Realms::Actions::Attack do
 
       it "can attack the base" do
         game.attack(base)
-        expect(game.passive_player.deck.discard_pile).to include(base)
+        expect(game.passive_player.discard_pile).to include(base)
         expect { game.attack(game.passive_player) }.to raise_error(Realms::Choice::InvalidOption)
       end
 
@@ -94,7 +94,7 @@ RSpec.describe Realms::Actions::Attack do
     let(:base) { Realms::Cards::DefenseCenter.new(game.active_player) }
 
     before do
-      game.passive_player.deck.in_play << base
+      game.p2.in_play << base
       game.start
       game.play(card)
     end
@@ -104,7 +104,7 @@ RSpec.describe Realms::Actions::Attack do
 
       it "can attack the base" do
         game.attack(base)
-        expect(game.passive_player.deck.discard_pile).to include(base)
+        expect(game.passive_player.discard_pile).to include(base)
         expect(game.passive_player.authority).to eq(50)
         game.attack(game.passive_player)
         expect(game.passive_player.authority).to eq(49)
@@ -120,7 +120,7 @@ RSpec.describe Realms::Actions::Attack do
 
       it "can attack the base" do
         game.attack(base)
-        expect(game.passive_player.deck.discard_pile).to include(base)
+        expect(game.passive_player.discard_pile).to include(base)
         expect { game.attack(game.passive_player) }.to raise_error(Realms::Choice::InvalidOption)
       end
 
@@ -148,8 +148,8 @@ RSpec.describe Realms::Actions::Attack do
     let(:combat) { outpost.defense + outpost.defense + 1 }
 
     before do
-      game.passive_player.deck.in_play << base
-      game.passive_player.deck.in_play << outpost
+      game.p2.in_play << base
+      game.p2.in_play << outpost
       game.start
       game.play(card)
     end
@@ -160,8 +160,8 @@ RSpec.describe Realms::Actions::Attack do
       game.attack(outpost)
       game.attack(base)
       game.attack(game.passive_player)
-      expect(game.passive_player.deck.discard_pile).to include(base)
-      expect(game.passive_player.deck.discard_pile).to include(outpost)
+      expect(game.passive_player.discard_pile).to include(base)
+      expect(game.passive_player.discard_pile).to include(outpost)
       expect(game.passive_player.authority).to eq(49)
     end
   end

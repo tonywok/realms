@@ -9,7 +9,7 @@ RSpec.describe Realms::Cards::Mothership do
 
   describe "#primary_ability" do
     before do
-      game.active_player.deck.hand << card
+      game.p1.hand << card
       game.start
     end
 
@@ -17,7 +17,7 @@ RSpec.describe Realms::Cards::Mothership do
       expect {
         game.play(card)
       }.to change { game.active_turn.combat }.by(6).and \
-           change { game.active_player.deck.draw_pile.length }.by(-1)
+           change { game.active_player.draw_pile.length }.by(-1)
     }
   end
 
@@ -25,13 +25,13 @@ RSpec.describe Realms::Cards::Mothership do
     let(:ally_card) { Realms::Cards::BlobFighter.new(game.active_player) }
 
     before do
-      game.active_player.deck.hand << ally_card
-      game.active_player.deck.hand << card
+      game.p1.hand << ally_card
+      game.p1.hand << card
       game.start
       game.play(ally_card)
       game.play(card)
     end
 
-    it { expect { game.ally_ability(card) }.to change { game.active_player.deck.hand.length }.by(1) }
+    it { expect { game.ally_ability(card) }.to change { game.active_player.hand.length }.by(1) }
   end
 end

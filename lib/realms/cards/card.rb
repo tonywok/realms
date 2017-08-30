@@ -130,16 +130,16 @@ module Realms
         owner.zones.find(if_none) { |z| z.include?(self) }
       end
 
-      def primary_ability
-        definition.primary_ability.new(self, owner.active_turn)
+      def primary_ability(turn)
+        definition.primary_ability.new(self, turn)
       end
 
-      def ally_ability
-        definition.ally_ability.new(self, owner.active_turn)
+      def ally_ability(turn)
+        definition.ally_ability.new(self, turn)
       end
 
-      def scrap_ability
-        definition.scrap_ability.new(self, owner.active_turn)
+      def scrap_ability(turn)
+        definition.scrap_ability.new(self, turn)
       end
 
       def ally_factions

@@ -6,8 +6,8 @@ module Realms
       end
 
       def execute
-        active_player.deck.scrap(card)
-        perform card.scrap_ability
+        active_player.scrap(card)
+        perform card.scrap_ability(turn)
         # TODO: put explorers back
       end
     end

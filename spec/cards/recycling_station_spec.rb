@@ -35,7 +35,7 @@ RSpec.describe Realms::Cards::RecyclingStation do
       context "discard 2" do
         it {
           expect {
-            top_of_deck = game.active_player.deck.draw_pile.first
+            top_of_deck = game.active_player.draw_pile.first
             c1, c2 = game.active_player.hand.sample(2)
             game.decide(:discard_to_draw, c1)
             expect(game.current_choice.options.values.map(&:key)).to_not include(top_of_deck.key)

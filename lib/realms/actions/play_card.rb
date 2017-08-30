@@ -6,7 +6,7 @@ module Realms
       end
 
       def execute
-        active_player.deck.play(card)
+        active_player.play(card)
         perform active_player.in_play
       end
     end

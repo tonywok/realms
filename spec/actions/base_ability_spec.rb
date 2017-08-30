@@ -9,7 +9,7 @@ RSpec.describe Realms::Actions::BaseAbility do
 
     context "playing a base" do
       before do
-        game.active_player.deck.hand << card
+        game.p1.hand << card
         game.start
       end
 
@@ -38,7 +38,7 @@ RSpec.describe Realms::Actions::BaseAbility do
 
     context "playing a base" do
       before do
-        game.active_player.deck.hand << card
+        game.p1.hand << card
         game.start
       end
 
@@ -53,7 +53,7 @@ RSpec.describe Realms::Actions::BaseAbility do
 
     context "a base in play" do
       before do
-        game.active_player.deck.in_play << card
+        game.p1.in_play << card
         game.start
       end
 

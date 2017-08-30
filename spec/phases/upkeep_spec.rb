@@ -7,7 +7,7 @@ RSpec.describe Realms::Phases::Upkeep do
     let(:card) { Realms::Cards::ImperialFighter.new(game.active_player, index: 42) }
 
     before do
-      game.active_player.hand << card
+      game.p1.hand << card
       game.start
     end
 

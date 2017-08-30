@@ -12,7 +12,7 @@ module Realms
       def on_removing_card(event)
         zt = event.args.first
         if zt.card.ship?
-          zt.destination = active_player.deck.draw_pile
+          zt.destination = active_player.draw_pile
           zt.destination_position = 0
           trade_deck.trade_row.events.detach(self)
         end

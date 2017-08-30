@@ -5,21 +5,21 @@ RSpec.describe Realms::Actions::PlayCard do
 
   before do
     cards.each do |card|
-      game.active_player.deck.hand << card
+      game.p1.hand << card
     end
     game.start
   end
 
   context "playing a card" do
     let(:cards) do
-      3.times.map { game.active_player.scout }
+      3.times.map { game.p1.scout }
     end
 
     it do
       expect {
         game.play(cards[0])
-      }.to change { game.active_player.deck.hand.length }.by(-1).and \
-           change { game.active_player.deck.in_play.length }.by(1)
+      }.to change { game.active_player.hand.length }.by(-1).and \
+           change { game.active_player.in_play.length }.by(1)
       game.play(cards[1])
       game.play(cards[2])
       expect(game.active_turn.trade).to eq(3)
@@ -29,8 +29,8 @@ RSpec.describe Realms::Actions::PlayCard do
   context "playing a card with an automatically performed ally ability" do
     let(:cards) do
       [
-        Realms::Cards::Corvette.new(game.active_player, index: 0),
-        Realms::Cards::Corvette.new(game.active_player, index: 1),
+        Realms::Cards::Corvette.new(game.p1, index: 0),
+        Realms::Cards::Corvette.new(game.p1, index: 1),
       ]
     end
 

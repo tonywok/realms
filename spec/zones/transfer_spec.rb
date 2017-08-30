@@ -1,9 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Realms::Zones::Transfer do
-  let(:owner) { Realms::Game.new.active_player }
-  let(:destination) { Realms::Zones::Zone.new(owner, destination_cards) }
-  let(:source) { Realms::Zones::Zone.new(owner, source_cards) }
+  let(:game) { Realms::Game.new }
+  let(:owner) { game.p1 }
+  let(:destination) { Realms::Zones::Zone.new(game.registry, owner, destination_cards) }
+  let(:source) { Realms::Zones::Zone.new(game.registry, owner, source_cards) }
   let(:zone_transfer) { described_class.new(source: source, destination: destination, card: card) }
 
   describe "#transfer!" do

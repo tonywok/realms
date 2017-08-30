@@ -10,7 +10,7 @@ module Realms
       end
 
       def execute
-        perform card.ally_ability
+        perform card.ally_ability(turn)
       end
     end
   end
