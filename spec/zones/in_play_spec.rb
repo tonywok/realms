@@ -60,7 +60,7 @@ RSpec.describe Realms::Zones::InPlay do
           it do
             expect {
               game.base_ability(card)
-              game.decide(:authority)
+              game.decide(:trading_post, :authority)
             }.to change { game.active_player.authority }.by(1)
             expect(game.current_choice.options.keys).to_not include(:"base_ability.#{card.key}")
           end

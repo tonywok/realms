@@ -17,7 +17,7 @@ RSpec.describe Realms::Cards::MachineBase do
       card_in_hand = game.active_player.deck.hand.sample
 
       expect {
-        game.decide(card_in_hand.key)
+        game.decide(:draw_then_scrap_from_hand, card_in_hand)
       }.to change { game.trade_deck.scrap_heap.length }.by(1)
     end
   end

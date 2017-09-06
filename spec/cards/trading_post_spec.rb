@@ -14,11 +14,11 @@ RSpec.describe Realms::Cards::TradingPost do
     end
 
     context "authority" do
-      it { expect { game.decide(:authority) }.to change { game.active_player.authority }.by(1) }
+      it { expect { game.decide(:trading_post, :authority) }.to change { game.active_player.authority }.by(1) }
     end
 
     context "trade" do
-      it { expect { game.decide(:trade) }.to change { game.active_turn.trade }.by(1) }
+      it { expect { game.decide(:trading_post, :trade) }.to change { game.active_turn.trade }.by(1) }
     end
   end
 

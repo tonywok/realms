@@ -10,11 +10,11 @@ RSpec.describe Realms::Cards::PatrolMech do
     end
 
     context "trade" do
-      it { expect { game.decide(:trade) }.to change { game.active_turn.trade }.by(3) }
+      it { expect { game.decide(:patrol_mech, :trade) }.to change { game.active_turn.trade }.by(3) }
     end
 
     context "combat" do
-      it { expect { game.decide(:combat) }.to change { game.active_turn.combat }.by(5) }
+      it { expect { game.decide(:patrol_mech, :combat) }.to change { game.active_turn.combat }.by(5) }
     end
   end
 
@@ -23,7 +23,7 @@ RSpec.describe Realms::Cards::PatrolMech do
 
     include_examples "scrap_card_from_hand_or_discard_pile" do
       before do
-        game.decide(:trade)
+        game.decide(:patrol_mech, :trade)
         game.ally_ability(card)
       end
     end

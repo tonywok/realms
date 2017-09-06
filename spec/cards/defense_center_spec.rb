@@ -14,11 +14,11 @@ RSpec.describe Realms::Cards::DefenseCenter do
     end
 
     context "authority" do
-      it { expect { game.decide(:authority) }.to change { game.active_player.authority }.by(3) }
+      it { expect { game.decide(:defense_center, :authority) }.to change { game.active_player.authority }.by(3) }
     end
 
     context "combat" do
-      it { expect { game.decide(:combat) }.to change { game.active_turn.combat }.by(2) }
+      it { expect { game.decide(:defense_center, :combat) }.to change { game.active_turn.combat }.by(2) }
     end
   end
 

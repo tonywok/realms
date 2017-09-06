@@ -6,7 +6,7 @@ module Realms
       end
 
       def execute
-        choose(Choice.new(cards_in_trade_row, optional: optional)) do |card|
+        choose(cards_in_trade_row) do |card|
           turn.trade_deck.scrap(card)
         end
       end

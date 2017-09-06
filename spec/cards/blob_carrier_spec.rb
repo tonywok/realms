@@ -19,7 +19,7 @@ RSpec.describe Realms::Cards::BlobCarrier do
 
     it "acquire any ship without paying its cost and put it on top of your deck" do
       game.ally_ability(card)
-      game.decide(selected_card.key)
+      game.decide(:acquire_ship_and_top_deck, selected_card)
       expect(game.trade_deck.trade_row).to_not include(selected_card)
       expect(game.trade_deck.trade_row.length).to eq(5)
       expect(game.active_player.deck.draw_pile.first).to eq(selected_card)

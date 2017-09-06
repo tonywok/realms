@@ -14,19 +14,19 @@ RSpec.describe Realms::Cards::RecyclingStation do
     end
 
     context "trade" do
-      it { expect { game.decide(:trade) }.to change { game.active_turn.trade }.by(1) }
+      it { expect { game.decide(:recycling_station, :trade) }.to change { game.active_turn.trade }.by(1) }
     end
 
     context "discard to draw" do
       before do
-        game.decide(:discard_to_draw)
+        game.decide(:recycling_station, :discard_to_draw)
       end
 
       context "discard 1" do
         it {
           expect {
-            game.decide(game.active_player.hand.sample.key)
-            game.decide(:none)
+            game.decide(:discard_to_draw, game.active_player.hand.sample)
+            game.decide(:discard_to_draw, :none)
           }.to change { game.active_player.draw_pile.length }.by(-1).and \
                change { game.active_player.hand.length }.by(0)
         }
@@ -37,10 +37,10 @@ RSpec.describe Realms::Cards::RecyclingStation do
           expect {
             top_of_deck = game.active_player.deck.draw_pile.first
             c1, c2 = game.active_player.hand.sample(2)
-            game.decide(c1.key)
+            game.decide(:discard_to_draw, c1)
             expect(game.current_choice.options.values.map(&:key)).to_not include(top_of_deck.key)
             expect(c1).to_not eq(c2)
-            game.decide(c2.key)
+            game.decide(:discard_to_draw, c2)
           }.to change { game.active_player.draw_pile.length }.by(-2).and \
                change { game.active_player.hand.length }.by(0)
         }

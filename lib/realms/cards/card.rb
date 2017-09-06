@@ -97,6 +97,10 @@ module Realms
         definition.ally_abilities << klass
       end
 
+      def self.key
+        to_s.demodulize.underscore
+      end
+
       def self.scrap_ability(klass, optional: false)
         klass = Abilities::Optional[klass] if optional
         definition.scrap_abilities << klass
@@ -118,7 +122,7 @@ module Realms
       end
 
       def name
-        self.class.to_s.demodulize.underscore
+        self.class.key
       end
 
       def zone

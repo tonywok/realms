@@ -46,7 +46,7 @@ RSpec.describe Realms::Actions::BaseAbility do
         game.play(card)
         expect {
           game.base_ability(card)
-          game.decide(:authority)
+          game.decide(:"trading_post.authority")
         }.to change { game.active_player.authority }.by(1)
       end
     end
@@ -60,14 +60,14 @@ RSpec.describe Realms::Actions::BaseAbility do
       it "must be explicitly chosen" do
         game.base_ability(card)
         expect {
-          game.decide(:authority)
+          game.decide(:"trading_post.authority")
         }.to change { game.active_player.authority }.by(1)
       end
 
       it "can only be used once" do
         game.base_ability(card)
         expect {
-          game.decide(:trade)
+          game.decide(:"trading_post.trade")
         }.to change { game.active_turn.trade }.by(1)
         expect { game.base_ability(card) }.to raise_error(Realms::Choice::InvalidOption)
       end

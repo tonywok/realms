@@ -6,7 +6,7 @@ module Realms
       end
 
       def execute
-        choose(MultiChoice.new(zones.flat_map(&:cards), count: arg)) do |cards|
+        choose_many(zones.flat_map(&:cards), count: arg) do |cards|
           cards.each do |selected_card|
             turn.trade_deck.scrap(selected_card)
           end
