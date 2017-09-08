@@ -10,7 +10,7 @@ RSpec.describe Realms::Cards::SurveyShip do
       expect {
         game.play(card)
       }.to change { game.active_turn.trade }.by(1).and \
-           change { game.active_player.deck.draw_pile.length }.by(-1)
+           change { game.active_player.draw_pile.length }.by(-1)
     }
   end
 

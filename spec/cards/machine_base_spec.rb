@@ -12,9 +12,9 @@ RSpec.describe Realms::Cards::MachineBase do
     it "draws a card and scraps a card from hand" do
       expect {
         game.base_ability(card)
-      }.to change { game.active_player.deck.draw_pile.length }.by(-1)
+      }.to change { game.active_player.draw_pile.length }.by(-1)
 
-      card_in_hand = game.active_player.deck.hand.sample
+      card_in_hand = game.active_player.hand.sample
 
       expect {
         game.decide(:draw_then_scrap_from_hand, card_in_hand)

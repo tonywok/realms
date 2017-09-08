@@ -1,3 +1,4 @@
+require "realms/zones/registry"
 require "realms/zones/zone"
 require "realms/zones/null"
 require "realms/zones/trade_row"

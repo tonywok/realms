@@ -1,59 +1,49 @@
 require "realms/yielder"
-require "realms/choice"
 require "realms/zones"
-require "realms/player"
 require "realms/turn"
-require "realms/trade_deck"
+require "realms/phases"
+require "realms/choice"
 
 module Realms
   class Game < Yielder
-    attr_reader :players, :active_turn, :trade_deck, :seed, :p1, :p2, :starter_deck
+    attr_reader :seed, :registry, :active_turn
 
     delegate :active_player, :passive_player,
-      to: :active_turn
+      to: :active_turn, allow_nil: true
 
-    delegate :scout, :viper,
-      to: :starter_deck
-
-    include Brainguy::Observable
-    include Brainguy::Observer
+    delegate :p1, :p2, :trade_deck,
+      to: :registry
 
     def initialize(seed: Random.new_seed)
       @seed = seed
-      @starter_deck = StarterDeck.new
-      @trade_deck = TradeDeck.new(self)
-      @players = ["p1", "p2"].shuffle(random: rng).map do |key|
-        instance_variable_set("@#{key}", Player.new(self, key))
-      end
-      @active_turn = Turn.first(trade_deck, p1, p2)
+      @registry = Zones::Registry.new(self)
+      registry.register!
     end
 
     def start
-      p1.draw(3)
-      p2.draw(5)
+      self.active_turn = Turn.first(trade_deck, p1, p2)
       next_choice
       self
     end
 
-    def on_card_removed(event)
-      emit(:card_moved, event.args[0])
-    end
-
-    def rng
-      Random.new(seed)
-    end
-
     def over?
-      players.any? { |p| p.authority <= 0 }
+      [p1, p2].any? { |p| p.authority <= 0 }
     end
 
     def execute
+      perform Phases::Setup.new(active_turn)
+
       until over?
-        perform(@active_turn)
+        perform Phases::Upkeep.new(active_turn)
+        perform Phases::Main.new(active_turn)
+        perform Phases::Discard.new(active_turn)
+        perform Phases::Draw.new(active_turn)
         next_turn
       end
     end
 
+    ## Decisions
+    #
     def decide(*args)
       action, key = args
       if args.many?
@@ -97,29 +87,14 @@ module Realms
 
     private
 
-    def safe(key_or_thing)
-      key_or_thing.respond_to?(:key) ? key_or_thing.key : key_or_thing
-    end
+    attr_writer :active_turn
 
     def next_turn
-      @active_turn = @active_turn.next
+      self.active_turn = active_turn.next
     end
 
-    class StarterDeck
-      attr_reader :scout_count, :viper_count
-
-      def initialize
-        @scout_count = 0
-        @viper_count = 0
-      end
-
-      def scout(player)
-        Cards::Scout.new(player, index: scout_count).tap { @scout_count += 1 }
-      end
-
-      def viper(player)
-        Cards::Viper.new(player, index: viper_count).tap { @viper_count += 1 }
-      end
+    def safe(key_or_thing)
+      key_or_thing.respond_to?(:key) ? key_or_thing.key : key_or_thing
     end
   end
 end

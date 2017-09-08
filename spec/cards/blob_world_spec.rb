@@ -33,7 +33,7 @@ RSpec.describe Realms::Cards::BlobWorld do
       context "when played alone" do
         it "draws 1" do
           game.base_ability(card)
-          expect { game.decide(:blob_world, :draw_for_each_blob_card_played_this_turn) }.to change { game.active_player.deck.hand.length }.by(1)
+          expect { game.decide(:blob_world, :draw_for_each_blob_card_played_this_turn) }.to change { game.active_player.hand.length }.by(1)
         end
       end
 
@@ -41,7 +41,7 @@ RSpec.describe Realms::Cards::BlobWorld do
         it "draws 2" do
           game.play(blob_card)
           game.base_ability(card)
-          expect { game.decide(:blob_world, :draw_for_each_blob_card_played_this_turn) }.to change { game.active_player.deck.hand.length }.by(2)
+          expect { game.decide(:blob_world, :draw_for_each_blob_card_played_this_turn) }.to change { game.active_player.hand.length }.by(2)
         end
       end
 
@@ -49,8 +49,8 @@ RSpec.describe Realms::Cards::BlobWorld do
         let(:blob_card) { Realms::Cards::BlobWheel.new(game.active_player) }
         it "draws 1" do
           game.base_ability(card)
-          expect { game.decide(:blob_world, :draw_for_each_blob_card_played_this_turn) }.to change { game.active_player.deck.hand.length }.by(1)
-          expect { game.play(blob_card) }.to change { game.active_player.deck.hand.length }.by(-1)
+          expect { game.decide(:blob_world, :draw_for_each_blob_card_played_this_turn) }.to change { game.active_player.hand.length }.by(1)
+          expect { game.play(blob_card) }.to change { game.active_player.hand.length }.by(-1)
         end
       end
 
@@ -62,12 +62,12 @@ RSpec.describe Realms::Cards::BlobWorld do
           game.end_turn # active_player turn again
 
           some_card = game.active_player.hand.sample
-          game.active_player.deck.hand << blob_card
+          game.active_player.hand << blob_card
           game.play(some_card)
-          expect { game.play(blob_card) }.to change { game.active_player.deck.hand.length }.by(-1)
+          expect { game.play(blob_card) }.to change { game.active_player.hand.length }.by(-1)
 
           game.base_ability(card)
-          expect { game.decide(:blob_world, :draw_for_each_blob_card_played_this_turn) }.to change { game.active_player.deck.hand.length }.by(1)
+          expect { game.decide(:blob_world, :draw_for_each_blob_card_played_this_turn) }.to change { game.active_player.hand.length }.by(1)
         end
       end
     end

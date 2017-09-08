@@ -1,7 +1,5 @@
-require "realms/phases"
-
 module Realms
-  class Turn < Yielder
+  class Turn
     attr_reader :id,
                 :active_player,
                 :passive_player,
@@ -35,13 +33,6 @@ module Realms
         passive_player: active_player,
         trade_deck: trade_deck,
       )
-    end
-
-    def execute
-      perform Phases::Upkeep.new(self)
-      perform Phases::Main.new(self)
-      perform Phases::Discard.new(self)
-      perform Phases::Draw.new(self)
     end
   end
 end

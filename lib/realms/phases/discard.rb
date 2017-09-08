@@ -4,13 +4,11 @@ module Realms
       def execute
         turn.trade = 0
         turn.combat = 0
-        deck.in_play.select(&:ship?).each { |ship| deck.destroy(ship) }
-        deck.in_play.cards_in_play.select(&:base?).each { |base| base.reset! }
-        deck.discard_hand
-      end
-
-      def deck
-        @deck ||= turn.active_player.deck
+        active_player.in_play.select(&:ship?).each do |ship|
+          active_player.destroy(ship)
+        end
+        active_player.in_play.cards_in_play.select(&:base?).each { |base| base.reset! }
+        active_player.discard_hand
       end
     end
   end

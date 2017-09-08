@@ -17,6 +17,6 @@ RSpec.describe Realms::Cards::TradeEscort do
   describe "#ally_ability" do
     include_context "ally_ability", Realms::Cards::FederationShuttle
 
-    it { expect { game.ally_ability(card) }.to change { game.active_player.deck.hand.length }.by(1) }
+    it { expect { game.ally_ability(card) }.to change { game.active_player.hand.length }.by(1) }
   end
 end

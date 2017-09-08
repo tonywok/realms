@@ -4,11 +4,11 @@ RSpec.describe Realms::Actions::AcquireCard do
   let(:game) { Realms::Game.new }
 
   context "acquiring cards from the trade row" do
-    let(:card) { game.active_player.scout }
+    let(:card) { game.p1.scout }
     let(:trade_row_card) { Realms::Cards::BlobFighter.new(game.trade_deck, index: 10) }
 
     before do
-      game.active_player.deck.hand << card
+      game.p1.hand << card
       game.trade_deck.trade_row.cards[0] = trade_row_card
       game.start
     end
@@ -21,7 +21,7 @@ RSpec.describe Realms::Actions::AcquireCard do
       expect {
         game.acquire(trade_row_card)
         expect(trade_row_card.owner).to eq(game.active_player)
-      }.to change { game.active_player.deck.discard_pile.length }.by(1).and \
+      }.to change { game.active_player.discard_pile.length }.by(1).and \
            change { game.trade_deck.trade_row.length }.by(0)
 
       expect(game.active_turn.trade).to eq(0)
@@ -32,14 +32,14 @@ RSpec.describe Realms::Actions::AcquireCard do
     let(:trade_row_card) { Realms::Cards::BlobWheel.new(game.trade_deck) }
     let(:cards_in_hand) do
       [
-        game.active_player.scout,
-        game.active_player.scout,
-        game.active_player.viper,
+        game.p1.scout,
+        game.p1.scout,
+        game.p1.viper,
       ]
     end
 
     before do
-      cards_in_hand.each { |card| game.active_player.deck.hand << card }
+      cards_in_hand.each { |card| game.p1.hand << card }
       game.trade_deck.trade_row.cards[0] = trade_row_card
       game.start
     end

@@ -23,7 +23,7 @@ RSpec.describe Realms::Cards::BattleMech do
       game.decide(:"scrap_from_hand_or_discard_pile.none")
       expect {
         game.ally_ability(card)
-      }.to change { game.active_player.deck.hand.length }.by(1)
+      }.to change { game.active_player.hand.length }.by(1)
     }
   end
 end

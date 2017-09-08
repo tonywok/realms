@@ -1,5 +1,3 @@
-require "realms/card_pools/card_pool"
-
 module Realms
   module CardPools
     class Vanilla < CardPool

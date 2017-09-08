@@ -2,12 +2,14 @@ require "spec_helper"
 
 RSpec.describe Realms::Zones::Explorers do
   let(:game) { Realms::Game.new }
-  let(:hand) do
-    Realms::Zones::Hand.new(game.active_player, 100.times.map { |i| game.active_player.scout })
+  let(:explorers) do
+    100.times.map { |i| game.p1.scout }
   end
 
   before do
-    game.active_player.deck.hand = hand
+    explorers.each do |card|
+      game.p1.hand << card
+    end
     game.start
   end
 

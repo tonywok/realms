@@ -6,7 +6,7 @@ module Realms
       end
 
       def execute
-        perform card.primary_ability
+        perform card.primary_ability(turn)
       end
     end
   end

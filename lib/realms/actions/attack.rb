@@ -12,7 +12,7 @@ module Realms
           turn.combat = 0
         else
           turn.combat -= target.defense
-          passive_player.deck.destroy(target)
+          passive_player.destroy(target)
         end
       end
     end

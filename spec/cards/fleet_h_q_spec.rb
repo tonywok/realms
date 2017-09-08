@@ -12,25 +12,27 @@ RSpec.describe Realms::Cards::FleetHQ do
   # NOTE: http://www.starrealms.com/faq/
   #
   describe "#primary_ability" do
-    let(:viper_0) { game.active_player.viper }
-    let(:viper_1) { game.active_player.viper }
-    let(:scout_0) { game.active_player.scout }
-    let(:scout_1) { game.active_player.scout }
-    let(:scout_2) { game.active_player.scout }
+    let(:viper_0) { game.p1.viper }
+    let(:viper_1) { game.p1.viper }
+    let(:scout_0) { game.p1.scout }
+    let(:scout_1) { game.p1.scout }
+    let(:scout_2) { game.p1.scout }
 
     let(:hand) do
-      Realms::Zones::Hand.new(game.active_player, [
+      [
         viper_0,
         viper_1,
         scout_0,
         scout_1,
         scout_2,
-      ])
+      ]
     end
 
     before do
-      game.active_player.deck.hand = hand
-      game.active_player.hand << card
+      hand.each do |c|
+        game.p1.hand << c
+      end
+      game.p1.hand << card
       game.start
     end
 

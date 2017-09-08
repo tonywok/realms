@@ -13,7 +13,7 @@ module Realms
       end
 
       def cards_in_hand
-        turn.active_player.deck.hand
+        turn.active_player.hand
       end
     end
   end
