@@ -15,7 +15,7 @@ RSpec.describe Realms::Actions::AllyAbility do
 
     it "triggers both cards" do
       game.play(card1)
-      expect(game.current_choice.options).to_not have_key(:"ally_ability.blob_fighter_0")
+      expect(game.current_choice).to_not have_option(:ally_ability, card1)
 
       expect {
         game.play(card2)

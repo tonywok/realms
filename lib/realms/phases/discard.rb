@@ -7,7 +7,6 @@ module Realms
         active_player.in_play.select(&:ship?).each do |ship|
           active_player.destroy(ship)
         end
-        active_player.in_play.cards_in_play.select(&:base?).each { |base| base.reset! }
         active_player.discard_hand
       end
     end

@@ -7,7 +7,10 @@ module Realms
 
       def execute
         active_player.play(card)
-        perform active_player.in_play
+        perform card.primary_ability(turn) if card.automatic_primary_ability?
+        active_player.in_play.actions.select(&:auto?).each do |action|
+          perform action
+        end
       end
     end
   end

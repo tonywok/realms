@@ -29,7 +29,7 @@ RSpec.describe Realms::Actions::AcquireCard do
   end
 
   context "when the turn doesn't have enough trade" do
-    let(:trade_row_card) { Realms::Cards::BlobWheel.new(game.trade_deck) }
+    let(:trade_row_card) { Realms::Cards::BlobWheel.new(game.trade_deck, index: 42) }
     let(:cards_in_hand) do
       [
         game.p1.scout,
@@ -50,8 +50,8 @@ RSpec.describe Realms::Actions::AcquireCard do
       }.to change { game.active_turn.trade }.by(2).and \
            change { game.active_turn.combat }.by(1)
 
-      expect(game.current_choice.options).to have_key(:"acquire.explorer_0")
-      expect(game.current_choice.options.keys).to_not include(:"acquire.#{trade_row_card.key}")
+      expect(game.current_choice).to have_option(:acquire, :explorer_0)
+      expect(game.current_choice).to_not have_option(:acquire, trade_row_card)
     end
   end
 end

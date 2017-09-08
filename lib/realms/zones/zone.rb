@@ -2,7 +2,7 @@ require "realms/zones/transfer"
 
 module Realms
   module Zones
-    class Zone < Yielder
+    class Zone
       attr_accessor :owner, :cards
 
       include Enumerable

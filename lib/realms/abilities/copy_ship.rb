@@ -10,8 +10,10 @@ module Realms
           card.definition = ship.definition.clone.tap do |definition|
             card.factions.each { |faction| definition.factions << faction }
           end
-          active_player.in_play.reset!(card)
-          perform active_player.in_play
+          perform card.primary_ability(turn)
+          active_player.in_play.actions.select(&:auto?).each do |action|
+            perform action
+          end
         end
       end
 

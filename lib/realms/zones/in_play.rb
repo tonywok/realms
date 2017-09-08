@@ -12,22 +12,42 @@ module Realms
       end
 
       def on_card_added(event)
-        add_card(event.args.first.card)
+        card = event.args.first.card
+        add_card(card)
+
+        # TODO: is this a class?
+        cards_in_play.each do |card_state|
+          card_state.refresh!
+        end
+
+        card.events.attach(self)
       end
 
       def on_card_removed(event)
-        @in_play.delete(event.args.first.card.key)
+        card = event.args.first.card
+        @in_play.delete(card.key)
+        card.events.detach(self)
+      end
+
+      def on_ally_ability(event)
+        card = event.args.first
+        card_state(card).ally.exhaust!
+      end
+
+      def on_primary_ability(event)
+        card = event.args.first
+        card_state(card).primary.exhaust!
+      end
+
+      def on_definition_change(_)
+        cards_in_play.each(&:refresh!)
       end
 
       def actions
-        return attack_actions if owner == active_turn.passive_player
-        base_actions + ally_actions + scrap_actions
-      end
-
-      def execute
-        cards_in_play.each do |card|
-          perform(card.primary_ability(active_turn)) if card.auto_primary_available?
-          perform(card.ally_ability(active_turn)) if auto_ally_available?(card)
+        if my_turn?
+          my_actions
+        else
+          your_actions
         end
       end
 
@@ -35,32 +55,27 @@ module Realms
         in_play.values
       end
 
-      def reset!(card)
-        card_in_play = in_play.fetch(card.key)
-        card_in_play.reset!
+      def reset!
+        cards_in_play.each(&:reset!)
       end
 
       private
 
-      def add_card(card)
-        @in_play[card.key] = CardState.new(card)
+      def card_state(card)
+        @in_play.fetch(card.key)
       end
 
-      def base_actions
-        cards_in_play.select(&:primary_available?).map { |card| Actions::BaseAbility.new(active_turn, card) }
+      def my_turn?
+        active_turn.active_player == owner
       end
 
-      def ally_actions
-        cards_in_play.each_with_object([]) do |card, actions|
-          actions << Actions::AllyAbility.new(active_turn, card) if ally_available?(card)
+      def my_actions
+        cards_in_play.flat_map do |card_state|
+          card_state.actions(active_turn)
         end
       end
 
-      def scrap_actions
-        cards.select(&:scrap_ability?).map { |card| Actions::ScrapAbility.new(active_turn, card) }
-      end
-
-      def attack_actions
+      def your_actions
         eligible = ->(base) { active_turn.combat >= base.defense }
         outposts, bases = cards.select(&:base?).partition(&:outpost?)
 
@@ -81,6 +96,10 @@ module Realms
 
       def auto_ally_available?(card)
         card.automatic_ally_ability? && ally_available?(card)
+      end
+
+      def add_card(card)
+        @in_play[card.key] = CardState.new(card)
       end
     end
   end
