@@ -7,6 +7,8 @@ module Realms
     class Registry
       attr_reader :game, :rng, :p1, :p2, :trade_deck
 
+      include Brainguy::Observer
+
       def initialize(game)
         @game = game
         @rng = Random.new(game.seed)
@@ -15,6 +17,7 @@ module Realms
         @p1 = Player.new("p1", self)
         @p2 = Player.new("p2", self)
         @trade_deck = TradeDeck.new(self)
+        @events = []
       end
 
       def zone(key)
@@ -24,6 +27,14 @@ module Realms
       def register!
         register_players
         register_trade_deck
+      end
+
+      def flush
+        (_events = @events).tap { @events = [] }
+      end
+
+      def on_card_added(event)
+        @events << event.args.first
       end
 
       private
