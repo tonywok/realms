@@ -1,47 +1,112 @@
+## notes
+# 1. zone isn't a state machine
+# 2. automatic should be a concern of the ability
+# 3. zones just send back actions
+# 4. in play card state kept in sync with observation
+#
 module Realms
   module Zones
     class InPlay < Zone
       class CardState
-        attr_reader :card
-        attr_accessor :primary_used, :ally_used, :played_this_turn
+        class State
+          STATES = [
+            INELIGIBLE = "ineligible",
+            ELIGIBLE   = "eligible",
+            AVAILABLE  = "available",
+            EXHAUSTED  = "exhausted",
+          ]
+
+          attr_reader :state
+
+          def initialize(card_state)
+            @card_state = card_state
+            reset!
+          end
+
+          def reset!
+            self.state = get_state
+          end
+
+          def refresh!
+            return EXHAUSTED if exhausted?
+            reset!
+          end
+
+          def exhaust!
+            self.state = EXHAUSTED
+          end
+
+          def exhausted?
+            state == EXHAUSTED
+          end
+
+          def available?
+            state == AVAILABLE
+          end
+
+          def inspect
+            "<#{self.class} state=#{state}>"
+          end
+
+          private
+
+          attr_reader :card_state
+          attr_writer :state
+        end
+
+        class Primary < State
+          def get_state
+            return AVAILABLE if card_state.primary_ability?
+            INELIGIBLE
+          end
+        end
+
+        class Ally < State
+          def get_state
+            return AVAILABLE if ally_available?
+            return ELIGIBLE if card_state.ally_ability?
+            INELIGIBLE
+          end
+
+          private
+
+          def ally_available?
+            card_state.owner.in_play.cards.any? { |other| card_state.ally?(other) }
+          end
+        end
+
+        attr_reader :card, :primary, :ally
 
         delegate_missing_to :card
 
         def initialize(card)
           @card = card
-          @primary_used = false
-          @ally_used = false
           @played_this_turn = true
+          @primary = Primary.new(self)
+          @ally = Ally.new(self)
         end
 
-        alias_method :primary_used?, :primary_used
-        alias_method :ally_used?, :ally_used
-        # maybe make this private and ask the zone for cards played this turn
-        # then we wouldn't have to have CardInPlay exposed externally
-        alias_method :played_this_turn?, :played_this_turn
-
-        def primary_available?
-          return false unless primary_ability?
-          !primary_used?
+        def actions(turn)
+          [].tap do |actions|
+            actions << Actions::BaseAbility.new(turn, card) if primary.available?
+            actions << Actions::AllyAbility.new(turn, card) if ally.available?
+            actions << Actions::ScrapAbility.new(turn, card) if scrap_ability?
+          end
         end
 
-        def auto_primary_available?
-          return false if primary_used?
-          ship? ? true : automatic_primary_ability?
+        def played_this_turn?
+          @played_this_turn
         end
 
-        def primary_ability(turn)
-          super(turn).tap { self.primary_used = true }
-        end
-
-        def ally_ability(turn)
-          super(turn).tap { self.ally_used = true }
+        def refresh!
+          primary.refresh!
+          ally.refresh!
         end
 
         def reset!
-          self.primary_used = false
-          self.ally_used = false
-          self.played_this_turn = false if base?
+          @played_this_turn = false
+          primary.reset!
+          ally.reset!
         end
       end
     end

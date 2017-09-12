@@ -5,6 +5,8 @@ require "equalizer"
 module Realms
   module Cards
     class Card
+      include Brainguy::Observable
+
       module Factions
         ALL = [
           BLOB = :blob,
@@ -131,11 +133,20 @@ module Realms
       end
 
       def primary_ability(turn)
-        definition.primary_ability.new(self, turn)
+        definition.primary_ability.new(self, turn).tap do
+          emit(:primary_ability, self)
+        end
       end
 
       def ally_ability(turn)
-        definition.ally_ability.new(self, turn)
+        definition.ally_ability.new(self, turn).tap do
+          emit(:ally_ability, self)
+        end
+      end
+
+      def definition=(definition)
+        @definition = definition
+        emit(:definition_change, self)
       end
 
       def scrap_ability(turn)
@@ -187,6 +198,7 @@ module Realms
       end
 
       def ally?(other)
+        return false if self == other
         (ally_factions & other.ally_factions).present?
       end
 
