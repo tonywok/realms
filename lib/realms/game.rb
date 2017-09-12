@@ -58,7 +58,7 @@ module Realms
     end
 
     def base_ability(card)
-      decide(:base_ability, card)
+      decide(:primary_ability, card)
     end
 
     def ally_ability(card)

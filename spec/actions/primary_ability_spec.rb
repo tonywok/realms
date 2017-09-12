@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Realms::Actions::BaseAbility do
+RSpec.describe Realms::Actions::PrimaryAbility do
   let(:game) { Realms::Game.new }
   let(:action) { described_class.new(card) }
 
