@@ -88,7 +88,7 @@ module Realms
 
         def actions(turn)
           [].tap do |actions|
-            actions << Actions::BaseAbility.new(turn, card) if primary.available?
+            actions << Actions::PrimaryAbility.new(turn, card) if primary.available?
             actions << Actions::AllyAbility.new(turn, card) if ally.available?
             actions << Actions::ScrapAbility.new(turn, card) if scrap_ability?
           end

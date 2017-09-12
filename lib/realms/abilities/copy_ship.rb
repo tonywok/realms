@@ -10,10 +10,7 @@ module Realms
           card.definition = ship.definition.clone.tap do |definition|
             card.factions.each { |faction| definition.factions << faction }
           end
-          perform card.primary_ability(turn)
-          active_player.in_play.actions.select(&:auto?).each do |action|
-            perform action
-          end
+          perform Actions::PrimaryAbility.new(turn, card)
         end
       end
 
