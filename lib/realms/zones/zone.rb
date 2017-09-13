@@ -29,6 +29,7 @@ module Realms
         @owner = owner
         @cards = cards
         events.attach(self)
+        events.attach(registry)
       end
 
       def key

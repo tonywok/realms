@@ -23,7 +23,7 @@ module Realms
     def start
       self.active_turn = Turn.first(trade_deck, p1, p2)
       next_choice
-      self
+      registry.flush
     end
 
     def over?
@@ -51,6 +51,7 @@ module Realms
       else
         super(safe(action))
       end
+      registry.flush
     end
 
     def play(card)
