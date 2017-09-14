@@ -26,8 +26,8 @@ RSpec.describe Realms::Zones::InPlay do
             game.ally_ability(ally)
           }.to change { game.active_player.draw_pile.length }.by(-2)
 
-          expect(game.current_choice).to_not have_option(:ally_ability, card)
-          expect(game.current_choice).to_not have_option(:ally_ability, ally)
+          expect(game).to_not have_option(:ally_ability, card)
+          expect(game).to_not have_option(:ally_ability, ally)
         end
       end
 
@@ -42,8 +42,8 @@ RSpec.describe Realms::Zones::InPlay do
           }.to change { game.active_turn.combat }.by(5).and \
                change { game.active_player.draw_pile.length }.by(-1)
 
-          expect(game.current_choice).to_not have_option(:ally_ability, card)
-          expect(game.current_choice).to_not have_option(:ally_ability, ally)
+          expect(game).to_not have_option(:ally_ability, card)
+          expect(game).to_not have_option(:ally_ability, ally)
         end
       end
     end
@@ -62,7 +62,7 @@ RSpec.describe Realms::Zones::InPlay do
               game.base_ability(card)
               game.decide(:trading_post, :authority)
             }.to change { game.active_player.authority }.by(1)
-            expect(game.current_choice).to_not have_option(:base_ability, card)
+            expect(game).to_not have_option(:base_ability, card)
           end
         end
 
@@ -75,7 +75,7 @@ RSpec.describe Realms::Zones::InPlay do
             expect {
               game.play(card)
             }.to change { game.active_turn.combat }.by(1)
-            expect(game.current_choice).to_not have_option(:base_ability, card)
+            expect(game).to_not have_option(:base_ability, card)
           end
         end
       end
@@ -90,7 +90,7 @@ RSpec.describe Realms::Zones::InPlay do
             expect {
               game.ally_ability(card)
             }.to change { game.active_player.draw_pile.length }.by(-1)
-            expect(game.current_choice).to_not have_option(:ally_ability, card)
+            expect(game).to_not have_option(:ally_ability, card)
           end
         end
 
@@ -103,7 +103,7 @@ RSpec.describe Realms::Zones::InPlay do
             expect {
               game.play(card)
             }.to change { game.active_turn.combat }.by(9)
-            expect(game.current_choice).to_not have_option(:ally_ability, card)
+            expect(game).to_not have_option(:ally_ability, card)
           end
         end
       end
@@ -121,7 +121,7 @@ RSpec.describe Realms::Zones::InPlay do
               game.base_ability(card)
               game.decide(:authority)
             }.to change { game.active_player.authority }.by(1)
-            expect(game.current_choice).to_not have_option(:base_ability, card)
+            expect(game).to_not have_option(:base_ability, card)
           end
         end
 
@@ -134,7 +134,7 @@ RSpec.describe Realms::Zones::InPlay do
             expect {
               game.play(card)
             }.to change { game.active_turn.combat }.by(1)
-            expect(game.current_choice).to_not have_option(:base_ability, card)
+            expect(game).to_not have_option(:base_ability, card)
           end
         end
       end
@@ -149,7 +149,7 @@ RSpec.describe Realms::Zones::InPlay do
             expect {
               game.ally_ability(card)
             }.to change { game.active_player.draw_pile.length }.by(-1)
-            expect(game.current_choice).to_not have_option(:ally_ability, card)
+            expect(game).to_not have_option(:ally_ability, card)
           end
         end
 
@@ -162,7 +162,7 @@ RSpec.describe Realms::Zones::InPlay do
             expect {
               game.play(card)
             }.to change { game.active_turn.combat }.by(9)
-            expect(game.current_choice).to_not have_option(:ally_ability, card)
+            expect(game).to_not have_option(:ally_ability, card)
           end
         end
       end

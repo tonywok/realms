@@ -28,7 +28,7 @@ RSpec.describe Realms::Cards::StealthNeedle do
              change { game.active_player.authority }.by(4)
 
         game.play(card)
-        expect(game.current_choice).to_not have_option(:copy_ship, card)
+        expect(game).to_not have_option(:copy_ship, card)
 
         expect {
           game.decide(:copy_ship, another_ship)

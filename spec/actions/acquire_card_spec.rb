@@ -50,8 +50,8 @@ RSpec.describe Realms::Actions::AcquireCard do
       }.to change { game.active_turn.trade }.by(2).and \
            change { game.active_turn.combat }.by(1)
 
-      expect(game.current_choice).to have_option(:acquire, :explorer_0)
-      expect(game.current_choice).to_not have_option(:acquire, trade_row_card)
+      expect(game).to have_option(:acquire, :explorer_0)
+      expect(game).to_not have_option(:acquire, trade_row_card)
     end
   end
 end

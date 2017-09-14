@@ -25,7 +25,7 @@ RSpec.describe Realms::Cards::BattlePod do
       trade_row_card = game.trade_deck.trade_row.last
 
       expect {
-        game.decide(:"scrap_card_from_trade_row.#{trade_row_card.key}")
+        game.decide(:scrap_card_from_trade_row, trade_row_card)
       }.to change { game.trade_deck.trade_row }
 
       expect(game.trade_deck.trade_row).to_not include(trade_row_card)
@@ -38,10 +38,10 @@ RSpec.describe Realms::Cards::BattlePod do
           game.play(card)
         }.to change { game.active_turn.combat }.by(4)
 
-        expect(game.current_choice.options).to have_key(:"scrap_card_from_trade_row.none")
+        expect(game).to have_option(:scrap_card_from_trade_row, :none)
 
         expect {
-          game.decide(:"scrap_card_from_trade_row.none")
+          game.decide(:scrap_card_from_trade_row, :none)
         }.to_not change { game.trade_deck.trade_row.length }
       end
     end
@@ -53,7 +53,7 @@ RSpec.describe Realms::Cards::BattlePod do
     it {
       expect {
         game.play(card)
-        game.decide(:"scrap_card_from_trade_row.none")
+        game.decide(:scrap_card_from_trade_row, :none)
       }.to change { game.active_turn.combat }.by(6)
     }
   end

@@ -35,8 +35,8 @@ shared_examples "destroy_target_base" do
     end
 
     it "must choose the outpost card first" do
-      expect(game.current_choice.options).to have_key(:"destroy_target_base.#{outpost_card.key}")
-      expect(game.current_choice.options).to_not have_key(:"destroy_target_base.#{base_card.key}")
+      expect(game).to have_option(:destroy_target_base, outpost_card)
+      expect(game).to_not have_option(:destroy_target_base, base_card)
       game.decide(:destroy_target_base, outpost_card)
       expect(game.active_player.discard_pile).to include(outpost_card)
     end
@@ -54,7 +54,7 @@ shared_examples "scrap_card_from_hand_or_discard_pile" do
   context "opting out of the scrap" do
     it {
       expect {
-        game.decide(:"scrap_from_hand_or_discard_pile.none")
+        game.decide(:scrap_from_hand_or_discard_pile, :none)
       }.to change { game.trade_deck.scrap_heap.length }.by(0)
     }
   end
@@ -62,14 +62,14 @@ shared_examples "scrap_card_from_hand_or_discard_pile" do
   context "scrapping from hand" do
     let(:card_in_hand) { game.p1.hand.first }
     it {
-      game.decide(:"scrap_from_hand_or_discard_pile.#{card_in_hand.key}")
+      game.decide(:scrap_from_hand_or_discard_pile, card_in_hand)
       expect(game.trade_deck.scrap_heap).to include(card_in_hand)
     }
   end
 
   context "scrapping from discard pile" do
     it {
-      game.decide(:"scrap_from_hand_or_discard_pile.#{discarded_card.key}")
+      game.decide(:scrap_from_hand_or_discard_pile, discarded_card)
       expect(game.trade_deck.scrap_heap).to include(discarded_card)
     }
   end

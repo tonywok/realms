@@ -15,7 +15,7 @@ RSpec.describe Realms::Actions::AllyAbility do
 
     it "triggers both cards" do
       game.play(card1)
-      expect(game.current_choice).to_not have_option(:ally_ability, card1)
+      expect(game).to_not have_option(:ally_ability, card1)
 
       expect {
         game.play(card2)
@@ -25,8 +25,8 @@ RSpec.describe Realms::Actions::AllyAbility do
 
       expect { game.ally_ability(card1) }.to change { game.active_turn.active_player.hand.length }.by(1)
 
-      expect(game.current_choice.options).to_not have_key(:"ally_ability.blob_fighter_0")
-      expect(game.current_choice.options).to_not have_key(:"ally_ability.battle_pod_0")
+      expect(game).to_not have_option(:ally_ability, card1)
+      expect(game).to_not have_option(:ally_ability, card2)
     end
   end
 
@@ -47,8 +47,8 @@ RSpec.describe Realms::Actions::AllyAbility do
       expect { game.ally_ability(card1) }.to change { game.active_turn.active_player.hand.length }.by(1)
       expect { game.ally_ability(card2) }.to change { game.active_turn.active_player.hand.length }.by(1)
 
-      expect(game.current_choice).to_not have_option(:ally_ability, card1)
-      expect(game.current_choice).to_not have_option(:ally_ability, card2)
+      expect(game).to_not have_option(:ally_ability, card1)
+      expect(game).to_not have_option(:ally_ability, card2)
     end
   end
 
@@ -61,7 +61,7 @@ RSpec.describe Realms::Actions::AllyAbility do
         game.play(card)
       end
       game.p1.in_play.each do |card|
-        expect(game.current_choice).to_not have_option(:ally_ability, card)
+        expect(game).to_not have_option(:ally_ability, card)
       end
     end
   end
