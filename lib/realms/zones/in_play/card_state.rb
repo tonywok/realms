@@ -71,6 +71,7 @@ module Realms
           private
 
           def ally_available?
+            return false unless card_state.ally_ability?
             card_state.owner.in_play.cards.any? { |other| card_state.ally?(other) }
           end
         end

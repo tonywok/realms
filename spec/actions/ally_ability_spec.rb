@@ -47,8 +47,22 @@ RSpec.describe Realms::Actions::AllyAbility do
       expect { game.ally_ability(card1) }.to change { game.active_turn.active_player.hand.length }.by(1)
       expect { game.ally_ability(card2) }.to change { game.active_turn.active_player.hand.length }.by(1)
 
-      expect(game.current_choice.options).to_not have_key(:"ally_ability.blob_fighter_0")
-      expect(game.current_choice.options).to_not have_key(:"ally_ability.blob_fighter_1")
+      expect(game.current_choice).to_not have_option(:ally_ability, card1)
+      expect(game.current_choice).to_not have_option(:ally_ability, card2)
+    end
+  end
+
+  context "when playing a card that doesn't have an ally ability" do
+    let(:scout_or_viper) { game.p1.hand.sample }
+
+    it "triggers both cards once" do
+      game.start
+      game.p1.hand.each do |card|
+        game.play(card)
+      end
+      game.p1.in_play.each do |card|
+        expect(game.current_choice).to_not have_option(:ally_ability, card)
+      end
     end
   end
 end
