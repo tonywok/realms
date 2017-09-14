@@ -1,3 +1,5 @@
+require "realms/choices"
+
 module Realms
   class Yielder
     attr_reader :current_choice
@@ -16,7 +18,7 @@ module Realms
     end
 
     def next_choice
-      return current_choice if current_choice && !current_choice.decided?
+      return current_choice if current_choice && current_choice.undecided?
       @current_choice = state_machine.next
     rescue StopIteration
       @current_choice = nil
@@ -26,20 +28,38 @@ module Realms
 
     attr_reader :choices
 
-    def choose(choice)
+    def perform(yielder)
+      choices.yield yielder.state_machine
+    end
+
+    def may_choose(options, **kwargs, &block)
+      choose(options, kwargs.merge(optionality: true), &block)
+    end
+
+    def choose_many(options, count:, **kwargs, &block)
+      choose(options, kwargs.merge(count: count), &block)
+    end
+
+    def may_choose_many(options, count:, **kwargs, &block)
+      choose_many(options, kwargs.merge(count: count, optionality: true), &block)
+    end
+
+    def choose(options, **kwargs)
+      choice = choice_factory.make(options, **kwargs)
+
       return if choice.noop?
       choice.clear
-      choices.yield choice
+      choices.yield(choice)
 
       if block_given? && choice.actionable?
-        yield choice.decision
+        yield(choice.decision.result)
       else
-        choice.decision
+        choice.decision.result
       end
     end
 
-    def perform(choosable)
-      choices.yield choosable.state_machine
+    def choice_factory
+      @choice_factory ||= Choices::Factory.new
     end
   end
 end

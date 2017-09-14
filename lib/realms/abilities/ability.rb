@@ -13,21 +13,12 @@ module Realms
         @optional = optional
       end
 
-      def choose(options, name: self.class.key, optionality: optional, count: 1, &block)
-        choice = if count == 1
-                   Choice.new(options, name: name, optional: optionality)
-                 else
-                   MultiChoice.new(options, name: name, count: count)
-                 end
-        super(choice) { |decision| yield(decision) }
+      def choose(options, subject: key, optionality: optional, **kwargs)
+        super
       end
 
-      def may_choose(options, **kwargs, &block)
-        choose(options, kwargs.merge(optionality: true), &block)
-      end
-
-      def choose_many(options, count:, **kwargs, &block)
-        choose(options, kwargs.merge(count: count), &block)
+      def key
+        self.class.respond_to?(:key) ? self.class.key : card.name
       end
 
       def self.auto?

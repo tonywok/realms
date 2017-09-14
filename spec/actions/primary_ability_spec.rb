@@ -23,7 +23,7 @@ RSpec.describe Realms::Actions::PrimaryAbility do
         expect {
           game.play(card)
         }.to change { game.active_turn.combat }.by(1)
-        expect { game.base_ability(card) }.to raise_error(Realms::Choice::InvalidOption)
+        expect { game.base_ability(card) }.to raise_error(Realms::Choices::InvalidOption)
       end
     end
 
@@ -69,7 +69,7 @@ RSpec.describe Realms::Actions::PrimaryAbility do
         expect {
           game.decide(:"trading_post.trade")
         }.to change { game.active_turn.trade }.by(1)
-        expect { game.base_ability(card) }.to raise_error(Realms::Choice::InvalidOption)
+        expect { game.base_ability(card) }.to raise_error(Realms::Choices::InvalidOption)
       end
     end
   end

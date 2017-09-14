@@ -2,7 +2,6 @@ require "realms/yielder"
 require "realms/zones"
 require "realms/turn"
 require "realms/phases"
-require "realms/choice"
 
 module Realms
   class Game < Yielder
@@ -76,6 +75,10 @@ module Realms
 
     def attack(key)
       decide(:attack, key)
+    end
+
+    def discard(key)
+      decide(:discard, key)
     end
 
     def end_turn

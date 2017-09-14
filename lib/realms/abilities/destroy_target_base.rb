@@ -13,7 +13,8 @@ module Realms
       end
 
       def bases_in_play
-        all_bases = turn.active_player.in_play.select(&:base?)
+        all_bases = turn.active_player.in_play.select(&:base?) +
+          turn.passive_player.in_play.select(&:base?)
         all_bases.any?(&:outpost?) ? all_bases.select(&:outpost?) : all_bases
       end
     end

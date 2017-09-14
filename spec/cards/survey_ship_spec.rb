@@ -20,7 +20,7 @@ RSpec.describe Realms::Cards::SurveyShip do
       game.scrap_ability(card)
       game.end_turn
       expect {
-        game.decide(game.active_player.hand.sample)
+        game.discard(game.active_player.hand.sample)
       }.to change { game.active_player.hand.length }.by(-1)
     }
   end

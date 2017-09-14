@@ -15,13 +15,6 @@ RSpec.describe Realms::Cards::BlobWorld do
       end
     end
 
-    context "choosing nothing" do
-      it "does nothing" do
-        game.base_ability(card)
-        expect { game.decide(:blob_world, :none) }.to change { game.active_turn.combat }.by(0)
-      end
-    end
-
     context "choosing combat" do
       it "adds 5 combat" do
         game.base_ability(card)
@@ -56,8 +49,6 @@ RSpec.describe Realms::Cards::BlobWorld do
 
       context "already in play" do
         it "only draws for blobs played this turn" do
-          game.base_ability(card)
-          game.decide(:blob_world, :none)
           game.end_turn # p2 turn
           game.end_turn # active_player turn again
 

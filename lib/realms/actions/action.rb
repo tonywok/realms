@@ -18,11 +18,15 @@ module Realms
       end
 
       def key
-        "#{self.class.key}.#{target.key}"
+        [self.class.key, target&.key].compact.join(".")
       end
 
       def auto?
         false
+      end
+
+      def choose(options, subject: key, **kwargs)
+        super
       end
 
       def execute

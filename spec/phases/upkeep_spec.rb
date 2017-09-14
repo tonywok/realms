@@ -15,8 +15,10 @@ RSpec.describe Realms::Phases::Upkeep do
       game.play(card)
       game.end_turn
 
-      card_to_discard = game.p2.hand.sample
-      game.decide(card_to_discard)
+      game.active_player.hand.each do |card|
+        expect(game).to have_option(:discard, card)
+      end
+      game.discard(game.active_player.hand.sample)
       game.end_turn
 
       game.end_turn

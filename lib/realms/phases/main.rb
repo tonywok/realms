@@ -5,7 +5,7 @@ module Realms
         to: :turn
 
       def execute
-        choose Choice.new(player_actions) do |decision|
+        choose(player_actions) do |decision|
           perform decision
           execute unless decision.is_a?(Actions::EndMainPhase)
         end

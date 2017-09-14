@@ -67,7 +67,7 @@ RSpec.describe Realms::Actions::Attack do
       it "can attack the base" do
         game.attack(base)
         expect(game.passive_player.discard_pile).to include(base)
-        expect { game.attack(game.passive_player) }.to raise_error(Realms::Choice::InvalidOption)
+        expect { game.attack(game.passive_player) }.to raise_error(Realms::Choices::InvalidOption)
       end
 
       it "can attack the player" do
@@ -80,7 +80,7 @@ RSpec.describe Realms::Actions::Attack do
       let(:combat) { base.defense - 1  }
 
       it "cannot attack the base" do
-        expect { game.attack(base) }.to raise_error(Realms::Choice::InvalidOption)
+        expect { game.attack(base) }.to raise_error(Realms::Choices::InvalidOption)
       end
 
       it "can attack the player" do
@@ -111,7 +111,7 @@ RSpec.describe Realms::Actions::Attack do
       end
 
       it "cannot attack the player" do
-        expect { game.attack(game.passive_player) }.to raise_error(Realms::Choice::InvalidOption)
+        expect { game.attack(game.passive_player) }.to raise_error(Realms::Choices::InvalidOption)
       end
     end
 
@@ -121,11 +121,11 @@ RSpec.describe Realms::Actions::Attack do
       it "can attack the base" do
         game.attack(base)
         expect(game.passive_player.discard_pile).to include(base)
-        expect { game.attack(game.passive_player) }.to raise_error(Realms::Choice::InvalidOption)
+        expect { game.attack(game.passive_player) }.to raise_error(Realms::Choices::InvalidOption)
       end
 
       it "cannot attack the player" do
-        expect { game.attack(game.passive_player) }.to raise_error(Realms::Choice::InvalidOption)
+        expect { game.attack(game.passive_player) }.to raise_error(Realms::Choices::InvalidOption)
       end
     end
 
@@ -133,11 +133,11 @@ RSpec.describe Realms::Actions::Attack do
       let(:combat) { base.defense - 1  }
 
       it "cannot attack the base" do
-        expect { game.attack(base) }.to raise_error(Realms::Choice::InvalidOption)
+        expect { game.attack(base) }.to raise_error(Realms::Choices::InvalidOption)
       end
 
       it "cannot attack the player" do
-        expect { game.attack(game.passive_player) }.to raise_error(Realms::Choice::InvalidOption)
+        expect { game.attack(game.passive_player) }.to raise_error(Realms::Choices::InvalidOption)
       end
     end
   end
@@ -155,8 +155,8 @@ RSpec.describe Realms::Actions::Attack do
     end
 
     it "must destroy outpost first" do
-      expect { game.attack(base) }.to raise_error(Realms::Choice::InvalidOption)
-      expect { game.attack(game.passive_player) }.to raise_error(Realms::Choice::InvalidOption)
+      expect { game.attack(base) }.to raise_error(Realms::Choices::InvalidOption)
+      expect { game.attack(game.passive_player) }.to raise_error(Realms::Choices::InvalidOption)
       game.attack(outpost)
       game.attack(base)
       game.attack(game.passive_player)
