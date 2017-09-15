@@ -6,11 +6,11 @@ module Realms
       end
 
       def execute
-        choose_many(cards_in_hand, count: arg) do |cards|
+        may_choose_many(cards_in_hand, count: arg) do |cards|
           cards.each do |card|
-            active_player.hand.transfer!(card: card, to: active_player.discard_pile)
+            active_player.discard(card)
           end
-          cards.length.times { active_player.draw_pile.transfer!(to: active_player.hand) }
+          active_player.draw(cards.length)
         end
       end
 

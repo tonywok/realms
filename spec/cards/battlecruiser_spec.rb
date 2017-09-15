@@ -20,7 +20,7 @@ RSpec.describe Realms::Cards::Battlecruiser do
       game.ally_ability(card)
       game.end_turn
       expect {
-        game.decide(game.active_player.hand.sample.key)
+        game.discard(game.active_player.hand.sample)
       }.to change { game.active_player.hand.length }.by(-1)
     }
   end

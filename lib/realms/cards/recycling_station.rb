@@ -8,7 +8,7 @@ module Realms
       primary_ability Abilities::Choose[
         Abilities::Trade[1],
         Abilities::DiscardToDraw[2]
-      ], optional: true
+      ]
     end
   end
 end

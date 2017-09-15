@@ -6,7 +6,7 @@ module Realms
       end
 
       def execute
-        choose Choice.new(cards_in_hand) do |chosen_card|
+        choose(cards_in_hand) do |chosen_card|
           active_player.discard(chosen_card)
         end
       end

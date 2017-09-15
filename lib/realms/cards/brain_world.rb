@@ -6,7 +6,7 @@ module Realms
       end
 
       def execute
-        choose_many(zones.flat_map(&:cards), count: arg) do |cards|
+        may_choose_many(cards_in_hand_or_discard_pile, count: arg) do |cards|
           cards.each do |selected_card|
             turn.trade_deck.scrap(selected_card)
           end
@@ -14,8 +14,8 @@ module Realms
         end
       end
 
-      def zones
-        [active_player.hand, active_player.discard_pile]
+      def cards_in_hand_or_discard_pile
+        [active_player.hand, active_player.discard_pile].flat_map(&:cards)
       end
     end
   end
