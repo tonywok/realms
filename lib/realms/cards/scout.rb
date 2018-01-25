@@ -1,9 +1,13 @@
 module Realms
   module Cards
     class Scout < Card
+      include Cards::Dsl
+
       faction :unaligned
       cost 0
-      primary_ability Abilities::Trade[1]
+      primary do
+        trade 1
+      end
     end
   end
 end

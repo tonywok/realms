@@ -2,6 +2,8 @@ require "realms/abilities"
 require "realms/actions"
 require "equalizer"
 
+require "realms/cards/dsl"
+
 module Realms
   module Cards
     class Card
@@ -133,7 +135,7 @@ module Realms
       end
 
       def primary_ability(turn)
-        definition.primary_ability.new(self, turn).tap do
+        definition.primary_ability.to_ability(self, turn).tap do
           emit(:primary_ability, self)
         end
       end
