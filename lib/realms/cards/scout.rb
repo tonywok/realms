@@ -1,7 +1,7 @@
 module Realms
   module Cards
     class Scout < Card
-      include Cards::Dsl
+      include ::Framework::Cards::Dsl
 
       faction :unaligned
       cost 0
