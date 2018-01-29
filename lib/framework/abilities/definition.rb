@@ -13,21 +13,9 @@ module Framework
         @effects ||= []
       end
 
+      # TODO: move realms specific stuff out of framework
       def trade(num)
-        effects << EffectDefinition.new(::Realms::Abilities::Trade, num)
-      end
-
-      class EffectDefinition
-        attr_reader :effect_class, :num
-
-        def initialize(effect_class, num)
-          @effect_class = effect_class
-          @num = num
-        end
-
-        def to_effect(card, turn)
-          effect_class[num].new(card, turn)
-        end
+        effects << Effects::Definition.new(::Realms::Abilities::Trade, num)
       end
 
       class SequenceAbility < ::Realms::Abilities::Ability
