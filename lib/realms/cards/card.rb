@@ -38,7 +38,7 @@ module Realms
           @type = :ship
           @defense = 0 # TODO: there's probably a class in here
           @cost = 0
-          @factions = []
+          @factions = Set.new
           @primary_abilities = []
           @ally_abilities = []
           @scrap_abilities = []
@@ -135,15 +135,23 @@ module Realms
       end
 
       def primary_ability(turn)
-        definition.primary_ability.to_ability(self, turn).tap do
-          emit(:primary_ability, self)
-        end
+        ability = case definition.primary_ability
+                  when Framework::Abilities::Definition
+                    definition.primary_ability.to_ability(self, turn)
+                  else
+                    definition.primary_ability.new(self, turn)
+                  end
+        ability.tap { emit(:primary_ability, self) }
       end
 
       def ally_ability(turn)
-        definition.ally_ability.new(self, turn).tap do
-          emit(:ally_ability, self)
-        end
+        ability = case definition.ally_ability
+                  when Framework::Abilities::Definition
+                    definition.ally_ability.to_ability(self, turn)
+                  else
+                    definition.ally_ability.new(self, turn)
+                  end
+        ability.tap { emit(:ally_ability, self) }
       end
 
       def definition=(definition)

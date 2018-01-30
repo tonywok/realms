@@ -4,7 +4,9 @@ module Framework
       attr_reader :factions,
                   :type
 
-      attr_accessor :cost, :primary_ability
+      attr_accessor :cost,
+                    :primary_ability,
+                    :ally_ability
 
       def initialize
         @factions = Set.new
@@ -13,11 +15,11 @@ module Framework
       end
 
       def primary_abilities
-        ["derp"]
+        primary_ability.effects
       end
 
       def ally_abilities
-        []
+        ally_ability.effects
       end
 
       def scrap_abilities

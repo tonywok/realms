@@ -3,6 +3,8 @@ module Framework
     class Definition
       attr_reader :effect_class, :num
 
+      delegate :auto?, to: :effect_class
+
       def initialize(effect_class, num)
         @effect_class = effect_class
         @num = num

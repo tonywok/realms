@@ -13,9 +13,16 @@ module Framework
         @effects ||= []
       end
 
-      # TODO: move realms specific stuff out of framework
       def trade(num)
         effects << Effects::Definition.new(::Realms::Abilities::Trade, num)
+      end
+
+      def combat(num)
+        effects << Effects::Definition.new(::Realms::Abilities::Combat, num)
+      end
+
+      def authority(num)
+        effects << Effects::Definition.new(::Realms::Abilities::Authority, num)
       end
 
       class SequenceAbility < ::Realms::Abilities::Ability

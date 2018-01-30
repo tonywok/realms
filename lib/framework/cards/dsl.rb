@@ -21,6 +21,12 @@ module Framework
           ability_definition.instance_exec(&block)
           definition.primary_ability = ability_definition
         end
+
+        def ally(&block)
+          ability_definition = Abilities::Definition.new
+          ability_definition.instance_exec(&block)
+          definition.ally_ability = ability_definition
+        end
       end
     end
   end
