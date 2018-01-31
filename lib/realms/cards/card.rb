@@ -136,8 +136,8 @@ module Realms
 
       def primary_ability(turn)
         ability = case definition.primary_ability
-                  when Framework::Abilities::Definition
-                    definition.primary_ability.to_ability(self, turn)
+                  when Framework::Effects::Definition
+                    definition.primary_ability.to_effect(self, turn)
                   else
                     definition.primary_ability.new(self, turn)
                   end
@@ -146,8 +146,8 @@ module Realms
 
       def ally_ability(turn)
         ability = case definition.ally_ability
-                  when Framework::Abilities::Definition
-                    definition.ally_ability.to_ability(self, turn)
+                  when Framework::Effects::Definition
+                    definition.ally_ability.to_effect(self, turn)
                   else
                     definition.ally_ability.new(self, turn)
                   end
@@ -160,7 +160,13 @@ module Realms
       end
 
       def scrap_ability(turn)
-        definition.scrap_ability.new(self, turn)
+        ability = case definition.scrap_ability
+                  when Framework::Effects::Definition
+                    definition.scrap_ability.to_effect(self, turn)
+                  else
+                    definition.scrap_ability.new(self, turn)
+                  end
+        ability.tap { emit(:scrap_ability, self) }
       end
 
       def ally_factions
@@ -168,6 +174,7 @@ module Realms
       end
 
       def primary_ability?
+
         definition.primary_abilities.any?
       end
 

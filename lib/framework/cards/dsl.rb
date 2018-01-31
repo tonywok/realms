@@ -1,5 +1,6 @@
 module Framework
   module Cards
+    # TODO: this is realms specific
     module Dsl
       extend ActiveSupport::Concern
 
@@ -16,16 +17,30 @@ module Framework
           definition.cost = trade_amount
         end
 
+        def type(card_type)
+          definition.type = card_type
+        end
+
+        def defense(num)
+          definition.defense = num
+        end
+
         def primary(&block)
-          ability_definition = Abilities::Definition.new
+          ability_definition = Effects::Definition.new(Effects::Sequence, nil)
           ability_definition.instance_exec(&block)
           definition.primary_ability = ability_definition
         end
 
         def ally(&block)
-          ability_definition = Abilities::Definition.new
+          ability_definition = Effects::Definition.new(Effects::Sequence, nil)
           ability_definition.instance_exec(&block)
           definition.ally_ability = ability_definition
+        end
+
+        def scrap(&block)
+          ability_definition = Effects::Definition.new(Effects::Sequence, nil)
+          ability_definition.instance_exec(&block)
+          definition.scrap_ability = ability_definition
         end
       end
     end

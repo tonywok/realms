@@ -1,15 +1,23 @@
 module Realms
   module Cards
     class BarterWorld < Card
+      include Framework::Cards::Dsl
+
       type :base
       defense 4
       faction :trade_federation
       cost 4
-      primary_ability Abilities::Choose[
-        Abilities::Authority[2],
-        Abilities::Trade[2],
-      ]
-      scrap_ability Abilities::Combat[5]
+
+      primary do
+        choose do
+          authority 2
+          trade 2
+        end
+      end
+
+      scrap do
+        combat 5
+      end
     end
   end
 end
