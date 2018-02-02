@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "byebug"
+require "pry"
 Bundler.setup
 
 require "realms"
