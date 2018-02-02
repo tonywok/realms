@@ -174,7 +174,6 @@ module Realms
       end
 
       def primary_ability?
-
         definition.primary_abilities.any?
       end
 
@@ -187,7 +186,9 @@ module Realms
       end
 
       def automatic_primary_ability?
-        ship? || static? || definition.primary_abilities.any?(&:auto?)
+        ship? || static? || definition.primary_ability&.auto?
+      rescue => e
+        binding.pry
       end
 
       def automatic_ally_ability?

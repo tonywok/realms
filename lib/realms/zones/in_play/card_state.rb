@@ -57,7 +57,6 @@ module Realms
         class Primary < State
           def get_state
             return AVAILABLE if card_state.primary_ability?
-            byebug
             INELIGIBLE
           end
         end
