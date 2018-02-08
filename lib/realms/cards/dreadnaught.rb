@@ -1,11 +1,19 @@
 module Realms
   module Cards
     class Dreadnaught < Card
+      include Framework::Cards::Dsl
+
       faction Factions::STAR_ALLIANCE
       cost 7
-      primary_ability Abilities::Combat[7]
-      primary_ability Abilities::Draw[1]
-      scrap_ability Abilities::Combat[5]
+
+      primary do
+        combat 7
+        draw 1
+      end
+
+      scrap do
+        combat 5
+      end
     end
   end
 end

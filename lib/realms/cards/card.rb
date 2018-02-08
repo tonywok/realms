@@ -2,8 +2,6 @@ require "realms/abilities"
 require "realms/actions"
 require "equalizer"
 
-require "realms/cards/dsl"
-
 module Realms
   module Cards
     class Card
@@ -187,8 +185,6 @@ module Realms
 
       def automatic_primary_ability?
         ship? || static? || definition.primary_ability&.auto?
-      rescue => e
-        binding.pry
       end
 
       def automatic_ally_ability?

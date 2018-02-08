@@ -4,6 +4,7 @@ module Realms
       include Framework::Cards::Dsl
       faction :unaligned
       cost 0
+
       primary do
         combat 1
       end

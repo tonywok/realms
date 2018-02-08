@@ -1,11 +1,19 @@
 module Realms
   module Cards
     class MissileMech < Card
+      include Framework::Cards::Dsl
+
       faction :machine_cult
       cost 6
-      primary_ability Abilities::Combat[6]
-      primary_ability Abilities::DestroyTargetBase, optional: true
-      ally_ability Abilities::Draw[1]
+
+      primary do
+        combat 6
+        destroy_target_base optional: true
+      end
+
+      ally do
+        draw 1
+      end
     end
   end
 end

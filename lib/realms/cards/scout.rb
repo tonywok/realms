@@ -5,6 +5,7 @@ module Realms
 
       faction :unaligned
       cost 0
+
       primary do
         trade 1
       end

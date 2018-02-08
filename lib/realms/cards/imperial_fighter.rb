@@ -1,11 +1,19 @@
 module Realms
   module Cards
     class ImperialFighter < Card
+      include Framework::Cards::Dsl
+
       faction Factions::STAR_ALLIANCE
       cost 1
-      primary_ability Abilities::Combat[2]
-      primary_ability Abilities::Discard[1]
-      ally_ability Abilities::Combat[2]
+
+      primary do
+        combat 2
+        discard 1
+      end
+
+      ally do
+        combat 2
+      end
     end
   end
 end

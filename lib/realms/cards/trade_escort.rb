@@ -1,11 +1,19 @@
 module Realms
   module Cards
     class TradeEscort < Card
+      include Framework::Cards::Dsl
+
       faction :trade_federation
       cost 5
-      primary_ability Abilities::Authority[4]
-      primary_ability Abilities::Combat[4]
-      ally_ability Abilities::Draw[1]
+
+      primary do
+        authority 4
+        combat 4
+      end
+
+      ally do
+        draw 1
+      end
     end
   end
 end

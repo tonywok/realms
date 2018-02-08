@@ -44,7 +44,7 @@ module Framework
       end
 
       def scrap_card_from_hand_or_discard_pile(optional: false)
-        effects << self.class.new(ScrapCardFromHandOrDiscardPile, nil, optionality: optional)
+        effects << self.class.new(ScrapFromHandOrDiscardPile, nil, optionality: optional)
       end
 
       def scrap_card_from_trade_row(optional: false)
@@ -55,11 +55,43 @@ module Framework
         effects << self.class.new(DestroyTargetBase, nil, optionality: optional)
       end
 
+      def copy_ship
+        #TODO
+      end
+
+      def top_deck_next_ship(optional: false)
+        # TODO
+      end
+
+      def discard_to_draw(num, optional: false)
+        # TODO
+      end
+
       def choose(&block)
         # TODO: more specific effect definitions
         effect = self.class.new(Choose, nil)
         effect.instance_exec(&block)
         effects << effect
+      end
+
+      def effect(effect_key, optional: false, &block)
+        custom_effect = CustomDefinition.new(effect_key, optional, &block)
+        effects << custom_effect
+      end
+    end
+
+    class CustomDefinition < Definition
+      attr_reader :effect_key
+
+      def initialize(effect_key, optionality, &execute_block)
+        @effect_key = effect_key
+        @optionality = optionality
+        @effect_class = Class.new(CustomEffect)
+        effect_class.redefine_method(:execute, &execute_block)
+      end
+
+      def to_effect(card, turn)
+        effect_class.new(self, card, turn, optional: optionality)
       end
     end
 
@@ -94,6 +126,12 @@ module Framework
 
       def choose(options, subject: key, optionality: optional, **kwargs)
         super
+      end
+    end
+
+    class CustomEffect < Effect
+      def key
+        definition.effect_key
       end
     end
 
@@ -149,7 +187,7 @@ module Framework
       end
     end
 
-    class ScrapCardFromHandOrDiscardPile < Effect
+    class ScrapFromHandOrDiscardPile < Effect
       def execute
         choose(cards_in_hand_or_discard_pile, optionality: optional) do |card|
           active_player.scrap(card)
