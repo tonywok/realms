@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class DefenseCenter < Card
-      include Framework::Cards::Dsl
-
       type :outpost
       defense 5
       faction :trade_federation

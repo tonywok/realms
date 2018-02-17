@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class FederationShuttle < Card
-      include Framework::Cards::Dsl
-
       faction :trade_federation
       cost 1
 

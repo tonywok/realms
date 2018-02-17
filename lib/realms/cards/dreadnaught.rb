@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class Dreadnaught < Card
-      include Framework::Cards::Dsl
-
       faction Factions::STAR_ALLIANCE
       cost 7
 

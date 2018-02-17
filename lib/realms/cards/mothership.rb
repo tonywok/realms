@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class Mothership < Card
-      include Framework::Cards::Dsl
-
       faction :blob
       cost 7
 

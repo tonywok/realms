@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class CentralOffice < Card
-      include Framework::Cards::Dsl
-
       type :base
       defense 6
       faction :trade_federation

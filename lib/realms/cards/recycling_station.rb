@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class RecyclingStation < Card
-      include Framework::Cards::Dsl
-
       type :outpost
       defense 4
       faction Factions::STAR_ALLIANCE

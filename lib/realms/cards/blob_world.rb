@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class BlobWorld < Card
-      include Framework::Cards::Dsl
-
       type :base
       defense 7
       faction :blob

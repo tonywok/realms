@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class BattleMech < Card
-      include Framework::Cards::Dsl
-
       faction :machine_cult
       cost 5
 

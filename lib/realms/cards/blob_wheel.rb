@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class BlobWheel < Card
-      include Framework::Cards::Dsl
-
       type :base
       defense 5
       faction :blob

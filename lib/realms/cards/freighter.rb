@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class Freighter < Card
-      include Framework::Cards::Dsl
-
       faction :trade_federation
       cost 4
 

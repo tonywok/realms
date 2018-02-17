@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class Corvette < Card
-      include Framework::Cards::Dsl
-
       faction Factions::STAR_ALLIANCE
       cost 2
 

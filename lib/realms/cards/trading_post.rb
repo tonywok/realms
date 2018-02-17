@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class TradingPost < Card
-      include Framework::Cards::Dsl
-
       type :outpost
       defense 4
       faction :trade_federation

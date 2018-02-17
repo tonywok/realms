@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class PortOfCall < Card
-      include Framework::Cards::Dsl
-
       type :outpost
       defense 6
       faction :trade_federation

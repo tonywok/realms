@@ -1,4 +1,4 @@
-module Framework
+module Realms
   module Cards
     class Definition
       attr_reader :factions

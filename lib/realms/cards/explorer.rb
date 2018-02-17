@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class Explorer < Card
-      include Framework::Cards::Dsl
-
       faction :unaligned
       cost 2
 

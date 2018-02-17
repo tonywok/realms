@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class ImperialFighter < Card
-      include Framework::Cards::Dsl
-
       faction Factions::STAR_ALLIANCE
       cost 1
 

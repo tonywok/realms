@@ -5,6 +5,7 @@ require "equalizer"
 module Realms
   module Cards
     class Card
+      include Dsl
       include Brainguy::Observable
 
       module Factions
@@ -23,89 +24,10 @@ module Realms
 
       class CardConfigurationError < StandardError; end
 
-      class CardDefinition
-        attr_accessor :type,
-                      :defense,
-                      :cost,
-                      :factions,
-                      :primary_abilities,
-                      :ally_abilities,
-                      :scrap_abilities
-
-        def initialize
-          @type = :ship
-          @defense = 0 # TODO: there's probably a class in here
-          @cost = 0
-          @factions = Set.new
-          @primary_abilities = []
-          @ally_abilities = []
-          @scrap_abilities = []
-        end
-
-        def primary_ability
-          return primary_abilities.first unless primary_abilities.many?
-          Abilities::Multi[primary_abilities]
-        end
-
-        def ally_ability
-          return ally_abilities.first unless ally_abilities.many?
-          Abilities::Multi[ally_abilities]
-        end
-
-        def scrap_ability
-          return scrap_abilities.first unless scrap_abilities.many?
-          Abilities::Multi[scrap_abilities]
-        end
-
-        def initialize_copy(source)
-          super
-          @factions = source.factions.dup
-          @primary_abilities = source.primary_abilities.dup
-          @ally_abilities = source.ally_abilities.dup
-          @scrap_abilities = source.scrap_abilities.dup
-        end
-      end
-
       include Equalizer.new(:key)
-
-      def self.definition
-        @definition ||= CardDefinition.new
-      end
-
-      def self.type(type)
-        definition.type = type
-      end
-
-      def self.faction(faction)
-        raise CardConfigurationError, "invalid faction: #{faction}" unless Factions.valid?(faction)
-        definition.factions << faction
-      end
-
-      def self.cost(num)
-        definition.cost = num
-      end
-
-      def self.defense(num)
-        definition.defense = num
-      end
-
-      def self.primary_ability(klass, optional: false)
-        klass = Abilities::Optional[klass] if optional
-        definition.primary_abilities << klass
-      end
-
-      def self.ally_ability(klass, optional: false)
-        klass = Abilities::Optional[klass] if optional
-        definition.ally_abilities << klass
-      end
 
       def self.key
         to_s.demodulize.underscore
-      end
-
-      def self.scrap_ability(klass, optional: false)
-        klass = Abilities::Optional[klass] if optional
-        definition.scrap_abilities << klass
       end
 
       attr_reader :key
@@ -133,23 +55,15 @@ module Realms
       end
 
       def primary_ability(turn)
-        ability = case definition.primary_ability
-                  when Framework::Effects::Definition
-                    definition.primary_ability.to_effect(self, turn)
-                  else
-                    definition.primary_ability.new(self, turn)
-                  end
-        ability.tap { emit(:primary_ability, self) }
+        definition.primary_ability.to_effect(self, turn).tap do
+          emit(:primary_ability, self)
+        end
       end
 
       def ally_ability(turn)
-        ability = case definition.ally_ability
-                  when Framework::Effects::Definition
-                    definition.ally_ability.to_effect(self, turn)
-                  else
-                    definition.ally_ability.new(self, turn)
-                  end
-        ability.tap { emit(:ally_ability, self) }
+        definition.ally_ability.to_effect(self, turn).tap do
+          emit(:ally_ability, self)
+        end
       end
 
       def definition=(definition)
@@ -158,13 +72,9 @@ module Realms
       end
 
       def scrap_ability(turn)
-        ability = case definition.scrap_ability
-                  when Framework::Effects::Definition
-                    definition.scrap_ability.to_effect(self, turn)
-                  else
-                    definition.scrap_ability.new(self, turn)
-                  end
-        ability.tap { emit(:scrap_ability, self) }
+        definition.scrap_ability.to_effect(self, turn).tap do
+          emit(:scrap_ability, self)
+        end
       end
 
       def ally_factions
@@ -172,23 +82,25 @@ module Realms
       end
 
       def primary_ability?
-        definition.primary_abilities.any?
+        definition.primary_ability.present?
       end
 
       def scrap_ability?
-        definition.scrap_abilities.any?
+        definition.scrap_ability.present?
       end
 
       def ally_ability?
-        definition.ally_abilities.any?
+        definition.ally_ability.present?
       end
 
       def automatic_primary_ability?
-        ship? || static? || definition.primary_ability&.auto?
+        return false unless primary_ability?
+        ship? || definition.primary_ability.auto?
       end
 
       def automatic_ally_ability?
-        definition.ally_abilities.any?(&:auto?)
+        return false unless ally_ability?
+        definition.ally_ability.auto?
       end
 
       def blob?

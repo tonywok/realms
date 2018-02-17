@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class Junkyard < Card
-      include Framework::Cards::Dsl
-
       type :outpost
       defense 5
       faction :machine_cult

@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class BrainWorld < Card
-      include Framework::Cards::Dsl
-
       type :outpost
       defense 6
       faction :machine_cult

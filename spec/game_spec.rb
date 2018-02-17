@@ -55,6 +55,10 @@ RSpec.describe Realms::Game do
     let(:seed) { 337528643544294302828423678596897352772 }
     let(:game) { described_class.new(seed: seed) }
     it 'plays successfully' do
+      game.execute do
+        play :scout_5
+        play :scout_3
+      end
       game.start
       game.decide(:play, :scout_5)
       game.decide(:play, :scout_3)

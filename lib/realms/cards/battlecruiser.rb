@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class Battlecruiser < Card
-      include Framework::Cards::Dsl
-
       faction Factions::STAR_ALLIANCE
       cost 6
 

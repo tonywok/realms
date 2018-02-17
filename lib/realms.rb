@@ -1,7 +1,9 @@
 require "realms/version"
 require "active_support/all"
 require "brainguy"
-require "framework"
+require "realms/yielder"
+require "realms/effects"
+require "realms/cards"
 require "realms/game"
 
 module Realms

@@ -1,7 +1,6 @@
 module Realms
   module Cards
     class Cutter < Card
-      include Framework::Cards::Dsl
       faction :trade_federation
       cost 2
 

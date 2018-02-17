@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class Ram < Card
-      include Framework::Cards::Dsl
-
       faction :blob
       cost 3
 

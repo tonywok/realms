@@ -1,6 +1,5 @@
-module Framework
+module Realms
   module Cards
-    # TODO: this is realms specific
     module Dsl
       extend ActiveSupport::Concern
 
@@ -26,19 +25,19 @@ module Framework
         end
 
         def primary(&block)
-          ability_definition = Effects::Definition.new(Effects::PrimaryAbility, nil)
+          ability_definition = Effects::Definitions::Definition.new(Effects::PrimaryAbility)
           ability_definition.instance_exec(&block)
           definition.primary_ability = ability_definition
         end
 
         def ally(&block)
-          ability_definition = Effects::Definition.new(Effects::AllyAbility, nil)
+          ability_definition = Effects::Definitions::Definition.new(Effects::AllyAbility)
           ability_definition.instance_exec(&block)
           definition.ally_ability = ability_definition
         end
 
         def scrap(&block)
-          ability_definition = Effects::Definition.new(Effects::ScrapAbility, nil)
+          ability_definition = Effects::Definitions::Definition.new(Effects::ScrapAbility)
           ability_definition.instance_exec(&block)
           definition.scrap_ability = ability_definition
         end

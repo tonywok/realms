@@ -1,8 +1,6 @@
 module Realms
   module Cards
     class RoyalRedoubt < Card
-      include Framework::Cards::Dsl
-
       type :outpost
       defense 6
       faction Factions::STAR_ALLIANCE
