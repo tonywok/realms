@@ -9,7 +9,12 @@ module Realms
       primary do
         choose do
           trade 1
-          discard_to_draw 2
+          effect(:discard_to_draw) do
+            may_choose_many(active_player.hand, count: 2) do |cards|
+              cards.each { |card| active_player.discard(card) }
+              active_player.draw(cards.length)
+            end
+          end
         end
       end
     end

@@ -29,16 +29,8 @@ module Realms
           effects << self.class.new(DestroyTargetBase, nil, optionality: optional)
         end
 
-        def copy_ship
-          #TODO
-        end
-
         def top_deck_next_ship(optional: false)
           effects << self.class.new(TopDeckNextShip, nil, optionality: optional)
-        end
-
-        def discard_to_draw(num, optional: false)
-          # TODO
         end
       end
     end

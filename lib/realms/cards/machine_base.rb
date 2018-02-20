@@ -8,7 +8,10 @@ module Realms
 
       primary do
         effect(:draw_then_scrap_from_hand) do
-
+          active_player.draw(1)
+          choose(active_player.hand)do |chosen_card|
+            active_player.scrap(chosen_card)
+          end
         end
       end
     end
