@@ -1,5 +1,3 @@
-require "realms/abilities"
-require "realms/actions"
 require "equalizer"
 
 module Realms
