@@ -1,15 +1,13 @@
 module Realms
-  module Abilities
-    class ScrapFromHandOrDiscardPile < Ability
-      def self.key
-        :scrap_from_hand_or_discard_pile
-      end
-
+  module Effects
+    class ScrapFromHandOrDiscardPile < Effect
       def execute
-        may_choose(cards_in_hand_or_discard_pile) do |card|
+        choose(cards_in_hand_or_discard_pile, optionality: optional) do |card|
           active_player.scrap(card)
         end
       end
+
+      private
 
       def cards_in_hand_or_discard_pile
         active_player.hand.cards + active_player.discard_pile.cards

@@ -1,5 +1,3 @@
-require "active_support/string_inquirer"
-
 module Realms
   module Actions
     class Action < Yielder

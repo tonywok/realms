@@ -3,9 +3,15 @@ module Realms
     class BlobDestroyer < Card
       faction :blob
       cost 4
-      primary_ability Abilities::Combat[6]
-      ally_ability Abilities::DestroyTargetBase, optional: true
-      ally_ability Abilities::ScrapCardFromTradeRow, optional: true
+
+      primary do
+        combat 6
+      end
+
+      ally do
+        destroy_target_base optional: true
+        scrap_card_from_trade_row optional: true
+      end
     end
   end
 end

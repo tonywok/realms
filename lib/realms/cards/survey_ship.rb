@@ -3,9 +3,15 @@ module Realms
     class SurveyShip < Card
       faction Factions::STAR_ALLIANCE
       cost 3
-      primary_ability Abilities::Trade[1]
-      primary_ability Abilities::Draw[1]
-      scrap_ability Abilities::Discard[1]
+
+      primary do
+        trade 1
+        draw 1
+      end
+
+      scrap do
+        discard 1
+      end
     end
   end
 end

@@ -1,27 +1,22 @@
 module Realms
-  module Abilities
-    class DrawForEachBlobCardPlayedThisTurn < Ability
-      def self.key
-        :draw_for_each_blob_card_played_this_turn
-      end
-
-      def execute
-        num = active_player.in_play.cards_in_play.count { |c| c.played_this_turn? && c.blob? }
-        turn.active_player.draw(num)
-      end
-    end
-  end
-
   module Cards
     class BlobWorld < Card
       type :base
       defense 7
       faction :blob
       cost 8
-      primary_ability Abilities::Choose[
-        Abilities::Combat[5],
-        Abilities::DrawForEachBlobCardPlayedThisTurn
-      ]
+
+      primary do
+        choose do
+          combat 5
+          effect(:draw_for_each_blob_card_played_this_turn) do
+            num = active_player.in_play.cards_in_play.count do |c|
+              c.played_this_turn? && c.blob?
+            end
+            active_player.draw(num)
+          end
+        end
+      end
     end
   end
 end

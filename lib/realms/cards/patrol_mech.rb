@@ -3,11 +3,17 @@ module Realms
     class PatrolMech < Card
       faction :machine_cult
       cost 4
-      primary_ability Abilities::Choose[
-        Abilities::Trade[3],
-        Abilities::Combat[5]
-      ]
-      ally_ability Abilities::ScrapFromHandOrDiscardPile, optional: true
+
+      primary do
+        choose do
+          trade 3
+          combat 5
+        end
+      end
+
+      ally do
+        scrap_card_from_hand_or_discard_pile optional: true
+      end
     end
   end
 end

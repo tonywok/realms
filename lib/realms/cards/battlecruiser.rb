@@ -3,11 +3,20 @@ module Realms
     class Battlecruiser < Card
       faction Factions::STAR_ALLIANCE
       cost 6
-      primary_ability Abilities::Combat[5]
-      primary_ability Abilities::Draw[1]
-      ally_ability Abilities::Discard[1]
-      scrap_ability Abilities::Draw[1]
-      scrap_ability Abilities::DestroyTargetBase, optional: true
+
+      primary do
+        combat 5
+        draw 1
+      end
+
+      ally do
+        discard 1
+      end
+
+      scrap do
+        draw 1
+        destroy_target_base optional: true
+      end
     end
   end
 end

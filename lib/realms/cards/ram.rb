@@ -3,9 +3,18 @@ module Realms
     class Ram < Card
       faction :blob
       cost 3
-      primary_ability Abilities::Combat[5]
-      ally_ability Abilities::Combat[2]
-      scrap_ability Abilities::Trade[3]
+
+      primary do
+        combat 5
+      end
+
+      ally do
+        combat 2
+      end
+
+      scrap do
+        trade 3
+      end
     end
   end
 end

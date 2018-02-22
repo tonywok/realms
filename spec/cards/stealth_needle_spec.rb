@@ -73,8 +73,8 @@ RSpec.describe Realms::Cards::StealthNeedle do
 
           [card, another_stealth_needle].each do |c|
             expect(c.factions).to contain_exactly(:machine_cult)
-            expect(c.definition.primary_abilities).to be_one
-            expect(c.definition.primary_abilities.first.key).to eq(:copy_ship)
+            expect(c.definition.primary_ability.effects).to be_one
+            expect(c.definition.primary_ability.effects.first.effect_key).to eq(:copy_ship)
             expect(c.definition).to eq(c.class.definition)
           end
         end

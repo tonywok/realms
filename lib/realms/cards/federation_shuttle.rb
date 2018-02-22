@@ -3,8 +3,14 @@ module Realms
     class FederationShuttle < Card
       faction :trade_federation
       cost 1
-      primary_ability Abilities::Trade[2]
-      ally_ability Abilities::Authority[4]
+
+      primary do
+        trade 2
+      end
+
+      ally do
+        authority 4
+      end
     end
   end
 end

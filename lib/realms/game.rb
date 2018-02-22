@@ -1,4 +1,3 @@
-require "realms/yielder"
 require "realms/zones"
 require "realms/turn"
 require "realms/phases"

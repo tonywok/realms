@@ -3,9 +3,18 @@ module Realms
     class BattleBlob < Card
       faction :blob
       cost 6
-      primary_ability Abilities::Combat[8]
-      ally_ability Abilities::Draw[1]
-      scrap_ability Abilities::Combat[4]
+
+      primary do
+        combat 8
+      end
+
+      ally do
+        draw 1
+      end
+
+      scrap do
+        combat 4
+      end
     end
   end
 end

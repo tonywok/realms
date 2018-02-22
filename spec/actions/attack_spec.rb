@@ -1,12 +1,16 @@
 require "spec_helper"
 
-RSpec.describe Realms::Actions::Attack do
-  let(:game) { Realms::Game.new }
+RSpec.describe Actions::Attack do
+  let(:game) { Game.new }
   let(:combat) { 1 }
+  let(:primary_ability) do
+    Effects::Definitions::Numeric.new(Effects::Combat, combat)
+  end
+
   let(:card) do
-    card = Realms::Cards::Viper.new(game.active_player, index: 10)
+    card = Cards::Viper.new(game.active_player, index: 10)
     card.definition = card.definition.clone.tap do |definition|
-      definition.primary_abilities = [Realms::Abilities::Combat[combat]]
+      definition.primary_ability = primary_ability
     end
     card
   end
@@ -35,7 +39,7 @@ RSpec.describe Realms::Actions::Attack do
   end
 
   context "opponent has a non-outpost base in play" do
-    let(:base) { Realms::Cards::BlobWheel.new(game.active_player) }
+    let(:base) { Cards::BlobWheel.new(game.active_player) }
 
     before do
       game.p2.in_play << base
@@ -49,7 +53,7 @@ RSpec.describe Realms::Actions::Attack do
       it "can attack the base" do
         game.attack(base)
         expect(base.zone).to eq(game.passive_player.discard_pile)
-        expect(base.class).to eq(Realms::Cards::BlobWheel)
+        expect(base.class).to eq(Cards::BlobWheel)
         expect(game.passive_player.authority).to eq(50)
         game.attack(game.passive_player)
         expect(game.passive_player.authority).to eq(49)
@@ -67,7 +71,7 @@ RSpec.describe Realms::Actions::Attack do
       it "can attack the base" do
         game.attack(base)
         expect(game.passive_player.discard_pile).to include(base)
-        expect { game.attack(game.passive_player) }.to raise_error(Realms::Choices::InvalidOption)
+        expect { game.attack(game.passive_player) }.to raise_error(Choices::InvalidOption)
       end
 
       it "can attack the player" do
@@ -80,7 +84,7 @@ RSpec.describe Realms::Actions::Attack do
       let(:combat) { base.defense - 1  }
 
       it "cannot attack the base" do
-        expect { game.attack(base) }.to raise_error(Realms::Choices::InvalidOption)
+        expect { game.attack(base) }.to raise_error(Choices::InvalidOption)
       end
 
       it "can attack the player" do
@@ -91,7 +95,7 @@ RSpec.describe Realms::Actions::Attack do
   end
 
   context "opponent has an outpost base in play" do
-    let(:base) { Realms::Cards::DefenseCenter.new(game.active_player) }
+    let(:base) { Cards::DefenseCenter.new(game.active_player) }
 
     before do
       game.p2.in_play << base
@@ -111,7 +115,7 @@ RSpec.describe Realms::Actions::Attack do
       end
 
       it "cannot attack the player" do
-        expect { game.attack(game.passive_player) }.to raise_error(Realms::Choices::InvalidOption)
+        expect { game.attack(game.passive_player) }.to raise_error(Choices::InvalidOption)
       end
     end
 
@@ -121,11 +125,11 @@ RSpec.describe Realms::Actions::Attack do
       it "can attack the base" do
         game.attack(base)
         expect(game.passive_player.discard_pile).to include(base)
-        expect { game.attack(game.passive_player) }.to raise_error(Realms::Choices::InvalidOption)
+        expect { game.attack(game.passive_player) }.to raise_error(Choices::InvalidOption)
       end
 
       it "cannot attack the player" do
-        expect { game.attack(game.passive_player) }.to raise_error(Realms::Choices::InvalidOption)
+        expect { game.attack(game.passive_player) }.to raise_error(Choices::InvalidOption)
       end
     end
 
@@ -133,18 +137,18 @@ RSpec.describe Realms::Actions::Attack do
       let(:combat) { base.defense - 1  }
 
       it "cannot attack the base" do
-        expect { game.attack(base) }.to raise_error(Realms::Choices::InvalidOption)
+        expect { game.attack(base) }.to raise_error(Choices::InvalidOption)
       end
 
       it "cannot attack the player" do
-        expect { game.attack(game.passive_player) }.to raise_error(Realms::Choices::InvalidOption)
+        expect { game.attack(game.passive_player) }.to raise_error(Choices::InvalidOption)
       end
     end
   end
 
   context "opponent has both an outpost and base" do
-    let(:base) { Realms::Cards::BlobWheel.new(game.active_player) }
-    let(:outpost) { Realms::Cards::DefenseCenter.new(game.active_player) }
+    let(:base) { Cards::BlobWheel.new(game.active_player) }
+    let(:outpost) { Cards::DefenseCenter.new(game.active_player) }
     let(:combat) { outpost.defense + outpost.defense + 1 }
 
     before do
@@ -155,8 +159,8 @@ RSpec.describe Realms::Actions::Attack do
     end
 
     it "must destroy outpost first" do
-      expect { game.attack(base) }.to raise_error(Realms::Choices::InvalidOption)
-      expect { game.attack(game.passive_player) }.to raise_error(Realms::Choices::InvalidOption)
+      expect { game.attack(base) }.to raise_error(Choices::InvalidOption)
+      expect { game.attack(game.passive_player) }.to raise_error(Choices::InvalidOption)
       game.attack(outpost)
       game.attack(base)
       game.attack(game.passive_player)

@@ -1,10 +1,6 @@
 module Realms
-  module Abilities
-    class TopDeckNextShip < Ability
-      def self.key
-        :top_deck_next_ship
-      end
-
+  module Effects
+    class TopDeckNextShip < Effect
       def execute
         trade_deck.trade_row.events.attach(self)
       end

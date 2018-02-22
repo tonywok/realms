@@ -1,10 +1,6 @@
 module Realms
-  module Abilities
-    class DestroyTargetBase < Ability
-      def self.key
-        :destroy_target_base
-      end
-
+  module Effects
+    class DestroyTargetBase < Effect
       def execute
         choose(bases_in_play) do |card|
           player = card.owner

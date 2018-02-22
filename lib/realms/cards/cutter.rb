@@ -3,9 +3,15 @@ module Realms
     class Cutter < Card
       faction :trade_federation
       cost 2
-      primary_ability Abilities::Authority[4]
-      primary_ability Abilities::Trade[2]
-      ally_ability Abilities::Combat[4]
+
+      primary do
+        authority 4
+        trade 2
+      end
+
+      ally do
+        combat 4
+      end
     end
   end
 end

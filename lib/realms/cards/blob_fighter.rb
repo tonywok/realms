@@ -3,8 +3,14 @@ module Realms
     class BlobFighter < Card
       faction :blob
       cost 1
-      primary_ability Abilities::Combat[3]
-      ally_ability Abilities::Draw[1]
+
+      primary do
+        combat 3
+      end
+
+      ally do
+        draw 1
+      end
     end
   end
 end

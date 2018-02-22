@@ -5,11 +5,17 @@ module Realms
       defense 5
       faction :trade_federation
       cost 5
-      primary_ability Abilities::Choose[
-        Abilities::Authority[3],
-        Abilities::Combat[2],
-      ]
-      ally_ability Abilities::Combat[2]
+
+      primary do
+        choose do
+          authority 3
+          combat 2
+        end
+      end
+
+      ally do
+        combat 2
+      end
     end
   end
 end

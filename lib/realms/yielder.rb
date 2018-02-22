@@ -8,6 +8,7 @@ module Realms
       @state_machine ||= Enumerator.new do |yielder|
         @choices = yielder
         execute
+        # logger.debug("#{key}")
         @choices = nil
       end.lazy.flat_map { |x| x }
     end
@@ -22,6 +23,14 @@ module Realms
       @current_choice = state_machine.next
     rescue StopIteration
       @current_choice = nil
+    end
+
+    def logger
+      @logger ||= Logger.new(STDOUT)
+    end
+
+    def key
+      self.class.name
     end
 
     private
