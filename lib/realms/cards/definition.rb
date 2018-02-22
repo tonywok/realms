@@ -17,16 +17,12 @@ module Realms
         @type = :ship
       end
 
-      def primary_abilities
-        Array.wrap(primary_ability&.effects)
-      end
-
-      def ally_abilities
-        Array.wrap(ally_ability&.effects)
-      end
-
-      def scrap_abilities
-        Array.wrap(scrap_ability&.effects)
+      def initialize_copy(source)
+        super
+        @factions = source.factions.dup
+        @primary_ability = source.primary_ability&.dup
+        @ally_ability = source.ally_ability&.dup
+        @scrap_ability = source.scrap_ability&.dup
       end
     end
   end

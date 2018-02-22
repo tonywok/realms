@@ -12,10 +12,6 @@ module Realms
         def auto?
           false
         end
-
-        def static?
-          false
-        end
       end
 
       def initialize(definition, card, turn, optional: false)

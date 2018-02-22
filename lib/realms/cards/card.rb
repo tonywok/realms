@@ -105,10 +105,6 @@ module Realms
         factions.include?(:blob)
       end
 
-      def static?
-        definition.primary_abilities.any?(&:static?)
-      end
-
       def ship?
         type == :ship
       end

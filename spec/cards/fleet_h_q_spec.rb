@@ -45,18 +45,18 @@ RSpec.describe Realms::Cards::FleetHQ do
       expect { game.play(viper_1) }.to change { game.active_turn.combat }.by(2)
       expect(game.active_turn.combat).to eq(5)
 
-      expect(viper_0.definition.primary_abilities.map(&:key)).to eq([:combat])
-      expect(scout_0.definition.primary_abilities.map(&:key)).to eq([:trade])
+      expect(viper_0.definition.primary_ability.effects.flat_map(&:effect_class)).to eq([Effects::Combat])
+      expect(scout_0.definition.primary_ability.effects.flat_map(&:effect_class)).to eq([Effects::Trade])
 
-      expect(scout_1.definition.primary_abilities.map(&:key)).to eq([:trade, :combat])
-      expect(scout_2.definition.primary_abilities.map(&:key)).to eq([:trade, :combat])
-      expect(viper_1.definition.primary_abilities.map(&:key)).to eq([:combat, :combat])
+      expect(scout_1.definition.primary_ability.effects.flat_map(&:effect_class)).to eq([Effects::Trade, Effects::Combat])
+      expect(scout_2.definition.primary_ability.effects.flat_map(&:effect_class)).to eq([Effects::Trade, Effects::Combat])
+      expect(viper_1.definition.primary_ability.effects.flat_map(&:effect_class)).to eq([Effects::Combat, Effects::Combat])
 
       game.end_turn
 
-      expect(scout_1.definition.primary_abilities.map(&:key)).to eq([:trade])
-      expect(scout_2.definition.primary_abilities.map(&:key)).to eq([:trade])
-      expect(viper_1.definition.primary_abilities.map(&:key)).to eq([:combat])
+      expect(scout_1.definition.primary_ability.effects.flat_map(&:effect_class)).to eq([Effects::Trade])
+      expect(scout_2.definition.primary_ability.effects.flat_map(&:effect_class)).to eq([Effects::Trade])
+      expect(viper_1.definition.primary_ability.effects.flat_map(&:effect_class)).to eq([Effects::Combat])
 
       # kill fleethq
       #
@@ -73,11 +73,11 @@ RSpec.describe Realms::Cards::FleetHQ do
 
       game.end_turn
 
-      # Check to see that fleet hq isn't still active - this kinda sucks
+      # Check to see that fleet hq isn't still active - this kinda sucks (need a spy?)
       #
       some_card = game.active_player.hand.sample
       game.play(some_card)
-      expect(some_card.definition.primary_abilities.length).to eq(1)
+      expect(some_card.definition.primary_ability.effects.flat_map(&:effect_class).length).to eq(1)
     end
   end
 end

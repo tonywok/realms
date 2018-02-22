@@ -10,8 +10,9 @@ module Realms
           @optionality = optionality
         end
 
-        def static?
-          false
+        def initialize_copy(source)
+          super
+          @effects = source.effects.dup
         end
 
         def auto?
@@ -68,6 +69,10 @@ module Realms
 
         def top_deck_next_ship(optional: false)
           effects << self.class.new(TopDeckNextShip, optionality: optional)
+        end
+
+        def all_ships_get_combat
+          effects << self.class.new(AllShipsGetCombat)
         end
       end
     end
