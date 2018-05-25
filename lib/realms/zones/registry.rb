@@ -13,11 +13,9 @@ module Realms
         @game = game
         @rng = Random.new(game.seed)
         @starter_deck = StarterDeck.new
-        @transfer_counter = TransferCounter.new
         @p1 = Player.new("p1", self)
         @p2 = Player.new("p2", self)
         @trade_deck = TradeDeck.new(self)
-        @events = []
       end
 
       def zone(key)
@@ -29,26 +27,19 @@ module Realms
         register_trade_deck
       end
 
-      def flush
-        (_events = @events).tap { @events = [] }
-      end
-
       def on_card_added(event)
-        @events << event.args.first
+        zt = event.args[0]
+        game.publish(:zone_transfer, card: zt.card.key, source: zt.source.key, destination: zt.destination.key)
       end
 
       private
 
       attr_reader :game,
         :starter_deck,
-        :transfer_counter,
         :registry
 
       delegate :viper, :scout,
         to: :starter_deck
-
-      delegate :next_transfer_id,
-        to: :transfer_counter
 
       delegate :active_turn,
         to: :game
@@ -116,20 +107,6 @@ module Realms
         private
 
         attr_reader :scout_count, :viper_count
-      end
-
-      class TransferCounter
-        def initialize
-          @ids = (0...Float::INFINITY).lazy
-        end
-
-        def next_transfer_id
-          ids.next
-        end
-
-        private
-
-        attr_reader :ids
       end
     end
   end

@@ -6,7 +6,6 @@ module Realms
                     :destination,
                     :destination_position,
                     :card
-      attr_reader :id
 
       def initialize(source:, destination:, card: source.first, destination_position: destination.length)
         @source = source
@@ -18,7 +17,6 @@ module Realms
 
       def transfer!
         raise InvalidTarget, card.key if !source.include?(card) || destination.include?(card)
-        @id = source.next_transfer_id
         card.owner = destination.owner
         self.card = source.remove(card)
         destination.insert(destination_position, card)

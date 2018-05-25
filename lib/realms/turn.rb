@@ -1,38 +1,31 @@
 module Realms
   class Turn
-    attr_reader :id,
+    attr_reader :game,
+                :id,
                 :active_player,
-                :passive_player,
-                :trade_deck
+                :passive_player
 
-    attr_accessor :trade,
-                  :combat
+    attr_accessor :combat, :trade
 
-    def self.first(trade_deck, active_player, passive_player)
-      new(
-        id: 0,
-        active_player: active_player,
-        passive_player: passive_player,
-        trade_deck: trade_deck,
-      )
+    delegate :trade_deck,
+             :publish,
+             to: :game
+
+    def self.first(game)
+      new(game, 0, active_player: game.p1, passive_player: game.p2)
     end
 
-    def initialize(id:, active_player:, passive_player:, trade_deck:)
+    def initialize(game, id, active_player:, passive_player:)
+      @game = game
       @id = id
-      @active_player = active_player
-      @passive_player = passive_player
-      @trade_deck = trade_deck
       @trade = 0
       @combat = 0
+      @active_player = active_player
+      @passive_player = passive_player
     end
 
     def next
-      self.class.new(
-        id: id + 1,
-        active_player: passive_player,
-        passive_player: active_player,
-        trade_deck: trade_deck,
-      )
+      self.class.new(game, id + 1, active_player: passive_player, passive_player: active_player)
     end
   end
 end

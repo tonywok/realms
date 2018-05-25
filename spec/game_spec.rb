@@ -8,22 +8,32 @@ RSpec.describe Realms::Game do
 
   context "collecting events" do
     it "returns the game events that occurred as a result of a decision" do
-      events = game.start.map { |e| [e.id, e.card.key, e.source.key, e.destination.key] }
-      expect(events).to eq([
-       [0, :federation_shuttle_0, "trade_deck.draw_pile", "trade_deck.trade_row"],
-       [1, :imperial_fighter_2, "trade_deck.draw_pile", "trade_deck.trade_row"],
-       [2, :barter_world_0, "trade_deck.draw_pile", "trade_deck.trade_row"],
-       [3, :blob_destroyer_1, "trade_deck.draw_pile", "trade_deck.trade_row"],
-       [4, :trade_bot_0, "trade_deck.draw_pile", "trade_deck.trade_row"],
-       [5, :viper_0, "p1.draw_pile", "p1.hand"],
-       [6, :scout_1, "p1.draw_pile", "p1.hand"],
-       [7, :scout_5, "p1.draw_pile", "p1.hand"],
-       [8, :scout_8, "p2.draw_pile", "p2.hand"],
-       [9, :scout_9, "p2.draw_pile", "p2.hand"],
-       [10, :viper_2, "p2.draw_pile", "p2.hand"],
-       [11, :scout_13, "p2.draw_pile", "p2.hand"],
-       [12, :scout_11, "p2.draw_pile", "p2.hand"],
-      ])
+      events = []
+      game.subscribe do |event|
+        events << event
+      end
+
+      game.start
+
+      expect(events.length).to eq(13)
+      expect(events[0]).to have_event(0, :zone_transfer, card: :federation_shuttle_0, source: "trade_deck.draw_pile", destination: "trade_deck.trade_row")
+      expect(events[1]).to have_event(1, :zone_transfer, card: :imperial_fighter_2, source: "trade_deck.draw_pile", destination: "trade_deck.trade_row")
+      expect(events[2]).to have_event(2, :zone_transfer, card: :barter_world_0, source: "trade_deck.draw_pile", destination: "trade_deck.trade_row")
+      expect(events[3]).to have_event(3, :zone_transfer, card: :blob_destroyer_1, source: "trade_deck.draw_pile", destination: "trade_deck.trade_row")
+      expect(events[4]).to have_event(4, :zone_transfer, card: :trade_bot_0, source: "trade_deck.draw_pile", destination: "trade_deck.trade_row")
+      expect(events[5]).to have_event(5, :zone_transfer, card: :viper_0, source: "p1.draw_pile", destination: "p1.hand")
+      expect(events[6]).to have_event(6, :zone_transfer, card: :scout_1, source: "p1.draw_pile", destination: "p1.hand")
+      expect(events[7]).to have_event(7, :zone_transfer, card: :scout_5, source: "p1.draw_pile", destination: "p1.hand")
+      expect(events[8]).to have_event(8, :zone_transfer, card: :scout_8, source: "p2.draw_pile", destination: "p2.hand")
+      expect(events[9]).to have_event(9, :zone_transfer, card: :scout_9, source: "p2.draw_pile", destination: "p2.hand")
+      expect(events[10]).to have_event(10, :zone_transfer, card: :viper_2, source: "p2.draw_pile", destination: "p2.hand")
+      expect(events[11]).to have_event(11, :zone_transfer, card: :scout_13, source: "p2.draw_pile", destination: "p2.hand")
+      expect(events[12]).to have_event(12, :zone_transfer, card: :scout_11, source: "p2.draw_pile", destination: "p2.hand")
+
+      game.decide(:play, :viper_0)
+
+      expect(events[13]).to have_event(13, :zone_transfer, card: :viper_0, source: "p1.hand", destination: "p1.in_play")
+      expect(events[14]).to have_event(14, :combat)
     end
   end
 

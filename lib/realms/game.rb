@@ -4,7 +4,7 @@ require "realms/phases"
 
 module Realms
   class Game < Yielder
-    attr_reader :seed, :registry, :active_turn
+    attr_reader :seed, :registry, :event_counter, :active_turn
 
     delegate :active_player, :passive_player,
       to: :active_turn, allow_nil: true
@@ -15,13 +15,13 @@ module Realms
     def initialize(seed: Random.new_seed)
       @seed = seed
       @registry = Zones::Registry.new(self)
+      @event_counter = (0...Float::INFINITY).lazy
       registry.register!
     end
 
     def start
-      self.active_turn = Turn.first(trade_deck, p1, p2)
+      self.active_turn = Turn.first(self)
       next_choice
-      registry.flush
     end
 
     def over?
@@ -40,6 +40,22 @@ module Realms
       end
     end
 
+    def publish(event, **kwargs)
+      event_name = key_for(event)
+      event_id = event_counter.next
+      ActiveSupport::Notifications.instrument(event_name, id: event_id, **kwargs)
+    end
+
+    def subscribe
+      ActiveSupport::Notifications.subscribe(/^game:#{seed}/) do |*args|
+        yield Realms::Effects::Event.new(*args)
+      end
+    end
+
+    def key_for(event_name)
+      [namespace, event_name].join(".")
+    end
+
     ## Decisions
     #
     def decide(*args)
@@ -49,7 +65,6 @@ module Realms
       else
         super(safe(action))
       end
-      registry.flush
     end
 
     def play(card)
@@ -91,6 +106,10 @@ module Realms
     private
 
     attr_writer :active_turn
+
+    def namespace
+      "game:#{seed}.turn:#{active_turn&.id || 0}"
+    end
 
     def next_turn
       self.active_turn = active_turn.next

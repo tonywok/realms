@@ -5,6 +5,10 @@ module Realms
         turn.trade += num
       end
 
+      def notify
+        publish(:trade)
+      end
+
       def self.auto?
         true
       end

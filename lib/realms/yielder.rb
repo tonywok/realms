@@ -7,8 +7,7 @@ module Realms
     def state_machine
       @state_machine ||= Enumerator.new do |yielder|
         @choices = yielder
-        execute
-        # logger.debug("#{key}")
+        __execute
         @choices = nil
       end.lazy.flat_map { |x| x }
     end
@@ -34,6 +33,27 @@ module Realms
     end
 
     private
+
+    module Callbacks
+      extend ActiveSupport::Concern
+
+      included do
+        include ActiveSupport::Callbacks
+
+        define_callbacks :execute
+        set_callback :execute, :after, :notify
+
+
+        def __execute
+          run_callbacks :execute do
+            execute
+          end
+        end
+
+        def notify; end
+      end
+    end
+    include Callbacks
 
     attr_reader :choices
 

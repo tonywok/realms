@@ -6,7 +6,7 @@ module Realms
       attr_reader :definition, :card, :turn, :optional
 
       delegate :effects, to: :definition
-      delegate :active_player, :trade_deck, to: :turn
+      delegate :active_player, :trade_deck, :publish, to: :turn
 
       class << self
         def auto?

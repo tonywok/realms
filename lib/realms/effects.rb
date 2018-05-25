@@ -1,5 +1,6 @@
 require "realms/effects/definitions"
 require "realms/effects/effect"
+require "realms/effects/event"
 require "realms/effects/sequence"
 require "realms/effects/numeric"
 require "realms/effects/custom"

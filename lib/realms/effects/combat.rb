@@ -5,6 +5,10 @@ module Realms
         turn.combat += num
       end
 
+      def notify
+        publish(:combat)
+      end
+
       def self.auto?
         true
       end
