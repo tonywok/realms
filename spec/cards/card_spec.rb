@@ -33,7 +33,7 @@ RSpec.describe Realms::Cards::Card do
   end
 
   describe "shuffling" do
-    let(:unshuffled) { 10.times.map { |i| Realms::Cards::Scout.new(index: i) } }
+    let(:unshuffled) { 10.times.map { |i| Realms::Cards::Scout.new("test", index: i) } }
     let(:seed) { Random.new_seed }
 
     it "shuffles the same with a seed" do

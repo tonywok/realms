@@ -1,12 +1,12 @@
 module Realms
   module Effects
-    class Event < ActiveSupport::Notifications::Event
-      attr_reader :id, :key
+    class Event
+      attr_reader :id, :name, :payload
 
-      def initialize(key, start, ending, transaction_id, id:, **payload)
-        @id = id
-        @key = key
-        super(key.split(".").last, start, ending, transaction_id, payload)
+      def initialize(event)
+        @id = event.payload.fetch(:id)
+        @name = event.name.split(".").last
+        @payload = event.payload.except(:id)
       end
     end
   end
