@@ -47,8 +47,8 @@ module Realms
     end
 
     def subscribe
-      ActiveSupport::Notifications.subscribe(/^game:#{seed}/) do |*args|
-        yield Realms::Effects::Event.new(*args)
+      ActiveSupport::Notifications.subscribe(/^game:#{seed}/) do |event|
+        yield Realms::Effects::Event.new(event)
       end
     end
 
