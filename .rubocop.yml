@@ -16,7 +16,10 @@ Style/StringLiteralsInInterpolation:
 Style/DoubleNegation:
   Enabled: false
 
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: comma
 
 Style/TrailingCommaInArguments:
@@ -28,19 +31,16 @@ Style/WordArray:
 Style/SignalException:
   EnforcedStyle: only_raise
 
-Style/DotPosition:
+Layout/DotPosition:
   EnforcedStyle: trailing
 
 Style/GuardClause:
   Enabled: false
 
-Style/IndentHash:
-  EnforcedStyle: consistent
-
-Style/MultilineMethodCallIndentation:
+Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
-Metrics/LineLength:
+Layout/LineLength:
   Enabled: false
 
 Metrics/ClassLength:
@@ -49,3 +49,24 @@ Metrics/ClassLength:
 Metrics/MethodLength:
   CountComments: false
   Max: 20
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: false
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
+
+Style/ExponentialNotation:
+  Enabled: true
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
