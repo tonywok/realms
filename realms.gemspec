@@ -33,7 +33,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry"
   spec.add_development_dependency "pry-doc"
   spec.add_development_dependency "pry-byebug"
+  spec.add_development_dependency "async-rspec"
   spec.add_dependency "activesupport", "~> 6.0.0"
   spec.add_dependency "brainguy"
   spec.add_dependency "equalizer"
+  spec.add_dependency "async-io"
 end

@@ -20,8 +20,10 @@ module Realms
     end
 
     def start
-      self.active_turn = Turn.first(self)
-      next_choice
+      Async do
+        self.active_turn = Turn.first(self)
+        next_choice
+      end
     end
 
     def over?
