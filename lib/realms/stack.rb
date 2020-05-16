@@ -7,7 +7,7 @@ module Realms
     def initialize
       @flows = []
       @fib = Fiber.new do
-        run(:test1)
+        run(:test1) until @score == 3
       end
       fib.resume
     end
@@ -24,8 +24,11 @@ module Realms
     def run(flow_key, *args)
       flows.push(flow_key)
       instance_exec(*args, &FLOWS.fetch(flow_key))
-      puts "pop"
       flows.pop
+    end
+
+    def effect(effect_key, *args)
+      @score += 1 if effect_key == :yay
     end
 
     FLOWS = {
@@ -38,10 +41,10 @@ module Realms
       test2: lambda do |prev|
         choose([3, 4, 5]) do |other_num|
           puts "you chose another #{prev + other_num}"
-          if other_num == 4
-            run(:test1)
+          if other_num > 4
+            effect(:yay)
           else
-            run(:test3, other_num)
+            effect(:nay)
           end
         end
       end,
