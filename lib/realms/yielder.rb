@@ -2,6 +2,11 @@ require "realms/choices"
 
 module Realms
   class Yielder
+    module Gutted
+      delegate :game, to: :turn
+      delegate :choose, :perform, to: :game
+    end
+
     attr_reader :current_choice
 
     def state_machine

@@ -3,7 +3,7 @@ require "realms/turn"
 require "realms/phases"
 
 module Realms
-  class Game < Yielder
+  class Game
     attr_reader :seed, :registry, :event_counter, :active_turn
 
     delegate :active_player, :passive_player,
@@ -12,19 +12,52 @@ module Realms
     delegate :p1, :p2, :trade_deck,
       to: :registry
 
+    attr_reader :fiber, :flows
+
     def initialize(seed: Random.new_seed)
       @seed = seed
       @registry = Zones::Registry.new(self)
       @event_counter = (0...Float::INFINITY).lazy
       registry.register!
+      @flows = []
+      @fiber = Fiber.new { execute }
     end
 
+    ## START
+
     def start
-      Async do
-        self.active_turn = Turn.first(self)
-        next_choice
+      self.active_turn = Turn.first(self)
+      fiber.resume
+    end
+
+    def perform(thing)
+      flows.push(thing)
+      instance_exec { thing.execute }
+      flows.pop
+    rescue => e
+      binding.pry
+      raise
+    end
+
+    def choose(options, **kwargs)
+      choice = choice_factory.make(options, **kwargs)
+      return if choice.noop?
+      choice.clear
+      decision_key = Fiber.yield(choice)
+      choice.decide(decision_key.to_sym)
+
+      if block_given? && choice.actionable?
+        yield(choice.decision.result)
+      else
+        choice.decision.result
       end
     end
+
+    def choice_factory
+      @choice_factory ||= Choices::Factory.new
+    end
+
+    ## END REMOVE ME
 
     def over?
       [p1, p2].any? { |p| p.authority <= 0 }
@@ -63,9 +96,9 @@ module Realms
     def decide(*args)
       action, key = args
       if args.many?
-        super([action, safe(key)].compact.join("."))
+        fiber.resume([action, safe(key)].compact.join("."))
       else
-        super(safe(action))
+        fiber.resume(safe(action))
       end
     end
 

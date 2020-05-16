@@ -1,12 +1,14 @@
 module Realms
   module Effects
-    class Effect < Yielder
+    class Effect
       include Brainguy::Observer
 
       attr_reader :definition, :card, :turn, :optional
 
       delegate :effects, to: :definition
       delegate :active_player, :trade_deck, :publish, to: :turn
+
+      include Yielder::Gutted
 
       class << self
         def auto?
@@ -29,8 +31,8 @@ module Realms
         self.class.name.demodulize.underscore.to_s
       end
 
-      def choose(options, subject: key, optionality: optional, **kwargs)
-        super
+      def choose(options, subject: key, optionality: optional, **kwargs, &block)
+        game.choose(options, subject: key, optionality: optional, **kwargs, &block)
       end
     end
   end

@@ -1,10 +1,12 @@
 module Realms
   module Actions
-    class Action < Yielder
+    class Action
       attr_reader :turn, :target
 
       delegate :active_player, :passive_player,
         to: :turn
+
+      include Yielder::Gutted
 
       def initialize(turn, target = nil)
         @turn = turn
