@@ -26,7 +26,7 @@ module Realms
       end
 
       def choose(options, subject: key, **kwargs)
-        super
+        game.choose(options, subject: subject, **kwargs)
       end
 
       def execute

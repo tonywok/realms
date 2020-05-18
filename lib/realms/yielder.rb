@@ -4,7 +4,7 @@ module Realms
   class Yielder
     module Gutted
       delegate :game, to: :turn
-      delegate :choose, :perform, to: :game
+      delegate :choose, :may_choose, :choose_many, :may_choose_many, :perform, to: :game
     end
 
     attr_reader :current_choice

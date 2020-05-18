@@ -32,7 +32,7 @@ module Realms
       end
 
       def choose(options, subject: key, optionality: optional, **kwargs, &block)
-        game.choose(options, subject: key, optionality: optional, **kwargs, &block)
+        game.choose(options, subject: subject, optionality: optionality, **kwargs, &block)
       end
     end
   end

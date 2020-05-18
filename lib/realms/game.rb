@@ -53,6 +53,18 @@ module Realms
       end
     end
 
+    def may_choose(options, **kwargs, &block)
+      choose(options, optionality: true, **kwargs, &block)
+    end
+
+    def choose_many(options, count:, **kwargs, &block)
+      choose(options, count: count, **kwargs, &block)
+    end
+
+    def may_choose_many(options, count:, **kwargs, &block)
+      choose_many(options, count: count, optionality: true, **kwargs, &block)
+    end
+
     def choice_factory
       @choice_factory ||= Choices::Factory.new
     end
