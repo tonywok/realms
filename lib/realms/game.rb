@@ -47,8 +47,11 @@ module Realms
 
       self._current_choice = choice
       choice.clear
-      decision_key = Fiber.yield(choice)
-      choice.decide(decision_key.to_sym)
+
+      until !choice.undecided?
+        decision_key = Fiber.yield(choice)
+        choice.decide(decision_key.to_sym)
+      end
 
       if block_given? && choice.actionable?
         yield(choice.decision.result)
