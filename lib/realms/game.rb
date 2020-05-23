@@ -36,9 +36,6 @@ module Realms
       flows.push(thing)
       instance_exec { thing.__execute }
       flows.pop
-    rescue => e
-      binding.source_location
-      raise
     end
 
     def choose(options, **kwargs)
@@ -48,18 +45,16 @@ module Realms
       self._current_choice = choice
       choice.clear
 
+      decision = nil
       until !choice.undecided?
-        decision_key = Fiber.yield(choice)
-        choice.decide(decision_key.to_sym)
+        decision = Fiber.yield(choice)
       end
 
-      if block_given? && choice.actionable?
-        yield(choice.decision.result)
+      if block_given? && decision.actionable?
+        yield(decision.result)
       else
-        choice.decision.result
+        decision.result
       end
-    ensure
-      self._current_choice = nil
     end
 
     def may_choose(options, **kwargs, &block)
@@ -116,11 +111,13 @@ module Realms
     #
     def decide(*args)
       action, key = args
-      if args.many?
-        fiber.resume([action, safe(key)].compact.join("."))
+      decision_key = if args.many?
+        [action, safe(key)].compact.join(".")
       else
-        fiber.resume(safe(action))
+        safe(action)
       end
+      decision = _current_choice.decide(decision_key.to_sym)
+      fiber.resume(decision)
     end
 
     def play(card)

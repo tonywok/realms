@@ -16,6 +16,7 @@ module Realms
         option = options_hash.fetch(key) { raise InvalidOption, "missing #{key} in #{options_hash.keys}" }
         options_hash.delete(key) unless option.noop?
         decision.make(option)
+        decision
       end
 
       class Decision
