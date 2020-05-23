@@ -34,6 +34,10 @@ module Realms
       def choose(options, subject: key, optionality: optional, **kwargs, &block)
         game.choose(options, subject: subject, optionality: optionality, **kwargs, &block)
       end
+
+      def may_choose_many(options, subject: key, **kwargs, &block)
+        game.may_choose_many(options, subject: subject, **kwargs, &block)
+      end
     end
   end
 end
