@@ -34,7 +34,7 @@ module Realms
 
     def perform(thing)
       flows.push(thing)
-      instance_exec { thing.execute }
+      instance_exec { thing.__execute }
       flows.pop
     rescue => e
       binding.source_location
