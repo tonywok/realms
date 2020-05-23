@@ -145,7 +145,6 @@ module Realms
     end
 
     def discard(key)
-      binding.pry
       decide(:discard, key)
     end
 

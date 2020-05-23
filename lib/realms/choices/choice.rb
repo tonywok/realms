@@ -32,6 +32,7 @@ module Realms
       end
 
       def inspect
+        "<Choice #{subject} options=#{options.map(&:key)}"
       end
 
       class Decision
