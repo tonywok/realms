@@ -7,7 +7,7 @@ shared_examples "destroy_target_base" do
 
   context "no bases in play" do
     it "has no eligible attack.<base> targets" do
-      attack_targets = game.current_choice.options_hash.except(:"attack.#{game.passive_player.key}").keys.select { |key| key =~ /attack/ }
+      attack_targets = game._current_choice.options_hash.except(:"attack.#{game.passive_player.key}").keys.select { |key| key =~ /attack/ }
       expect(attack_targets).to be_empty
     end
   end

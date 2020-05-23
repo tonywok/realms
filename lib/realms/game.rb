@@ -25,6 +25,8 @@ module Realms
 
     ## START
 
+    attr_accessor :_current_choice
+
     def start
       self.active_turn = Turn.first(self)
       fiber.resume
@@ -35,13 +37,15 @@ module Realms
       instance_exec { thing.execute }
       flows.pop
     rescue => e
-      binding.pry
+      binding.source_location
       raise
     end
 
     def choose(options, **kwargs)
       choice = choice_factory.make(options, **kwargs)
       return if choice.noop?
+
+      self._current_choice = choice
       choice.clear
       decision_key = Fiber.yield(choice)
       choice.decide(decision_key.to_sym)
@@ -51,6 +55,8 @@ module Realms
       else
         choice.decision.result
       end
+    ensure
+      self._current_choice = nil
     end
 
     def may_choose(options, **kwargs, &block)
@@ -139,6 +145,7 @@ module Realms
     end
 
     def discard(key)
+      binding.pry
       decide(:discard, key)
     end
 
