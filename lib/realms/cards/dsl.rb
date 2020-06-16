@@ -25,19 +25,19 @@ module Realms
         end
 
         def primary(&block)
-          ability_definition = Effects::Definitions::Definition.new(Effects::PrimaryAbility)
+          ability_definition = Effects::Definitions::Definition.new(Effects::Sequence)
           ability_definition.instance_exec(&block)
           definition.primary_ability = ability_definition
         end
 
         def ally(&block)
-          ability_definition = Effects::Definitions::Definition.new(Effects::AllyAbility)
+          ability_definition = Effects::Definitions::Definition.new(Effects::Sequence)
           ability_definition.instance_exec(&block)
           definition.ally_ability = ability_definition
         end
 
         def scrap(&block)
-          ability_definition = Effects::Definitions::Definition.new(Effects::ScrapAbility)
+          ability_definition = Effects::Definitions::Definition.new(Effects::Sequence)
           ability_definition.instance_exec(&block)
           definition.scrap_ability = ability_definition
         end
