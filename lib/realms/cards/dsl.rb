@@ -1,3 +1,5 @@
+require "realms/refactor/builder"
+
 module Realms
   module Cards
     module Dsl
@@ -5,41 +7,39 @@ module Realms
 
       class_methods do
         def definition
-          @definition ||= Definition.new
+          @definition ||= builder.to_definition
+        end
+
+        def builder
+          @builder ||= Refactor::Builder.new
         end
 
         def faction(*factions)
-          definition.factions.merge(factions)
+          builder.factions.merge(factions)
         end
 
         def cost(trade_amount)
-          definition.cost = trade_amount
+          builder.cost = trade_amount
         end
 
         def type(card_type)
-          definition.type = card_type
+          builder.type = card_type
         end
 
         def defense(num)
-          definition.defense = num
+          builder.defense = num
         end
 
         def primary(&block)
-          ability_definition = Effects::Definitions::Definition.new(Effects::Sequence)
-          ability_definition.instance_exec(&block)
-          definition.primary_ability = ability_definition
+          builder.primary(&block)
         end
 
         def ally(&block)
-          ability_definition = Effects::Definitions::Definition.new(Effects::Sequence)
-          ability_definition.instance_exec(&block)
-          definition.ally_ability = ability_definition
+          builder.ally(&block)
         end
 
         def scrap(&block)
-          ability_definition = Effects::Definitions::Definition.new(Effects::Sequence)
-          ability_definition.instance_exec(&block)
-          definition.scrap_ability = ability_definition
+          builder.scrap(&block)
         end
       end
     end

@@ -1,9 +1,14 @@
 require "realms/cards/definition"
 require "realms/cards/dsl"
 require "realms/cards/card"
-Dir[File.expand_path('../cards/*.rb', __FILE__)].each do |file|
-  require file
-end
+require "realms/cards/viper"
+require "realms/cards/scout"
+require "realms/cards/explorer"
+require "realms/cards/federation_shuttle"
+require "realms/cards/cutter"
+# Dir[File.expand_path('../cards/*.rb', __FILE__)].each do |file|
+#   require file
+# end
 
 module Realms
   module Cards

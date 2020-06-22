@@ -53,7 +53,8 @@ module Realms
       end
 
       def primary_ability(turn)
-        definition.primary_ability.to_effect(self, turn).tap do
+        ctx = OpenStruct.new(:card => self, :game => turn.game, :active_player => turn.game.active_player, :active_turn => turn)
+        definition.primary_ability.to_effect(ctx).tap do
           emit(:primary_ability, self)
         end
       end
