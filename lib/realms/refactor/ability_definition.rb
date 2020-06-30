@@ -1,32 +1,18 @@
 module Realms
   module Refactor
     class AbilityDefinition
-      attr_reader :effect_declarations
+      attr_reader :kind, :declarations
 
-      def initialize(effect_declarations:)
-        @effect_declarations = effect_declarations
+      def initialize(declaration)
+        @declarations = declarations
       end
 
-      def to_effect(context)
-        SequenceEffect.new(definition: self, context: context)
+      def evaluate(context)
+        kind.new(definition: self, context: context)
       end
 
-      class SequenceEffect
-        attr_reader :definition, :context
-
-        delegate :game, to: :context
-
-        def initialize(definition:, context:)
-          @definition = definition
-          @context = context
-        end
-
-        def __execute
-          definition.effect_declarations.each do |effect_declarations|
-            effect = effect_declarations.to_effect(context) 
-            game.perform(effect)
-          end
-        end
+      def auto?
+        declarations.all?(&:auto?)
       end
     end
   end

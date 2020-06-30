@@ -20,19 +20,19 @@ module Realms
       end
 
       def primary(&block)
-        ability_builder = AbilityBuilder.new
+        ability_builder = AbilityBuilder.sequence
         ability_builder.instance_exec(&block)
         self.primary_ability = ability_builder.to_definition
       end
 
       def ally(&block)
-        ability_builder = AbilityBuilder.new
+        ability_builder = AbilityBuilder.sequence
         ability_builder.instance_exec(&block)
         self.ally_ability = ability_builder.to_definition
       end
 
       def scrap(&block)
-        ability_builder = AbilityBuilder.new
+        ability_builder = AbilityBuilder.sequence
         ability_builder.instance_exec(&block)
         self.scrap_ability = ability_builder.to_definition
       end

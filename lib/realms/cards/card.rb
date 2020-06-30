@@ -54,13 +54,14 @@ module Realms
 
       def primary_ability(turn)
         ctx = OpenStruct.new(:card => self, :game => turn.game, :active_player => turn.game.active_player, :active_turn => turn)
-        definition.primary_ability.to_effect(ctx).tap do
+        definition.primary_ability.evaluate(ctx).tap do
           emit(:primary_ability, self)
         end
       end
 
       def ally_ability(turn)
-        definition.ally_ability.to_effect(self, turn).tap do
+        ctx = OpenStruct.new(:card => self, :game => turn.game, :active_player => turn.game.active_player, :active_turn => turn)
+        definition.ally_ability.evaluate(ctx).tap do
           emit(:ally_ability, self)
         end
       end
@@ -71,7 +72,8 @@ module Realms
       end
 
       def scrap_ability(turn)
-        definition.scrap_ability.to_effect(self, turn).tap do
+        ctx = OpenStruct.new(:card => self, :game => turn.game, :active_player => turn.game.active_player, :active_turn => turn)
+        definition.scrap_ability.evaluate(ctx).tap do
           emit(:scrap_ability, self)
         end
       end
