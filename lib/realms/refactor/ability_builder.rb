@@ -64,6 +64,31 @@ module Realms
               active_player.scrap(card)
             end
           end
+
+          effect(:discard_to_draw) do |amount|
+            may_choose_many(active_player.hand, count: amount) do |cards|
+              cards.each { |card| active_player.discard(card) }
+              active_player.draw(cards.length)
+            end
+          end
+
+          effect(:draw_for_each_scrap_from_hand_or_discard_pile) do |amount|
+            cards_in_hand_or_discard_pile = [active_player.hand, active_player.discard_pile].flat_map(&:cards)
+
+            may_choose_many(cards_in_hand_or_discard_pile, count: amount) do |cards|
+              cards.each { |selected_card| trade_deck.scrap(selected_card) }
+              active_player.draw(cards.length)
+            end
+          end
+
+          effect(:draw_then_scrap_from_hand) do |amount|
+            amount.times do
+              active_player.draw
+              choose(active_player.hand)do |chosen_card|
+                active_player.scrap(chosen_card)
+              end
+            end
+          end
         end
       end
 
@@ -145,6 +170,10 @@ module Realms
 
             def choose(options, **kwargs, &block)
               game.choose(options, optionality: declaration.optional, subject: declaration.key, **kwargs, &block)
+            end
+
+            def may_choose_many(options, **kwargs, &block)
+              game.may_choose_many(options, subject: declaration.key, **kwargs, &block)
             end
 
             def __execute

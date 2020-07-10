@@ -7,12 +7,7 @@ module Realms
       cost 7
 
       primary do
-        # effect(:draw_then_scrap_from_hand) do
-        #   active_player.draw(1)
-        #   choose(active_player.hand)do |chosen_card|
-        #     active_player.scrap(chosen_card)
-        #   end
-        # end
+        draw_then_scrap_from_hand 1
       end
     end
   end
