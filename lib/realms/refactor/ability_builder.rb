@@ -41,33 +41,35 @@ module Realms
             passive_player.upkeep << ::Realms::Actions::Discard
           end
 
-          # TODO: Make choice factory more usable (rn its coupled to game flow)
-          #       ChoiceFactory.choose
-          #       ChoiceFactory.may_choose
-          #       ChoiceFactory.choose_many
-          #       ChoiceFactory.may_choose_many
-          #
-          # effect(:destroy_target_base) do
-          #   all_bases = active_player.in_play.select(&:base?) + passive_player.in_play.select(&:base?)
-          #   bases_in_play = all_bases.any?(&:outpost?) ? all_bases.select(&:outpost?) : all_bases
-          #
-          #   choose(bases_in_play) do |card|
-          #     player = card.owner
-          #     player.destroy(card)
-          #   end
-          # end
-          #
-          # effect(:scrap_card_from_trade_row) do |amount|
-          #   choose(trade_deck.trade_row.cards, count: 1, optionality: optional) do
-          #     active_player.scrap(card)
-          #   end
-          # end
+          effect(:scrap_from_hand_or_discard_pile) do
+            options = active_player.hand.cards + active_player.discard_pile.cards
+
+            choose(options) do |card|
+              active_player.scrap(card)
+            end
+          end
+
+          effect(:destroy_target_base) do
+            all_bases = active_player.in_play.select(&:base?) + passive_player.in_play.select(&:base?)
+            bases_in_play = all_bases.any?(&:outpost?) ? all_bases.select(&:outpost?) : all_bases
+          
+            choose(bases_in_play) do |card|
+              player = card.owner
+              player.destroy(card)
+            end
+          end
+
+          effect(:scrap_card_from_trade_row) do |amount|
+            choose(trade_deck.trade_row.cards, count: 1, optionality: optional) do
+              active_player.scrap(card)
+            end
+          end
         end
       end
 
       effect_registry.registrations.each do |effect_key, effect_definition|
-        define_method(effect_key) do |amount|
-          declarations << Declarations::Effect.new(definition: effect_definition, amount: amount)
+        define_method(effect_key) do |amount = nil, optional: false|
+          declarations << Declarations::Effect.new(definition: effect_definition, amount: amount, optional: optional)
         end
       end
 
@@ -112,14 +114,15 @@ module Realms
 
       module Declarations
         class Effect
-          attr_reader :definition, :amount
+          attr_reader :definition, :amount, :optional
 
           delegate :auto?, :key,
             to: :definition
 
-          def initialize(definition:, amount:)
+          def initialize(definition:, amount:, optional: false)
             @definition = definition
             @amount = amount
+            @optional = optional
           end
 
           def evaluate(context)
@@ -132,7 +135,7 @@ module Realms
             delegate :game, to: :context
             delegate :active_turn, :active_player, :passive_player, to: :game
 
-            delegate :definition, to: :declaration
+            delegate :definition, :optional, to: :declaration
             delegate :auto?, to: :definition
 
             def initialize(context:, declaration:)
@@ -140,8 +143,12 @@ module Realms
               @declaration = declaration
             end
 
+            def choose(options, **kwargs, &block)
+              game.choose(options, optionality: declaration.optional, subject: declaration.key, **kwargs, &block)
+            end
+
             def __execute
-              context.instance_exec(declaration.amount, &declaration.definition.execution)
+              instance_exec(declaration.amount, &declaration.definition.execution)
             end
           end
         end
@@ -213,8 +220,8 @@ module Realms
             end
 
             def __execute
-              choose(declaration.declarations) do |declaration|
-                effect = declarations.evaluate(context) 
+              choose(declaration.declarations, subject: context.card.name) do |declaration|
+                effect = declaration.evaluate(context) 
                 game.perform(effect)
               end
             end

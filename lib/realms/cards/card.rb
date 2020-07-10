@@ -52,30 +52,43 @@ module Realms
         owner.zones.find(if_none) { |z| z.include?(self) }
       end
 
+      # TODO: Clean this up if good idea
+      class AbilityContext
+        attr_reader :game, :card
+
+        delegate :active_turn, :active_player, :choose,
+          :to => :game
+
+        def initialize(card:, game:)
+          @game = game
+          @card = card
+        end
+      end
+
       def primary_ability(turn)
-        ctx = OpenStruct.new(:card => self, :game => turn.game, :active_player => turn.game.active_player, :active_turn => turn)
+        ctx = AbilityContext.new(:card => self, :game => turn.game)
         definition.primary_ability.evaluate(ctx).tap do
           emit(:primary_ability, self)
         end
       end
 
       def ally_ability(turn)
-        ctx = OpenStruct.new(:card => self, :game => turn.game, :active_player => turn.game.active_player, :active_turn => turn)
+        ctx = AbilityContext.new(:card => self, :game => turn.game)
         definition.ally_ability.evaluate(ctx).tap do
           emit(:ally_ability, self)
+        end
+      end
+
+      def scrap_ability(turn)
+        ctx = AbilityContext.new(:card => self, :game => turn.game)
+        definition.scrap_ability.evaluate(ctx).tap do
+          emit(:scrap_ability, self)
         end
       end
 
       def definition=(definition)
         @definition = definition
         emit(:definition_change, self)
-      end
-
-      def scrap_ability(turn)
-        ctx = OpenStruct.new(:card => self, :game => turn.game, :active_player => turn.game.active_player, :active_turn => turn)
-        definition.scrap_ability.evaluate(ctx).tap do
-          emit(:scrap_ability, self)
-        end
       end
 
       def ally_factions
