@@ -22,7 +22,7 @@ module Realms
       class EffectDefinition
         attr_reader :key, :execution, :auto
 
-        def initialize(key:, auto: true, &block)
+        def initialize(key:, auto: false, &block)
           @key = key
           @auto = auto
           @execution = block

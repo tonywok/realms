@@ -21,19 +21,19 @@ module Realms
 
       def self.effect_registry
         @effect_registry ||= EffectRegistry.configure do
-          effect(:trade) do |amount|
+          effect(:trade, auto: true) do |amount|
             active_turn.trade += amount
           end
 
-          effect(:combat) do |amount|
+          effect(:combat, auto: true) do |amount|
             active_turn.combat += amount
           end
 
-          effect(:authority) do |amount|
+          effect(:authority, auto: true) do |amount|
             active_player.authority += amount
           end
 
-          effect(:draw, auto: false) do |amount|
+          effect(:draw) do |amount|
             active_player.draw(amount)
           end
 
@@ -60,7 +60,7 @@ module Realms
           end
 
           effect(:scrap_card_from_trade_row) do |amount|
-            choose(trade_deck.trade_row.cards, count: 1, optionality: optional) do
+            choose(trade_deck.trade_row.cards, count: 1) do |card|
               active_player.scrap(card)
             end
           end
@@ -133,7 +133,7 @@ module Realms
             attr_reader :context, :declaration
 
             delegate :game, to: :context
-            delegate :active_turn, :active_player, :passive_player, to: :game
+            delegate :active_turn, :active_player, :passive_player, :trade_deck, to: :game
 
             delegate :definition, :optional, to: :declaration
             delegate :auto?, to: :definition
@@ -166,9 +166,6 @@ module Realms
 
           def auto?
             declarations.all?(&:auto?)
-          rescue => e
-            binding.pry
-            raise
           end
 
           class Evaluated
