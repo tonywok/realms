@@ -133,7 +133,6 @@ module Realms
           end
 
           effect(:copy_ship) do
-            binding.pry
             ships = in_play.select(&:ship?).index_by(&:key).except(card.key).values
 
             choose(ships) do |ship|
@@ -214,8 +213,8 @@ module Realms
             attr_reader :context, :declaration, :listeners
 
             # TODO: access to all zone methods via registry
-            delegate :game, to: :context
-            delegate :active_turn, :active_player, :passive_player, :trade_deck, to: :game
+            delegate :game, :card, to: :context
+            delegate :perform, :active_turn, :active_player, :passive_player, :trade_deck, to: :game
             delegate :trade_row, to: :trade_deck
             delegate :in_play, to: :active_player
 
@@ -233,11 +232,6 @@ module Realms
 
             def may_choose_many(options, **kwargs, &block)
               game.may_choose_many(options, subject: declaration.key, **kwargs, &block)
-            end
-
-            def on_acquiring_card(selector_proc, &handler)
-              listener = Listener.new(selector: selector_proc, handler: handler)
-              trade_deck.trade_row.events.attach(listener)
             end
 
             def __execute
