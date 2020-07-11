@@ -9,7 +9,7 @@ module Realms
       end
 
       ally do
-        # top_deck_next_ship optional: true
+        top_deck_next_ship optional: true
       end
     end
   end

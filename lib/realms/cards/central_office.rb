@@ -8,7 +8,7 @@ module Realms
 
       primary do
         trade 2
-        # top_deck_next_ship optional: true
+        top_deck_next_ship optional: true
       end
 
       ally do

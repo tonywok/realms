@@ -19,9 +19,6 @@ module Realms
         option = options_hash.fetch(key) { raise InvalidOption, "missing #{key} in #{options_hash.keys}" }
         decision.make(option)
         decision
-      rescue => e
-        binding.pry
-        raise
       end
 
       def noop?

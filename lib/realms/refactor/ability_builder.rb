@@ -89,6 +89,60 @@ module Realms
               end
             end
           end
+
+          effect(:draw_for_each_blob_card_played_this_turn) do
+            num = active_player.in_play.cards_in_play.count do |c|
+              c.played_this_turn? && c.blob?
+            end
+            active_player.draw(num)
+          end
+
+          effect(:top_deck_next_ship) do
+            sub = trade_row.on(:removing_card) do |zt|
+              # active_turn.on(:end) { cancel }
+              if zt.card.ship?
+                zt.destination = active_player.draw_pile
+                zt.destination_position = 0
+                sub.cancel
+              end
+            end
+          end
+
+          # TODO: draw(2).when { active_player.in_play.count(&:base) >= 2 } ?
+          effect(:draw_two_if_two_bases) do
+            active_player.draw(2) if active_player.in_play.count(&:base?) >= 2
+          end
+
+          effect(:acquire_ship_and_top_deck) do
+            trade_row_ships = trade_row.select(&:ship?)
+            choose(trade_row_ships) do |card|
+              active_player.acquire(card, zone: active_player.draw_pile, pos: 0)
+            end
+          end
+
+          effect(:all_ships_get_combat, auto: true) do
+            combat_sub = in_play.on(:card_added) do |zt|
+              if zt.card.ship?
+                active_turn.combat += 1
+              end
+            end
+            card_sub = in_play.on(:card_removed) do
+              combat_sub.cancel
+              card_sub.cancel
+            end 
+          end
+
+          effect(:copy_ship) do
+            binding.pry
+            ships = in_play.select(&:ship?).index_by(&:key).except(card.key).values
+
+            choose(ships) do |ship|
+              card.definition = ship.definition.clone.tap do |definition|
+                card.factions.each { |faction| definition.factions << faction }
+              end
+              perform Actions::PrimaryAbility.new(active_turn, card)
+            end
+          end
         end
       end
 
@@ -155,10 +209,15 @@ module Realms
           end
 
           class Evaluated
-            attr_reader :context, :declaration
+            include Brainguy::Observable
 
+            attr_reader :context, :declaration, :listeners
+
+            # TODO: access to all zone methods via registry
             delegate :game, to: :context
             delegate :active_turn, :active_player, :passive_player, :trade_deck, to: :game
+            delegate :trade_row, to: :trade_deck
+            delegate :in_play, to: :active_player
 
             delegate :definition, :optional, to: :declaration
             delegate :auto?, to: :definition
@@ -174,6 +233,11 @@ module Realms
 
             def may_choose_many(options, **kwargs, &block)
               game.may_choose_many(options, subject: declaration.key, **kwargs, &block)
+            end
+
+            def on_acquiring_card(selector_proc, &handler)
+              listener = Listener.new(selector: selector_proc, handler: handler)
+              trade_deck.trade_row.events.attach(listener)
             end
 
             def __execute
