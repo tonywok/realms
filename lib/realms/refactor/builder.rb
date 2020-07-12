@@ -12,6 +12,12 @@ module Realms
                     :type,
                     :defense
 
+      def self.build(&block)
+        builder = new
+        builder.instance_exec(&block)
+        builder.to_definition
+      end
+
       def initialize
         @factions = Set.new
         @cost = 0

@@ -2,15 +2,15 @@ require "spec_helper"
 
 RSpec.describe Actions::Attack do
   let(:game) { Game.new }
-  let(:combat) { 1 }
-  let(:primary_ability) do
-    Effects::Definitions::Numeric.new(Effects::Combat, combat)
-  end
+  let(:combat_amount) { 1 }
 
   let(:card) do
     card = Cards::Viper.new(game.active_player, index: 10)
-    card.definition = card.definition.clone.tap do |definition|
-      definition.primary_ability = primary_ability
+    amount = combat_amount
+    card.definition = Refactor::Builder.build do
+      primary do
+        combat(amount)
+      end
     end
     card
   end
@@ -48,7 +48,7 @@ RSpec.describe Actions::Attack do
     end
 
     context "with combat greater than base defense" do
-      let(:combat) { base.defense + 1 }
+      let(:combat_amount) { base.defense + 1 }
 
       it "can attack the base" do
         game.attack(base)
@@ -66,7 +66,7 @@ RSpec.describe Actions::Attack do
     end
 
     context "with combat equal to base defense" do
-      let(:combat) { base.defense }
+      let(:combat_amount) { base.defense }
 
       it "can attack the base" do
         game.attack(base)
@@ -81,7 +81,7 @@ RSpec.describe Actions::Attack do
     end
 
     context "with combat less than base defense" do
-      let(:combat) { base.defense - 1  }
+      let(:combat_amount) { base.defense - 1  }
 
       it "cannot attack the base" do
         expect { game.attack(base) }.to raise_error(Choices::InvalidOption)
@@ -104,7 +104,7 @@ RSpec.describe Actions::Attack do
     end
 
     context "with combat greater than base defense" do
-      let(:combat) { base.defense + 1 }
+      let(:combat_amount) { base.defense + 1 }
 
       it "can attack the base" do
         game.attack(base)
@@ -120,7 +120,7 @@ RSpec.describe Actions::Attack do
     end
 
     context "with combat equal to base defense" do
-      let(:combat) { base.defense }
+      let(:combat_amount) { base.defense }
 
       it "can attack the base" do
         game.attack(base)
@@ -134,7 +134,7 @@ RSpec.describe Actions::Attack do
     end
 
     context "with combat less than base defense" do
-      let(:combat) { base.defense - 1  }
+      let(:combat_amount) { base.defense - 1  }
 
       it "cannot attack the base" do
         expect { game.attack(base) }.to raise_error(Choices::InvalidOption)
@@ -149,7 +149,7 @@ RSpec.describe Actions::Attack do
   context "opponent has both an outpost and base" do
     let(:base) { Cards::BlobWheel.new(game.active_player) }
     let(:outpost) { Cards::DefenseCenter.new(game.active_player) }
-    let(:combat) { outpost.defense + outpost.defense + 1 }
+    let(:combat_amount) { outpost.defense + outpost.defense + 1 }
 
     before do
       game.p2.in_play << base

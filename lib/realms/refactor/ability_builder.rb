@@ -14,6 +14,12 @@ module Realms
         new(kind: Declarations::Modal)
       end
 
+      def self.build(kind: Declarations::Sequence, &block)
+        builder = new(kind: kind)
+        builder.instance_exec(&block)
+        builder.to_definition
+      end
+
       def initialize(kind:)
         @kind = kind
         @declarations = []
@@ -121,14 +127,14 @@ module Realms
           end
 
           effect(:all_ships_get_combat, auto: true) do
-            combat_sub = in_play.on(:card_added) do |zt|
+            combat = in_play.on(:card_added) do |zt|
               if zt.card.ship?
                 active_turn.combat += 1
               end
             end
-            card_sub = in_play.on(:card_removed) do
-              combat_sub.cancel
-              card_sub.cancel
+            lifetime = in_play.on(:card_removed) do
+              combat.cancel
+              lifetime.cancel
             end 
           end
 
@@ -158,17 +164,6 @@ module Realms
       end
 
       def to_definition
-        # Spell Ability - just the words on the text
-        #   Sequence
-        #   Choice
-        #   
-        # Activitated Ability - has a cost (e.g scrap)
-        # Triggered Ability - happens when something else happens (usually for a duration)
-        # Static Ability - abilities that just are
-        #
-        #  FleetHQ has a triggered ability that gives ships that enter play +1 combat
-        #  It has been errata'd to say "Whenever you play a ship, gain {1 combat}"
-        #
         Ability.new(:declaration => Declarations::Sequence.new(declarations: declarations))
       end
 
@@ -219,7 +214,7 @@ module Realms
             delegate :in_play, to: :active_player
 
             delegate :definition, :optional, to: :declaration
-            delegate :auto?, to: :definition
+            delegate :auto?, :key, to: :definition
 
             def initialize(context:, declaration:)
               @context = context
@@ -236,6 +231,7 @@ module Realms
 
             def __execute
               instance_exec(declaration.amount, &declaration.definition.execution)
+              game.publish(key)
             end
           end
         end
