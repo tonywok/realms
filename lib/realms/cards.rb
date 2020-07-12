@@ -1,4 +1,3 @@
-require "realms/cards/definition"
 require "realms/cards/dsl"
 require "realms/cards/card"
 
