@@ -229,7 +229,7 @@ module Realms
               game.may_choose_many(options, subject: declaration.key, **kwargs, &block)
             end
 
-            def __execute
+            def execute
               instance_exec(declaration.amount, &declaration.definition.execution)
               game.publish(key)
             end
@@ -261,7 +261,7 @@ module Realms
               @context = context
             end
 
-            def __execute
+            def execute
               declaration.declarations.each do |declaration|
                 effect = declaration.evaluate(context) 
                 game.perform(effect)
@@ -299,7 +299,7 @@ module Realms
               @context = context
             end
 
-            def __execute
+            def execute
               choose(declaration.declarations, subject: context.card.name) do |declaration|
                 effect = declaration.evaluate(context) 
                 game.perform(effect)
