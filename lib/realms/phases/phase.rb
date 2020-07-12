@@ -5,8 +5,8 @@ module Realms
 
       delegate :active_player, :passive_player, :trade_deck,
         to: :turn
-
-      include Yielder::Gutted
+      delegate :game, to: :turn
+      delegate :choose, :may_choose, :choose_many, :may_choose_many, :perform, to: :game
 
       def initialize(turn)
         @turn = turn
