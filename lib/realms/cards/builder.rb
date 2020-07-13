@@ -1,8 +1,7 @@
-require_relative "definition"
-require_relative "ability_builder"
+require "realms/cards/definition"
 
 module Realms
-  module Refactor
+  module Cards
     class Builder
       attr_accessor :cost,
                     :factions,
@@ -26,19 +25,19 @@ module Realms
       end
 
       def primary(&block)
-        ability_builder = AbilityBuilder.sequence
+        ability_builder = Abilities::Builder.sequence
         ability_builder.instance_exec(&block)
         self.primary_ability = ability_builder.to_definition
       end
 
       def ally(&block)
-        ability_builder = AbilityBuilder.sequence
+        ability_builder = Abilities::Builder.sequence
         ability_builder.instance_exec(&block)
         self.ally_ability = ability_builder.to_definition
       end
 
       def scrap(&block)
-        ability_builder = AbilityBuilder.sequence
+        ability_builder = Abilities::Builder.sequence
         ability_builder.instance_exec(&block)
         self.scrap_ability = ability_builder.to_definition
       end

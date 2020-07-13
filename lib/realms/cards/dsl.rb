@@ -1,4 +1,4 @@
-require "realms/refactor/builder"
+require "realms/cards/builder"
 
 module Realms
   module Cards
@@ -11,7 +11,7 @@ module Realms
         end
 
         def builder
-          @builder ||= Refactor::Builder.new
+          @builder ||= Builder.new
         end
 
         def faction(*factions)

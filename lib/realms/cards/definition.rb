@@ -1,5 +1,5 @@
 module Realms
-  module Refactor
+  module Cards
     class Definition
       attr_reader :factions,
                   :type,

@@ -7,7 +7,7 @@ RSpec.describe Actions::Attack do
   let(:card) do
     card = Cards::Viper.new(game.active_player, index: 10)
     amount = combat_amount
-    card.definition = Refactor::Builder.build do
+    card.definition = Cards::Builder.build do
       primary do
         combat(amount)
       end
