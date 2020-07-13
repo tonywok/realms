@@ -9,12 +9,7 @@ module Realms
       end
 
       ally do
-        effect(:acquire_ship_and_top_deck, optional: true) do
-          trade_row_ships = turn.trade_deck.trade_row.select(&:ship?)
-          choose(trade_row_ships) do |card|
-            active_player.acquire(card, zone: active_player.draw_pile, pos: 0)
-          end
-        end
+        acquire_ship_and_top_deck 
       end
     end
   end

@@ -3,7 +3,7 @@ require "realms/turn"
 require "realms/phases"
 
 module Realms
-  class Game < Yielder
+  class Game
     attr_reader :seed, :registry, :event_counter, :active_turn
 
     delegate :active_player, :passive_player,
@@ -12,17 +12,68 @@ module Realms
     delegate :p1, :p2, :trade_deck,
       to: :registry
 
+    attr_reader :fiber, :flows
+
     def initialize(seed: Random.new_seed)
       @seed = seed
       @registry = Zones::Registry.new(self)
       @event_counter = (0...Float::INFINITY).lazy
       registry.register!
+      @flows = []
+      @fiber = Fiber.new { execute }
     end
+
+    ## START
+
+    attr_accessor :_current_choice
 
     def start
       self.active_turn = Turn.first(self)
-      next_choice
+      fiber.resume
     end
+
+    def perform(thing)
+      flows.push(thing)
+      instance_exec { thing.execute }
+      flows.pop
+    end
+
+    def choose(options, **kwargs)
+      choice = choice_factory.make(options, **kwargs)
+      return if choice.noop?
+
+      self._current_choice = choice
+      choice.clear
+
+      decision = nil
+      until !choice.undecided?
+        decision = Fiber.yield(choice)
+      end
+
+      if block_given? && decision.actionable?
+        yield(decision.result)
+      else
+        decision.result
+      end
+    end
+
+    def may_choose(options, **kwargs, &block)
+      choose(options, optionality: true, **kwargs, &block)
+    end
+
+    def choose_many(options, count:, **kwargs, &block)
+      choose(options, count: count, **kwargs, &block)
+    end
+
+    def may_choose_many(options, count:, **kwargs, &block)
+      choose_many(options, count: count, optionality: true, **kwargs, &block)
+    end
+
+    def choice_factory
+      @choice_factory ||= Choices::Factory.new
+    end
+
+    ## END REMOVE ME
 
     def over?
       [p1, p2].any? { |p| p.authority <= 0 }
@@ -60,11 +111,13 @@ module Realms
     #
     def decide(*args)
       action, key = args
-      if args.many?
-        super([action, safe(key)].compact.join("."))
+      decision_key = if args.many?
+        [action, safe(key)].compact.join(".")
       else
-        super(safe(action))
+        safe(action)
       end
+      decision = _current_choice.decide(decision_key.to_sym)
+      fiber.resume(decision)
     end
 
     def play(card)

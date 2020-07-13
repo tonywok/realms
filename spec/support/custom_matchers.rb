@@ -15,7 +15,7 @@ RSpec::Matchers.define :have_option do |action, target|
   end
 
   def options(game)
-    game.current_choice.send(:options_hash)
+    game._current_choice.send(:options_hash)
   end
 end
 

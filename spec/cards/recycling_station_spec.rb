@@ -38,7 +38,7 @@ RSpec.describe Realms::Cards::RecyclingStation do
             top_of_deck = game.active_player.draw_pile.first
             c1, c2 = game.active_player.hand.sample(2)
             game.decide(:discard_to_draw, c1)
-            expect(game.current_choice.options.map(&:key)).to_not include(top_of_deck.key)
+            expect(game._current_choice.options.map(&:key)).to_not include(top_of_deck.key)
             expect(c1).to_not eq(c2)
             game.decide(:discard_to_draw, c2)
           }.to change { game.active_player.draw_pile.length }.by(-2).and \

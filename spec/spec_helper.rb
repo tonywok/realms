@@ -1,4 +1,5 @@
 require "bundler/setup"
+require 'async/rspec'
 require "pry"
 Bundler.setup
 

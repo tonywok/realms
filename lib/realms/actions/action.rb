@@ -1,10 +1,12 @@
 module Realms
   module Actions
-    class Action < Yielder
+    class Action
       attr_reader :turn, :target
 
       delegate :active_player, :passive_player,
         to: :turn
+      delegate :game, to: :turn
+      delegate :choose, :may_choose, :choose_many, :may_choose_many, :perform, to: :game
 
       def initialize(turn, target = nil)
         @turn = turn
@@ -23,8 +25,8 @@ module Realms
         false
       end
 
-      def choose(options, subject: key, **kwargs)
-        super
+      def choose(options, subject: key, **kwargs, &block)
+        game.choose(options, subject: subject, **kwargs, &block)
       end
 
       def execute

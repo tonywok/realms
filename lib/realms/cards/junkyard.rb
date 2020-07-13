@@ -7,7 +7,7 @@ module Realms
       cost 6
 
       primary do
-        scrap_card_from_hand_or_discard_pile optional: true
+        scrap_from_hand_or_discard_pile optional: true
       end
     end
   end

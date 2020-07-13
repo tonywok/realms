@@ -7,9 +7,7 @@ module Realms
       primary do
         authority 3
         trade 2
-        effect(:draw_two_if_two_bases) do
-          active_player.draw(2) if active_player.in_play.count(&:base?) >= 2
-        end
+        draw_two_if_two_bases
       end
     end
   end

@@ -17,18 +17,18 @@ RSpec.describe Realms::Cards::Card do
 
   describe "overriding defaults" do
     before do
-      class SomeCard < described_class
+      class SomeOtherCard < described_class
         cost 1
         faction :blob
       end
     end
-    let(:card) { SomeCard.new("test") }
+    let(:card) { SomeOtherCard.new("test") }
 
     include_examples "factions", :blob do
-      let(:card) { SomeCard.new("test") }
+      let(:card) { SomeOtherCard.new("test") }
     end
     include_examples "cost", 1 do
-      let(:card) { SomeCard.new("test") }
+      let(:card) { SomeOtherCard.new("test") }
     end
   end
 

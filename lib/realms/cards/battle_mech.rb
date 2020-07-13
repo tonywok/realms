@@ -6,7 +6,7 @@ module Realms
 
       primary do
         combat 4
-        scrap_card_from_hand_or_discard_pile optional: true
+        scrap_from_hand_or_discard_pile optional: true
       end
 
       ally do
