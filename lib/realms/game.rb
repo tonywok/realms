@@ -79,16 +79,29 @@ module Realms
       [p1, p2].any? { |p| p.authority <= 0 }
     end
 
-    def execute
-      perform Phases::Setup.new(active_turn)
+    class AbilityContext
+      attr_reader :game
 
-      until over?
-        perform Phases::Upkeep.new(active_turn)
-        perform Phases::Main.new(active_turn)
-        perform Phases::Discard.new(active_turn)
-        perform Phases::Draw.new(active_turn)
-        next_turn
+      delegate :active_turn, :active_player, :choose,
+        :to => :game
+
+      def initialize(game:)
+        @game = game
       end
+    end
+    def execute
+      context = AbilityContext.new(game: self)
+      Realms::TurnStructure.registry.evaluate(context).execute
+
+      # perform Phases::Setup.new(active_turn)
+
+      # until over?
+      #   perform Phases::Upkeep.new(active_turn)
+      #   perform Phases::Main.new(active_turn)
+      #   perform Phases::Discard.new(active_turn)
+      #   perform Phases::Draw.new(active_turn)
+      #   next_turn
+      # end
     end
 
     def publish(event, **kwargs)
