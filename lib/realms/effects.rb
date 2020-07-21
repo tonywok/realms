@@ -22,7 +22,12 @@ module Realms
         end
 
         effect(:discard) do |amount|
-          passive_player.upkeep << ::Realms::Actions::Discard
+          sub = turn_structure.on_beginning_of(phase: :main, forx: passive_player) do
+            choose(active_player.hand.cards) do |chosen_card|
+              active_player.discard(chosen_card)
+              sub.cancel
+            end
+          end
         end
 
         effect(:scrap_from_hand_or_discard_pile) do

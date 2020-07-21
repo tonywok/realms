@@ -35,6 +35,7 @@ module Realms
 
           phase(:draw) do
             active_player.draw(5)
+            active_player.in_play.reset!
             # TODO: Probably remove turn as a thing that needs interacted with
             game.send(:next_turn)
           end
@@ -96,8 +97,26 @@ module Realms
           @declaration = declaration
         end
 
-        def evaluate(game)
-          declaration.evaluate(game)
+        def evaluate(context)
+          Evaluated.new(declaration, context)
+        end
+
+        class Evaluated
+          attr_reader :declaration, :context
+
+          def initialize(declaration, context)
+            @declaration = declaration
+            @context = context
+          end
+
+          def on_beginning_of(phase:, forx:, &handler)
+            event = [forx.key, phase, :beginning].join(":").to_sym
+            context.on(event, &handler)
+          end
+
+          def execute
+            declaration.evaluate(context).execute
+          end
         end
       end
 
@@ -136,10 +155,13 @@ module Realms
             end
 
             def execute
-              # TODO: broadcast before phase event
-              return unless declaration.definition.execution
-              instance_exec(&declaration.definition.execution)
-              # TODO: broadcast after phase event
+              event = [active_player.key, declaration.definition.key].join(":")
+              beginning = [event, :beginning].join(":").to_sym
+              ending = [event, :ending].join(":").to_sym
+
+              context.emit(beginning)
+              instance_exec(&declaration.definition.execution) if declaration.definition.execution
+              context.emit(ending)
             end
           end
         end

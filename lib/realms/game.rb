@@ -12,7 +12,7 @@ module Realms
     delegate :p1, :p2, :trade_deck,
       to: :registry
 
-    attr_reader :fiber, :flows
+    attr_reader :fiber, :flows, :turn_structure
 
     def initialize(seed: Random.new_seed)
       @seed = seed
@@ -21,6 +21,12 @@ module Realms
       registry.register!
       @flows = []
       @fiber = Fiber.new { execute }
+      @turn_structure = Realms::TurnStructure.registry.evaluate(GameContext.new(game: self))
+      @game_over = false
+    end
+
+    def over?
+      !!@game_over
     end
 
     ## START
@@ -75,11 +81,10 @@ module Realms
 
     ## END REMOVE ME
 
-    def over?
-      [p1, p2].any? { |p| p.authority <= 0 }
-    end
+    class GameContext
+      include Brainguy::Observer
+      include Brainguy::Observable
 
-    class AbilityContext
       attr_reader :game
 
       delegate :active_turn, :active_player, :choose,
@@ -88,20 +93,16 @@ module Realms
       def initialize(game:)
         @game = game
       end
+
+      def emit(*args)
+        super(*args)
+      end
     end
+
     def execute
-      context = AbilityContext.new(game: self)
-      Realms::TurnStructure.registry.evaluate(context).execute
-
-      # perform Phases::Setup.new(active_turn)
-
-      # until over?
-      #   perform Phases::Upkeep.new(active_turn)
-      #   perform Phases::Main.new(active_turn)
-      #   perform Phases::Discard.new(active_turn)
-      #   perform Phases::Draw.new(active_turn)
-      #   next_turn
-      # end
+      turn_structure.execute
+    rescue GameOver
+      @game_over = true
     end
 
     def publish(event, **kwargs)

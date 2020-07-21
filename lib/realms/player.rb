@@ -1,13 +1,18 @@
 module Realms
   class Player
-    attr_accessor :authority
-    attr_reader :key, :registry, :upkeep
+    attr_reader :key, :registry, :upkeep, :authority
 
     def initialize(key, registry)
       @key = key
       @registry = registry
       @authority = 50
       @upkeep = []
+    end
+
+    def authority=(amount)
+      (@authority = amount).tap do
+        raise(GameOver) if amount <= 0
+      end
     end
 
     def zones
