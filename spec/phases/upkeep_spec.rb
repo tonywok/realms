@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Realms::Phases::Upkeep do
+RSpec.describe "Realms::Phases::Upkeep" do
   let(:game) { Realms::Game.new }
 
   describe "discarding" do

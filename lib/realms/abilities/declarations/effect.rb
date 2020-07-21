@@ -24,7 +24,7 @@ module Realms
 
           # TODO: access to all zone methods via registry
           delegate :game, :card, to: :context
-          delegate :perform, :active_turn, :active_player, :passive_player, :trade_deck, to: :game
+          delegate :perform, :active_turn, :active_player, :passive_player, :trade_deck, :turn_structure, to: :game
           delegate :trade_row, to: :trade_deck
           delegate :in_play, to: :active_player
 

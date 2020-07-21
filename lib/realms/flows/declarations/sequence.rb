@@ -1,7 +1,7 @@
 module Realms
-  module Abilities
+  module Flows
     module Declarations
-      class Modal
+      class Sequence
         attr_reader :declarations
 
         def initialize(declarations:)
@@ -12,18 +12,14 @@ module Realms
           Evaluated.new(self, context)
         end
 
-        delegate :game, to: :context
-
         def auto?
-          false
+          declarations.all?(&:auto?)
         end
 
         class Evaluated
           attr_reader :declaration, :context
 
           delegate :game, to: :context
-          delegate :choose, to: :game
-          delegate :active_turn, :active_player, :passive_player, to: :game
 
           def initialize(declaration, context)
             @declaration = declaration
@@ -31,7 +27,7 @@ module Realms
           end
 
           def execute
-            choose(declaration.declarations, subject: context.card.name) do |declaration|
+            declaration.declarations.each do |declaration|
               effect = declaration.evaluate(context) 
               game.perform(effect)
             end
