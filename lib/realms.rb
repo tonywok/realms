@@ -11,5 +11,4 @@ require "realms/game"
 
 module Realms
   class InvalidTarget < StandardError; end
-  class GameOver < StandardError; end
 end

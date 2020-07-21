@@ -11,7 +11,7 @@ module Realms
 
     def authority=(amount)
       (@authority = amount).tap do
-        raise(GameOver) if amount <= 0
+        throw(:game_over) if amount <= 0
       end
     end
 

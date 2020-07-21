@@ -100,8 +100,9 @@ module Realms
     end
 
     def execute
-      turn_structure.execute
-    rescue GameOver
+      catch(:game_over) do
+        turn_structure.execute
+      end
       @game_over = true
     end
 
@@ -124,6 +125,7 @@ module Realms
     ## Decisions
     #
     def decide(*args)
+      return if over?
       action, key = args
       decision_key = if args.many?
         [action, safe(key)].compact.join(".")
