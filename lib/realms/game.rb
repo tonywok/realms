@@ -1,4 +1,5 @@
 require "realms/zones"
+require "realms/turns"
 require "realms/turn"
 require "realms/phases"
 
@@ -21,7 +22,7 @@ module Realms
       registry.register!
       @flows = []
       @fiber = Fiber.new { execute }
-      @turn_structure = Realms::TurnStructure.registry.evaluate(GameContext.new(game: self))
+      @turn_structure = Turns.structure.evaluate(GameContext.new(game: self))
       @game_over = false
     end
 
