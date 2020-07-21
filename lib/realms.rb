@@ -1,6 +1,7 @@
 require "realms/version"
 require "active_support/all"
 require "brainguy"
+require "realms/flows"
 require "realms/choices"
 require "realms/effects"
 require "realms/abilities"

@@ -1,7 +1,6 @@
 require "realms/zones"
 require "realms/turns"
 require "realms/turn"
-require "realms/phases"
 
 module Realms
   class Game

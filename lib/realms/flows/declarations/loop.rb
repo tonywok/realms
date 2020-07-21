@@ -1,5 +1,5 @@
 module Realms
-  module Turns
+  module Flows
     module Declarations
       class Loop
         attr_reader :key, :declarations

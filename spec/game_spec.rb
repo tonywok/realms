@@ -351,8 +351,6 @@ RSpec.describe Realms::Game do
       game.decide(:play, :patrol_mech_0)
       game.decide(:patrol_mech, :combat)
       game.decide(:attack, :p1)
-      # Should end here - a use case for throw/catch?
-      # game.decide(:end_turn)
     end
   end
 
