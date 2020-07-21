@@ -11,8 +11,6 @@ module Realms
         end
 
         loop(:players) do
-          phase(:upkeep)
-
           phase(:main) do
             # TODO: probabaly move to layout
             actions = active_player.actions +
