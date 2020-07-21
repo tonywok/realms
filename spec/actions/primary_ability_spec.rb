@@ -26,11 +26,6 @@ RSpec.describe Realms::Actions::PrimaryAbility do
         expect { game.base_ability(card) }.to raise_error(Realms::Choices::InvalidOption)
       end
     end
-
-    context "a base in play" do
-      it "automatically uses primary ability"
-      it "cannot perform primary base ability again once automatically triggered"
-    end
   end
 
   context "manually executed base abilities" do

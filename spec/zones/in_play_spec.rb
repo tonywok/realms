@@ -109,7 +109,7 @@ RSpec.describe Realms::Zones::InPlay do
       end
     end
 
-    xcontext "already in play" do
+    context "already in play" do
       context "primary_ability" do
         context "manual" do
           include_context "base_ability" do
@@ -119,7 +119,7 @@ RSpec.describe Realms::Zones::InPlay do
           it do
             expect {
               game.base_ability(card)
-              game.decide(:authority)
+              game.decide(:trading_post, :authority)
             }.to change { game.active_player.authority }.by(1)
             expect(game).to_not have_option(:base_ability, card)
           end
