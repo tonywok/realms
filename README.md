@@ -49,8 +49,6 @@ until game.over?
 end
 ```
 
-There's a very early game client and server under development [here](https://github.com/tonywok/realms-world).
-
 If you'd like to learn more about the underlying concepts and how to script the game, head over to the [wiki](https://github.com/tonywok/realms/wiki)
 
 ## Development
