@@ -12,7 +12,7 @@ module Realms
     delegate :p1, :p2, :trade_deck,
       to: :registry
 
-    attr_reader :fiber, :flows, :turn_structure
+    attr_reader :fiber, :flows, :turn_structure, :layout
 
     def initialize(seed: Random.new_seed)
       @seed = seed
@@ -22,6 +22,7 @@ module Realms
       @flows = []
       @fiber = Fiber.new { execute }
       @turn_structure = Turns.structure.evaluate(GameContext.new(game: self))
+      @layout = Zones.layout.make(GameContext.new(game: self))
       @game_over = false
     end
 
