@@ -21,8 +21,8 @@ module Realms
       registry.register!
       @flows = []
       @fiber = Fiber.new { execute }
-      @turn_structure = Turns.structure.evaluate(GameContext.new(game: self))
       @layout = Zones.layout.make(GameContext.new(game: self))
+      @turn_structure = Turns.structure.evaluate(GameContext.new(game: self))
       @game_over = false
     end
 
