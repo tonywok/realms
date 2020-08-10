@@ -24,12 +24,16 @@ module Realms
           def initialize(declaration, context)
             @declaration = declaration
             @context = context
+            @active_declaration = nil
           end
 
+          # TODO: There's probably a "round" that uses loop
           def execute
-            declaration.declarations.cycle do |declaration|
-              phase = declaration.evaluate(context) 
-              game.perform(phase)
+            context.layout.players.cycle do |active_player|
+              declaration.declarations.each do |declaration|
+                phase = declaration.evaluate(context, active_player) 
+                game.perform(phase)
+              end
             end
           end
         end

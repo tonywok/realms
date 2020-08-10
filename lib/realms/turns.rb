@@ -5,21 +5,16 @@ module Realms
     def self.structure
       @structure ||= Builder.build do
         phase(:setup) do
-          trade_deck.setup
+          5.times { layout.trade_deck.transfer!(to: layout.trade_row) }
           active_player.draw(3)
-          passive_player.draw(5)
+          passive_players.each { |p| p.draw(5) }
         end
 
         loop(:players) do
-          phase(:main) do
-            # TODO: probabaly move to layout
-            actions = active_player.actions +
-                      passive_player.in_play.actions +
-                      trade_deck.actions +
-                      [Actions::EndMainPhase.new(active_turn)]
-            choose(actions) do |action|
-              perform(action)
-              execute unless action.is_a?(Actions::EndMainPhase)
+          phase(:main, actions: [:play, :attack, :acquire, :primary, :scrap, :ally, :end_turn]) do
+            choose(eligible_actions) do |action|
+              continue = perform(action)
+              execute unless continue
             end
           end
 
@@ -30,14 +25,13 @@ module Realms
             active_player.in_play.select(&:ship?).each do |ship|
               active_player.destroy(ship)
             end
-            active_player.discard_hand
+            active_player.hand.each { |card| active_player.discard(card) }
           end
 
           phase(:draw) do
             active_player.draw(5)
-            active_player.in_play.reset!
+            # active_player.in_play
             # TODO: Probably remove turn as a thing that needs interacted with
-            game.send(:next_turn)
           end
         end
       end

@@ -7,8 +7,8 @@ module Realms
     class Builder
       include Flows::Builder
 
-      def phase(key, &execution)
-        definition = Phases::Definition.new(key: key, execution: execution)
+      def phase(key, actions: [], &execution)
+        definition = Phases::Definition.new(key: key, actions: actions, execution: execution)
         declarations << Declarations::Phase.new(definition: definition)
       end
 

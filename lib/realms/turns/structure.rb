@@ -7,28 +7,50 @@ module Realms
         @declaration = declaration
       end
 
-      def evaluate(context)
-        Evaluated.new(declaration, context)
+      def evaluate(layout)
+        Evaluated.new(declaration, layout)
       end
 
       class Evaluated
-        attr_reader :declaration, :context
+        attr_reader :declaration, :layout
 
-        def initialize(declaration, context)
+        delegate :game,
+          :to => :layout
+
+        include Brainguy::Observer
+        include Brainguy::Observable
+
+        def initialize(declaration, layout)
           @declaration = declaration
-          @context = context
+          @layout = layout
+        end
+
+        def emit(*args)
+          super(*args)
         end
 
         def once(phase, player:, &handler)
           event = [player.key, phase].join(":").to_sym
-          sub = context.on(event) do
+          sub = layout.on(event) do
             handler.call
             sub.cancel
           end
         end
 
+        def active_player
+          layout.perspective(layout.game.active_turn.active_player)
+        end
+
+        def passive_players
+          [layout.game.active_turn.passive_player].map { |p| layout.perspective(p) }
+        end
+
+        def perform(*args)
+          layout.game.perform(*args)
+        end
+
         def execute
-          declaration.evaluate(context).execute
+          declaration.evaluate(self).execute
         end
       end
     end
