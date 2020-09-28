@@ -102,9 +102,8 @@ module Realms
         end
 
         effect(:acquire_ship_and_top_deck) do
-          trade_row_ships = trade_row.select(&:ship?)
-          choose(trade_row_ships) do |card|
-            active_player.acquire(card, zone: active_player.draw_pile, pos: 0)
+          choose(trade_row.select(&:ship?)) do |card|
+            trade_row.transfer!(card: card, to: active_player.draw_pile, pos: 0)
           end
         end
 

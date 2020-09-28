@@ -8,21 +8,32 @@ module Realms
           @definition = definition
         end
 
-        def evaluate(context)
-          Evaluated.new(self, context)
+        def evaluate(structure, active_player)
+          Evaluated.new(self, structure, active_player)
         end
 
         class Evaluated
-          attr_reader :declaration, :context
+          attr_reader :declaration, :structure, :active_player
 
-          delegate :game, :card, to: :context
-          delegate :choose, :perform, :active_turn, :active_player, :passive_player, :trade_deck, to: :game
-          delegate :trade_row, to: :trade_deck
+          delegate :game, :layout, :passive_players,
+            to: :structure
+          delegate :choose, :perform, :active_turn, :passive_player, to: :game
           delegate :in_play, to: :active_player
 
-          def initialize(declaration, context)
+          def initialize(declaration, structure, active_player)
             @declaration = declaration
-            @context = context
+            @structure = structure
+            @active_player = active_player
+          end
+
+          def eligible_actions
+            action_defs = Actions.actions.slice(*declaration.definition.actions)
+            action_defs.values.each_with_object([]) do |action_def, actions|
+              instance_exec(&action_def.targeting).each do |target|
+                action = action_def.evaluate(structure, target)
+                actions << action if action.eligible?
+              end
+            end
           end
 
           def execute
@@ -30,9 +41,9 @@ module Realms
             beginning = [event, :beginning].join(":").to_sym
             ending = [event, :ending].join(":").to_sym
 
-            context.emit(beginning)
+            structure.emit(beginning)
             instance_exec(&declaration.definition.execution) if declaration.definition.execution
-            context.emit(ending)
+            structure.emit(ending)
           end
         end
       end

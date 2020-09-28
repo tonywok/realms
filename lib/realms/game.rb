@@ -4,25 +4,29 @@ require "realms/turn"
 
 module Realms
   class Game
-    attr_reader :seed, :registry, :event_counter, :active_turn
+    attr_reader :seed, :event_counter, :active_turn
 
-    delegate :active_player, :passive_player,
-      to: :active_turn, allow_nil: true
+    delegate :active_player,
+      to: :turn_structure
 
-    delegate :p1, :p2, :trade_deck,
-      to: :registry
-
-    attr_reader :fiber, :flows, :turn_structure
+    attr_reader :fiber, :flows, :turn_structure, :layout
 
     def initialize(seed: Random.new_seed)
       @seed = seed
-      @registry = Zones::Registry.new(self)
       @event_counter = (0...Float::INFINITY).lazy
-      registry.register!
       @flows = []
       @fiber = Fiber.new { execute }
-      @turn_structure = Turns.structure.evaluate(GameContext.new(game: self))
+      @layout = Zones.layout.make(GameContext.new(game: self))
+      @turn_structure = Turns.structure.evaluate(layout)
       @game_over = false
+    end
+
+    def p1
+      layout.perspectives.fetch("p1")
+    end
+
+    def p2
+      layout.perspectives.fetch("p2")
     end
 
     def over?
@@ -85,13 +89,14 @@ module Realms
       include Brainguy::Observer
       include Brainguy::Observable
 
-      attr_reader :game
+      attr_reader :game, :rng
 
-      delegate :active_turn, :active_player, :choose,
+      delegate :active_turn, :choose,
         :to => :game
 
       def initialize(game:)
         @game = game
+        @rng = Random.new(game.seed)
       end
 
       def emit(*args)

@@ -36,13 +36,6 @@ module Realms
       registry.viper(self)
     end
 
-    # TODO:
-    # delegate :hand, :discard_pile, :in_play, :draw_pile,
-    #   to: :player_zones
-    #
-    # delegate :trade_row, :scrap_heap, :explorers,
-    #   to: :trade_deck_zones
-
     def discard(card)
       hand.transfer!(card: card, to: discard_pile)
     end

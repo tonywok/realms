@@ -19,8 +19,6 @@ module Realms
         class Evaluated
           attr_reader :declaration, :context
 
-          delegate :game, to: :context
-
           def initialize(declaration, context)
             @declaration = declaration
             @context = context
@@ -28,8 +26,12 @@ module Realms
 
           def execute
             declaration.declarations.each do |declaration|
+              begin
               effect = declaration.evaluate(context) 
-              game.perform(effect)
+              context.perform(effect)
+              rescue => e
+                binding.pry
+              end
             end
           end
         end

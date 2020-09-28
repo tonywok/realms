@@ -3,8 +3,8 @@ require "spec_helper"
 RSpec.describe Realms::Game do
   let(:seed) { 42 }
   let(:game) { described_class.new(seed: seed) }
-  let(:p1) { game.active_player }
-  let(:p2) { game.passive_player }
+  let(:p1) { game.p1 }
+  let(:p2) { game.p2 }
 
   context "collecting events" do
     it "returns the game events that occurred as a result of a decision" do
@@ -41,8 +41,8 @@ RSpec.describe Realms::Game do
     it "plays" do
       game.start
 
-      expect(p1.authority).to eq(50)
-      expect(p2.authority).to eq(50)
+      expect(p1.authority.value).to eq(50)
+      expect(p2.authority.value).to eq(50)
 
       expect(p1.hand.length).to eq(3)
       expect(p2.hand.length).to eq(5)

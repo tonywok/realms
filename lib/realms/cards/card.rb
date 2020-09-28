@@ -56,7 +56,7 @@ module Realms
       class AbilityContext
         attr_reader :game, :card
 
-        delegate :active_turn, :active_player, :choose,
+        delegate :active_turn, :choose,
           :to => :game
 
         def initialize(card:, game:)
