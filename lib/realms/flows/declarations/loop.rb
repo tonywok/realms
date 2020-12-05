@@ -16,10 +16,7 @@ module Realms
         class Evaluated
           attr_reader :declaration, :context
 
-          delegate :game, :card, to: :context
-          delegate :perform, :active_turn, :active_player, :passive_player, :trade_deck, to: :game
-          delegate :trade_row, to: :trade_deck
-          delegate :in_play, to: :active_player
+          delegate :game, to: :context
 
           def initialize(declaration, context)
             @declaration = declaration

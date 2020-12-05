@@ -9,6 +9,10 @@ require "realms/actions"
 require "realms/cards"
 require "realms/game"
 
+# EXPERIMENT: start
+require "thrones"
+# EXPERIMENT: end
+
 module Realms
   class InvalidTarget < StandardError; end
 end
